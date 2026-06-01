@@ -19,6 +19,73 @@ export default function ThreeCanvas({
   const [interactionPrompt, setInteractionPrompt] = useState(null);
   const [currentDistanceLabel, setCurrentDistanceLabel] = useState("");
 
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+  const [joystickPos, setJoystickPos] = useState({ x: 0, y: 0 });
+  const joystickTouchIdRef = useRef(null);
+  const joystickCenterRef = useRef({ x: 0, y: 0 });
+  const maxJoystickRadius = 45;
+
+  useEffect(() => {
+    setIsMobileDevice(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+  }, []);
+
+  const handleJoystickStart = (e) => {
+    if (joystickTouchIdRef.current !== null) return;
+    
+    const touch = e.changedTouches[0];
+    joystickTouchIdRef.current = touch.identifier;
+    
+    const baseElement = e.currentTarget.querySelector(".joystick-base");
+    if (!baseElement) return;
+    const rect = baseElement.getBoundingClientRect();
+    joystickCenterRef.current = {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2
+    };
+  };
+
+  const handleJoystickMove = (e) => {
+    if (joystickTouchIdRef.current === null) return;
+    
+    const touches = Array.from(e.touches);
+    const touch = touches.find(t => t.identifier === joystickTouchIdRef.current);
+    if (!touch) return;
+    
+    const deltaX = touch.clientX - joystickCenterRef.current.x;
+    const deltaY = touch.clientY - joystickCenterRef.current.y;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    
+    let moveX = deltaX;
+    let moveY = deltaY;
+    
+    if (distance > maxJoystickRadius) {
+      moveX = (deltaX / distance) * maxJoystickRadius;
+      moveY = (deltaY / distance) * maxJoystickRadius;
+    }
+    
+    setJoystickPos({ x: moveX, y: moveY });
+    
+    const forceX = moveX / maxJoystickRadius;
+    const forceY = -moveY / maxJoystickRadius;
+    
+    stateRef.current.joyX = forceX;
+    stateRef.current.joyY = forceY;
+  };
+
+  const handleJoystickEnd = (e) => {
+    if (joystickTouchIdRef.current === null) return;
+    
+    const changedTouches = Array.from(e.changedTouches);
+    const hasEnded = changedTouches.some(t => t.identifier === joystickTouchIdRef.current);
+    
+    if (hasEnded) {
+      joystickTouchIdRef.current = null;
+      setJoystickPos({ x: 0, y: 0 });
+      stateRef.current.joyX = 0;
+      stateRef.current.joyY = 0;
+    }
+  };
+
   // Refs for animation loop and keyboard state to avoid re-triggering useEffect
   const stateRef = useRef({
     posX: 0,
@@ -691,29 +758,58 @@ export default function ThreeCanvas({
       stateRef.current.mouseDrag = false;
     };
 
-    // Touch events for mobile screens
+    // Multitouch touch look controls (tracks non-joystick touch IDs)
+    const activeLookTouchId = { current: null };
+    const prevLookTouchX = { current: 0 };
+    const prevLookTouchY = { current: 0 };
+
     const onTouchStart = (e) => {
       if (e.target !== renderer.domElement) return;
+      if (activeLookTouchId.current !== null) return;
+
+      // Find the look touch (excluding the joystick touch)
+      const touches = Array.from(e.changedTouches);
+      const lookTouch = touches.find(t => t.identifier !== joystickTouchIdRef.current);
+      if (!lookTouch) return;
+
+      activeLookTouchId.current = lookTouch.identifier;
+      prevLookTouchX.current = lookTouch.clientX;
+      prevLookTouchY.current = lookTouch.clientY;
       stateRef.current.mouseDrag = true;
-      stateRef.current.prevMouseX = e.touches[0].clientX;
-      stateRef.current.prevMouseY = e.touches[0].clientY;
     };
 
     const onTouchMove = (e) => {
-      if (!stateRef.current.mouseDrag) return;
-      const deltaX = e.touches[0].clientX - stateRef.current.prevMouseX;
-      const deltaY = e.touches[0].clientY - stateRef.current.prevMouseY;
+      if (activeLookTouchId.current === null) return;
 
-      stateRef.current.prevMouseX = e.touches[0].clientX;
-      stateRef.current.prevMouseY = e.touches[0].clientY;
+      const touches = Array.from(e.touches);
+      const lookTouch = touches.find(t => t.identifier === activeLookTouchId.current);
+      if (!lookTouch) return;
 
-      stateRef.current.rotY -= deltaX * 0.005;
-      stateRef.current.rotX -= deltaY * 0.005;
+      const deltaX = lookTouch.clientX - prevLookTouchX.current;
+      const deltaY = lookTouch.clientY - prevLookTouchY.current;
+
+      prevLookTouchX.current = lookTouch.clientX;
+      prevLookTouchY.current = lookTouch.clientY;
+
+      stateRef.current.rotY -= deltaX * 0.0035; // Fine-tuned speed for premium iPhone panning
+      stateRef.current.rotX -= deltaY * 0.0035;
       stateRef.current.rotX = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, stateRef.current.rotX));
     };
 
-    const onTouchEnd = () => {
-      stateRef.current.mouseDrag = false;
+    const onTouchEnd = (e) => {
+      if (activeLookTouchId.current === null) return;
+
+      const changedTouches = Array.from(e.changedTouches);
+      const hasEnded = changedTouches.some(t => t.identifier === activeLookTouchId.current);
+
+      if (hasEnded) {
+        activeLookTouchId.current = null;
+        stateRef.current.mouseDrag = false;
+      }
+    };
+
+    const onTouchCancel = (e) => {
+      onTouchEnd(e);
     };
 
     window.addEventListener("mousedown", onMouseDown);
@@ -722,6 +818,7 @@ export default function ThreeCanvas({
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: true });
     window.addEventListener("touchend", onTouchEnd);
+    window.addEventListener("touchcancel", onTouchCancel);
 
     // ANIMATION & INTERACTION LOOP
     let animationFrameId;
@@ -801,7 +898,7 @@ export default function ThreeCanvas({
       }
       dustParticles.geometry.attributes.position.needsUpdate = true;
 
-      // 2. PROCESS WASD CONTROLS
+      // 2. PROCESS NAVIGATION CONTROLS (WASD Keys + Mobile Virtual Joystick)
       const moveSpeed = 2.4 * delta;
       const keys = stateRef.current.keys;
       
@@ -826,6 +923,18 @@ export default function ThreeCanvas({
       if (keys["d"] || keys["arrowright"] || keys["KeyD"] || keys["ArrowRight"]) {
         moveX += Math.cos(stateRef.current.rotY) * moveSpeed;
         moveZ -= Math.sin(stateRef.current.rotY) * moveSpeed;
+      }
+
+      // Add Mobile Joystick Forces (joyX/joyY: -1.0 to 1.0)
+      const joyX = stateRef.current.joyX || 0;
+      const joyY = stateRef.current.joyY || 0;
+      if (joyY !== 0) {
+        moveX += joyY * -Math.sin(stateRef.current.rotY) * moveSpeed;
+        moveZ += joyY * -Math.cos(stateRef.current.rotY) * moveSpeed;
+      }
+      if (joyX !== 0) {
+        moveX += joyX * Math.cos(stateRef.current.rotY) * moveSpeed;
+        moveZ += joyX * -Math.sin(stateRef.current.rotY) * moveSpeed;
       }
 
       // Check collision
@@ -924,6 +1033,7 @@ export default function ThreeCanvas({
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchCancel);
       
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);
@@ -1004,28 +1114,51 @@ export default function ThreeCanvas({
         </div>
       )}
 
-      {/* Basic instruction hints */}
-      <div className="hud-control-tip ui-element" style={{ bottom: '24px', opacity: 0.9 }}>
-        <div className="hud-control-item">
-          <span className="hud-key">W</span>
-          <span className="hud-key">A</span>
-          <span className="hud-key">S</span>
-          <span className="hud-key">D</span>
-          <span>Di chuyển</span>
+      {/* Mobile Virtual Joystick Overlay */}
+      {isMobileDevice && (
+        <div 
+          className="joystick-zone ui-element"
+          onTouchStart={handleJoystickStart}
+          onTouchMove={handleJoystickMove}
+          onTouchEnd={handleJoystickEnd}
+          onTouchCancel={handleJoystickEnd}
+        >
+          <div className="joystick-base">
+            <div 
+              className="joystick-handle" 
+              style={{
+                transform: `translate(${joystickPos.x}px, ${joystickPos.y}px)`,
+                transition: joystickPos.x === 0 && joystickPos.y === 0 ? "transform 0.15s ease-out" : "none"
+              }}
+            />
+          </div>
         </div>
-        <div className="hud-control-item">
-          <span className="hud-key">Chuột</span>
-          <span>Kéo nhìn quanh</span>
+      )}
+
+      {/* Basic instruction hints (Hidden on Mobile) */}
+      {!isMobileDevice && (
+        <div className="hud-control-tip ui-element" style={{ bottom: '24px', opacity: 0.9 }}>
+          <div className="hud-control-item">
+            <span className="hud-key">W</span>
+            <span className="hud-key">A</span>
+            <span className="hud-key">S</span>
+            <span className="hud-key">D</span>
+            <span>Di chuyển</span>
+          </div>
+          <div className="hud-control-item">
+            <span className="hud-key">Chuột</span>
+            <span>Kéo nhìn quanh</span>
+          </div>
+          <div className="hud-control-item">
+            <span className="hud-key">F</span>
+            <span>Tương tác mẫu</span>
+          </div>
+          <div className="hud-control-item">
+            <span className="hud-key">E</span>
+            <span>Chat với Curator</span>
+          </div>
         </div>
-        <div className="hud-control-item">
-          <span className="hud-key">F</span>
-          <span>Tương tác mẫu</span>
-        </div>
-        <div className="hud-control-item">
-          <span className="hud-key">E</span>
-          <span>Chat với Curator</span>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

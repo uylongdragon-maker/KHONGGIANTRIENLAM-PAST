@@ -411,6 +411,63 @@ export default function DigitalLibraryModal({
           color: #8a96a8;
           font-size: 0.9rem;
         }
+
+        @media (max-width: 768px) {
+          .lib-modal-container {
+            padding: 16px;
+            gap: 12px;
+            height: 90vh;
+            border-radius: 16px;
+          }
+
+          .lib-close-btn {
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+          }
+
+          .lib-header h1 {
+            font-size: 1.15rem;
+          }
+
+          .lib-header p {
+            font-size: 0.72rem;
+          }
+
+          .lib-control-bar {
+            grid-template-columns: 1fr;
+            padding: 10px;
+            gap: 10px;
+            border-radius: 12px;
+          }
+
+          .lib-tabs {
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 4px;
+            gap: 6px;
+          }
+
+          .lib-tab-btn {
+            padding: 6px 12px;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+          }
+
+          .lib-grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+
+          .lib-card {
+            padding: 14px;
+            gap: 8px;
+          }
+        }
       `}</style>
 
       <div className="lib-modal-container" onClick={(e) => e.stopPropagation()}>

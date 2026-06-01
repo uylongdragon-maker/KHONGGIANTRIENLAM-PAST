@@ -222,6 +222,14 @@ export default function Home() {
           </button>
         </div>
 
+        {/* MOBILE SIDEBAR DRAWERS BACKDROP OVERLAY */}
+        {showLeftSidebar && (
+          <div 
+            className="mobile-sidebar-backdrop ui-element" 
+            onClick={() => setShowLeftSidebar(false)}
+          />
+        )}
+
         {/* SIDEBAR LEFT */}
         <SidebarLeft
           playerPosition={playerPosition}
