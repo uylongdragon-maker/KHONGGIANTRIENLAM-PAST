@@ -24,10 +24,13 @@ export default function ExhibitHUDModal({
 
   // Auto-pause audio on exhibit change and handle Web Speech API Synthesis
   useEffect(() => {
-    setIsPlaying(false);
+    const timer = setTimeout(() => {
+      setIsPlaying(false);
+    }, 0);
     if (typeof window !== "undefined" && window.speechSynthesis) {
       window.speechSynthesis.cancel();
     }
+    return () => clearTimeout(timer);
   }, [exhibit]);
 
   useEffect(() => {
@@ -483,7 +486,7 @@ export default function ExhibitHUDModal({
               </div>
 
               <p style={{ fontSize: "0.8rem", color: "#e5e7eb", fontStyle: "italic" }}>
-                "{exhibit.audioText}"
+                &ldquo;{exhibit.audioText}&rdquo;
               </p>
             </div>
           )}

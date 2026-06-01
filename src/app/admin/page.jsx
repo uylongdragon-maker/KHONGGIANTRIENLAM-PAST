@@ -19,6 +19,10 @@ import {
   Play
 } from "lucide-react";
 
+function generateTiktokId() {
+  return `tiktok_${Date.now()}`;
+}
+
 export default function AdminDashboard() {
   const [exhibits, setExhibits] = useState([]);
   const [posters, setPosters] = useState([]);
@@ -115,7 +119,10 @@ export default function AdminDashboard() {
 
     const session = sessionStorage.getItem("admin_session");
     if (session === "active") {
-      setIsLoggedIn(true);
+      const timer = setTimeout(() => {
+        setIsLoggedIn(true);
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, []);
 
@@ -478,7 +485,7 @@ export default function AdminDashboard() {
       updated = tiktokVideos.map(v => v.id === editingTiktokId ? { ...tiktokForm } : v);
       alert(`Đã cập nhật video TikTok [${tiktokForm.title}] thành công!`);
     } else {
-      const newId = `tiktok_${Date.now()}`;
+      const newId = generateTiktokId();
       const newVideo = {
         id: newId,
         title: tiktokForm.title,

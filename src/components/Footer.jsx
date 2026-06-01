@@ -157,7 +157,7 @@ export default function Footer({
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
               {savedExhibitsCount === 0 ? (
                 <div style={{ padding: '30px', textAlign: 'center', color: 'var(--color-secondary)', fontSize: '0.8rem' }}>
-                  Thư mục trống. Hãy đến gần tiêu bản bất kỳ và nhấn "Lưu mẫu" ở thanh bên phải.
+                  Thư mục trống. Hãy đến gần tiêu bản bất kỳ và nhấn &quot;Lưu mẫu&quot; ở thanh bên phải.
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>

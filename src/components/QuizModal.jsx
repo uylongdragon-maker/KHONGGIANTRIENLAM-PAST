@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { 
   X, 
   Check, 
@@ -11,6 +11,10 @@ import {
   FileCheck2
 } from "lucide-react";
 import { questionsData } from "../data/exhibits";
+
+function generateCertId() {
+  return `3DPAST-2026-${Math.floor(100000 + Math.random() * 900000)}`;
+}
 
 export default function QuizModal({ onClose, onPassQuiz }) {
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -67,7 +71,7 @@ export default function QuizModal({ onClose, onPassQuiz }) {
   };
 
   // Generate random certificate ID
-  const certId = `3DPAST-2026-${Math.floor(100000 + Math.random() * 900000)}`;
+  const certId = useMemo(() => generateCertId(), []);
 
   return (
     <div className="modal-backdrop ui-element" onClick={onClose}>

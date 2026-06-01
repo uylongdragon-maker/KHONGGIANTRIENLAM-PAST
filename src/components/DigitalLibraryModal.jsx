@@ -503,7 +503,7 @@ export default function DigitalLibraryModal({
                   
                   <div className="lib-card-effects" style={{ borderColor: "rgba(86, 204, 242, 0.1)" }}>
                     <strong style={{ color: "#56ccf2", fontSize: "0.65rem", textTransform: "uppercase", display: "block", marginBottom: "4px" }}>Khẩu hiệu hành động:</strong>
-                    <span style={{ fontSize: "0.7rem", color: "#d1d5db" }}>"{post.subtitle}"</span>
+                    <span style={{ fontSize: "0.7rem", color: "#d1d5db" }}>&ldquo;{post.subtitle}&rdquo;</span>
                   </div>
 
                   <div className="lib-card-actions">
