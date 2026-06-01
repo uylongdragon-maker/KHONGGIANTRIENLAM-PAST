@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
 import { exhibitsData, postersData } from "../../../data/exhibits";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     let exhibits = await prisma.exhibit.findMany({
