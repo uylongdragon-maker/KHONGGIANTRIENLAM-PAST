@@ -49,10 +49,16 @@ body {
   color: var(--color-primary);
   font-family: var(--font-sans);
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
   overflow: hidden;
   user-select: none;
   -webkit-font-smoothing: antialiased;
+}
+
+.app-container {
+  height: 100vh;
+  height: 100dvh;
 }
 
 /* Glassmorphism Classes */
@@ -1259,14 +1265,14 @@ body {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   .ui-overlay-container {
     grid-template-areas:
       "header"
       "."
       "footer";
     grid-template-columns: 1fr;
-    grid-template-rows: 70px 1fr 80px;
+    grid-template-rows: 64px 1fr 76px;
     padding: 10px;
     gap: 10px;
     overflow: hidden;
@@ -1281,7 +1287,9 @@ body {
     width: 85%;
     max-width: 300px;
     height: 100vh;
+    height: 100dvh;
     max-height: 100vh;
+    max-height: 100dvh;
     border-radius: 0 24px 24px 0;
     border-left: none;
     border-right: 1px solid var(--border-accent);
@@ -1308,6 +1316,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     z-index: 1150;
     background: rgba(4, 7, 12, 0.55);
     backdrop-filter: blur(4px);
@@ -1316,7 +1325,7 @@ body {
   }
 
   .floating-hud-controls {
-    top: 90px;
+    top: 84px;
     left: 15px;
   }
 
@@ -1327,7 +1336,7 @@ body {
   /* Header mobile optimization */
   .app-header {
     padding: 0 12px;
-    height: 60px;
+    height: 56px;
   }
   
   .header-title h1 {
@@ -1360,7 +1369,7 @@ body {
     padding: 0 8px;
     gap: 6px;
     justify-content: space-around;
-    height: 68px;
+    height: 64px;
   }
   
   .footer-widget-label {
@@ -1383,6 +1392,12 @@ body {
   
   .footer-credits-widget {
     display: none !important;
+  }
+
+  /* Float Mobile Joystick above Footer in Portrait mode */
+  .joystick-zone {
+    bottom: 84px !important;
+    left: 20px !important;
   }
 
   /* Viewport safe modals */
@@ -1421,8 +1436,8 @@ body {
   }
 
   .joystick-zone {
-    bottom: 25px;
-    left: 25px;
+    bottom: 80px !important;
+    left: 15px !important;
     width: 100px;
     height: 100px;
   }

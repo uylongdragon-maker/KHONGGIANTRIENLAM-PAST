@@ -182,7 +182,7 @@ export default function Home() {
   };
 
   return (
-    <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
+    <div className="app-container" style={{ position: "relative", width: "100vw", overflow: "hidden" }}>
       {/* 1. THREE.JS 3D ENVIRONMENT */}
       <ThreeCanvas
         playerPosition={playerPosition}
