@@ -87,6 +87,16 @@ export default function Footer({
             </span>
           </div>
         </div>
+
+        {/* PAST CREDITS FOOTER SIGNATURE */}
+        <div className="footer-widget footer-credits-widget" style={{ cursor: 'default', borderLeft: '1px solid rgba(255,255,255,0.08)', paddingLeft: '16px', marginLeft: '8px', display: 'flex', flexDirection: 'column', gap: '2px', alignItems: 'flex-start' }}>
+          <span style={{ fontSize: '0.72rem', color: 'var(--color-gold)', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase' }}>
+            Một sản phẩm công nghệ của PAST
+          </span>
+          <span style={{ fontSize: '0.65rem', color: 'var(--color-secondary)', fontWeight: 500, lineHeight: '1.2' }}>
+            Câu lạc bộ tình nguyện vì bình yên thành phố
+          </span>
+        </div>
       </footer>
 
       {/* QUESTS MODAL */}

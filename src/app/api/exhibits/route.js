@@ -12,6 +12,10 @@ export async function GET() {
       orderBy: { id: "asc" }
     });
 
+    let tiktokVideos = await prisma.tiktokVideo.findMany({
+      orderBy: { id: "asc" }
+    });
+
     // Auto-seed if database is empty on first boot
     if (exhibits.length === 0) {
       console.log("Seeding exhibits to Supabase...");
@@ -57,6 +61,31 @@ export async function GET() {
       posters = await prisma.poster.findMany({ orderBy: { id: "asc" } });
     }
 
+    if (tiktokVideos.length === 0) {
+      console.log("Seeding TikTok videos to Supabase...");
+      const initialTiktokVideos = [
+        {
+          id: "tiktok1",
+          title: "Hiệu ứng Ma Túy Đá tàn hoại thần kinh kinh hoàng - VTV24",
+          url: "https://www.tiktok.com/@vtv24news/video/7183029104829287682"
+        },
+        {
+          id: "tiktok2",
+          title: "Sự thật về thuốc lá điện tử ngụy trang ma túy học đường - VTV24",
+          url: "https://www.tiktok.com/@vtv24news/video/7219358291083928192"
+        },
+        {
+          id: "tiktok3",
+          title: "Hiểm họa ma túy ảo giác tẩm trong bùa lưỡi, nấm thức thần - PAST",
+          url: "https://www.tiktok.com/@vtv24news/video/7258392019482910832"
+        }
+      ];
+      await prisma.tiktokVideo.createMany({
+        data: initialTiktokVideos
+      });
+      tiktokVideos = await prisma.tiktokVideo.findMany({ orderBy: { id: "asc" } });
+    }
+
     // Map database models to matches front-end 3D scene structure
     const formattedExhibits = exhibits.map(e => ({
       id: e.id,
@@ -84,7 +113,11 @@ export async function GET() {
       impactText: p.impactText
     }));
 
-    return NextResponse.json({ exhibits: formattedExhibits, posters: formattedPosters });
+    return NextResponse.json({ 
+      exhibits: formattedExhibits, 
+      posters: formattedPosters,
+      tiktokVideos: tiktokVideos
+    });
   } catch (error) {
     console.error("Database fetch error:", error);
     return NextResponse.json({ error: "Failed to fetch exhibits from Supabase database" }, { status: 500 });
@@ -97,7 +130,7 @@ export async function POST(request) {
     const { action, type, data } = body;
 
     if (action === "save_all") {
-      const { exhibits: newExhibits, posters: newPosters } = data;
+      const { exhibits: newExhibits, posters: newPosters, tiktokVideos: newTiktokVideos } = data;
 
       if (newExhibits) {
         for (const e of newExhibits) {
@@ -173,6 +206,23 @@ export async function POST(request) {
         }
       }
 
+      if (newTiktokVideos) {
+        for (const t of newTiktokVideos) {
+          await prisma.tiktokVideo.upsert({
+            where: { id: t.id },
+            update: {
+              title: t.title,
+              url: t.url
+            },
+            create: {
+              id: t.id,
+              title: t.title,
+              url: t.url
+            }
+          });
+        }
+      }
+
       return NextResponse.json({ success: true, message: "Successfully saved to Supabase!" });
     }
 
@@ -182,6 +232,8 @@ export async function POST(request) {
         await prisma.exhibit.delete({ where: { id } });
       } else if (type === "poster") {
         await prisma.poster.delete({ where: { id } });
+      } else if (type === "tiktokVideo") {
+        await prisma.tiktokVideo.delete({ where: { id } });
       }
       return NextResponse.json({ success: true, message: `Deleted ${type} from Supabase` });
     }

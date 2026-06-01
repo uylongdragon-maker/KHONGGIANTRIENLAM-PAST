@@ -27,6 +27,7 @@ export default function Home() {
   // Exhibits & Posters dynamic state loaded from localStorage
   const [exhibits, setExhibits] = useState([]);
   const [posters, setPosters] = useState([]);
+  const [tiktokVideos, setTiktokVideos] = useState([]);
   
   // Load dynamic data on mount from Supabase Database
   useEffect(() => {
@@ -44,6 +45,10 @@ export default function Home() {
           setPosters(json.posters);
           localStorage.setItem("3dpast_posters", JSON.stringify(json.posters));
         }
+        if (json.tiktokVideos && json.tiktokVideos.length > 0) {
+          setTiktokVideos(json.tiktokVideos);
+          localStorage.setItem("3dpast_tiktokVideos", JSON.stringify(json.tiktokVideos));
+        }
       } catch (error) {
         console.error("Failed to load from Supabase database, using local cache fallback:", error);
         loadFallback();
@@ -53,6 +58,7 @@ export default function Home() {
     const loadFallback = () => {
       const savedExhibits = localStorage.getItem("3dpast_exhibits");
       const savedPosters = localStorage.getItem("3dpast_posters");
+      const savedTiktok = localStorage.getItem("3dpast_tiktokVideos");
       
       if (savedExhibits && JSON.parse(savedExhibits).length >= 30) {
         setExhibits(JSON.parse(savedExhibits));
@@ -66,6 +72,30 @@ export default function Home() {
       } else {
         localStorage.setItem("3dpast_posters", JSON.stringify(postersData));
         setPosters(postersData);
+      }
+
+      if (savedTiktok) {
+        setTiktokVideos(JSON.parse(savedTiktok));
+      } else {
+        const initialTiktokVideos = [
+          {
+            id: "tiktok1",
+            title: "Hiệu ứng Ma Túy Đá tàn hoại thần kinh kinh hoàng - VTV24",
+            url: "https://www.tiktok.com/@vtv24news/video/7183029104829287682"
+          },
+          {
+            id: "tiktok2",
+            title: "Sự thật về thuốc lá điện tử ngụy trang ma túy học đường - VTV24",
+            url: "https://www.tiktok.com/@vtv24news/video/7219358291083928192"
+          },
+          {
+            id: "tiktok3",
+            title: "Hiểm họa ma túy ảo giác tẩm trong bùa lưỡi, nấm thức thần - PAST",
+            url: "https://www.tiktok.com/@vtv24news/video/7258392019482910832"
+          }
+        ];
+        localStorage.setItem("3dpast_tiktokVideos", JSON.stringify(initialTiktokVideos));
+        setTiktokVideos(initialTiktokVideos);
       }
     };
 
@@ -151,8 +181,8 @@ export default function Home() {
       <div className="ui-overlay-container">
         {/* HEADER */}
         <header className="app-header glass-panel ui-element">
-          <div className="header-title-container">
-            <Compass className="header-logo" size={24} style={{ animation: "holographic-pulse 2s infinite" }} />
+          <div className="header-title-container" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <img src="/past_logo.png" alt="PAST Logo" style={{ height: "46px", width: "46px", objectFit: "contain", filter: "drop-shadow(0 0 10px rgba(242,153,74,0.35))" }} />
             <div className="header-title">
               <h1>Triển Lãm Ma Túy 3D</h1>
               <p>Hiểu đúng - Phòng ngừa - Vì một cộng đồng không ma túy</p>
@@ -231,6 +261,7 @@ export default function Home() {
         <DigitalLibraryModal
           exhibits={exhibits}
           posters={posters}
+          tiktokVideos={tiktokVideos}
           onClose={() => setActiveNav("sanh-chinh")}
           onTeleport={handleTeleport}
           onSelectExhibit={handleSelectExhibit}

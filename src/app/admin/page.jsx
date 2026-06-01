@@ -22,7 +22,8 @@ import {
 export default function AdminDashboard() {
   const [exhibits, setExhibits] = useState([]);
   const [posters, setPosters] = useState([]);
-  const [activeTab, setActiveTab] = useState("specimens"); // "specimens" | "posters"
+  const [tiktokVideos, setTiktokVideos] = useState([]);
+  const [activeTab, setActiveTab] = useState("specimens"); // "specimens" | "posters" | "tiktok"
 
   // Login Gate State
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -59,6 +60,14 @@ export default function AdminDashboard() {
     rotation: { x: 0, y: 0, z: 0 }
   });
 
+  // TikTok Form State
+  const [editingTiktokId, setEditingTiktokId] = useState(null);
+  const [tiktokForm, setTiktokForm] = useState({
+    id: "",
+    title: "",
+    url: ""
+  });
+
   // 3D & Image Mock Upload States
   const [is3DDragging, setIs3DDragging] = useState(false);
   const [isImageDragging, setIsImageDragging] = useState(false);
@@ -87,12 +96,18 @@ export default function AdminDashboard() {
           setPosters(json.posters);
           localStorage.setItem("3dpast_posters", JSON.stringify(json.posters));
         }
+        if (json.tiktokVideos && json.tiktokVideos.length > 0) {
+          setTiktokVideos(json.tiktokVideos);
+          localStorage.setItem("3dpast_tiktokVideos", JSON.stringify(json.tiktokVideos));
+        }
       } catch (error) {
         console.error("Failed to fetch from Supabase, loading from cache:", error);
         const savedExhibits = localStorage.getItem("3dpast_exhibits");
         const savedPosters = localStorage.getItem("3dpast_posters");
+        const savedTiktok = localStorage.getItem("3dpast_tiktokVideos");
         if (savedExhibits) setExhibits(JSON.parse(savedExhibits));
         if (savedPosters) setPosters(JSON.parse(savedPosters));
+        if (savedTiktok) setTiktokVideos(JSON.parse(savedTiktok));
       }
     };
 
@@ -120,9 +135,10 @@ export default function AdminDashboard() {
     sessionStorage.removeItem("admin_session");
   };
 
-  const saveToLocalStorage = async (newExhibits, newPosters) => {
+  const saveToLocalStorage = async (newExhibits, newPosters, newTiktokVideos) => {
     let exhibitsToSave = newExhibits;
     let postersToSave = newPosters;
+    let tiktokVideosToSave = newTiktokVideos;
 
     if (newExhibits) {
       setExhibits(newExhibits);
@@ -136,6 +152,12 @@ export default function AdminDashboard() {
     } else {
       postersToSave = posters;
     }
+    if (newTiktokVideos) {
+      setTiktokVideos(newTiktokVideos);
+      localStorage.setItem("3dpast_tiktokVideos", JSON.stringify(newTiktokVideos));
+    } else {
+      tiktokVideosToSave = tiktokVideos;
+    }
 
     try {
       await fetch("/api/exhibits", {
@@ -143,7 +165,11 @@ export default function AdminDashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: "save_all",
-          data: { exhibits: exhibitsToSave, posters: postersToSave }
+          data: { 
+            exhibits: exhibitsToSave, 
+            posters: postersToSave,
+            tiktokVideos: tiktokVideosToSave
+          }
         })
       });
       console.log("Synced successfully with Supabase!");
@@ -401,6 +427,77 @@ export default function AdminDashboard() {
     });
     setUploadImageStatus("idle");
     setUploadedImageFile(null);
+  };
+
+  // TikTok Video Form Operations
+  const handleTiktokFormChange = (field, val) => {
+    setTiktokForm(prev => ({ ...prev, [field]: val }));
+  };
+
+  const handleEditTiktok = (video) => {
+    setEditingTiktokId(video.id);
+    setTiktokForm({
+      id: video.id,
+      title: video.title,
+      url: video.url
+    });
+  };
+
+  const handleDeleteTiktok = async (id) => {
+    if (confirm("Bạn có chắc chắn muốn xóa video TikTok này không?")) {
+      const filtered = tiktokVideos.filter(v => v.id !== id);
+      setTiktokVideos(filtered);
+      localStorage.setItem("3dpast_tiktokVideos", JSON.stringify(filtered));
+
+      try {
+        await fetch("/api/exhibits", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "delete",
+            type: "tiktokVideo",
+            data: { id }
+          })
+        });
+        alert("Đã xóa video TikTok khỏi cơ sở dữ liệu Supabase!");
+      } catch (err) {
+        console.error("Failed to delete video from Supabase:", err);
+      }
+    }
+  };
+
+  const handleSaveTiktok = (e) => {
+    e.preventDefault();
+    if (!tiktokForm.title || !tiktokForm.url) {
+      alert("Vui lòng nhập Tiêu đề và Link video TikTok!");
+      return;
+    }
+
+    let updated;
+    if (editingTiktokId) {
+      updated = tiktokVideos.map(v => v.id === editingTiktokId ? { ...tiktokForm } : v);
+      alert(`Đã cập nhật video TikTok [${tiktokForm.title}] thành công!`);
+    } else {
+      const newId = `tiktok_${Date.now()}`;
+      const newVideo = {
+        id: newId,
+        title: tiktokForm.title,
+        url: tiktokForm.url
+      };
+      updated = [...tiktokVideos, newVideo];
+      alert(`Đã thêm video TikTok [${tiktokForm.title}] thành công!`);
+    }
+    saveToLocalStorage(null, null, updated);
+    resetTiktokForm();
+  };
+
+  const resetTiktokForm = () => {
+    setEditingTiktokId(null);
+    setTiktokForm({
+      id: "",
+      title: "",
+      url: ""
+    });
   };
 
   // Mock Upload Handlers
@@ -741,9 +838,11 @@ export default function AdminDashboard() {
         .admin-container {
           background-color: #080b11;
           color: #ffffff;
-          min-height: 100vh;
+          height: 100vh;
+          max-height: 100vh;
           width: 100vw;
           overflow-x: hidden;
+          overflow-y: auto;
           font-family: 'Outfit', sans-serif;
           padding: 24px;
           display: flex;
@@ -1155,10 +1254,8 @@ export default function AdminDashboard() {
 
       {/* HEADER BAR */}
       <header className="admin-header">
-        <div className="admin-header-title">
-          <div className="admin-logo-badge">
-            <Sparkles size={24} />
-          </div>
+        <div className="admin-header-title" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <img src="/past_logo.png" alt="PAST Logo" style={{ height: "42px", width: "42px", objectFit: "contain", filter: "drop-shadow(0 0 8px rgba(242,153,74,0.35))" }} />
           <div className="admin-title-text">
             <h1>Hệ Thống Quản Trị Triển Lãm</h1>
             <p>Admin Dashboard: Điều chỉnh tiêu bản 3D & Áp phích thời gian thực</p>
@@ -1194,6 +1291,14 @@ export default function AdminDashboard() {
             >
               <ImageIcon size={18} />
               <span>Khung Áp Phích Treo Tường</span>
+            </button>
+            <button 
+              className={`tab-btn ${activeTab === "tiktok" ? "active" : ""}`}
+              onClick={() => setActiveTab("tiktok")}
+              style={{ color: activeTab === "tiktok" ? "#f2994a" : "#8a96a8", borderColor: activeTab === "tiktok" ? "rgba(242,153,74,0.2)" : "transparent" }}
+            >
+              <Play size={18} />
+              <span>Tuyên Truyền TikTok ({tiktokVideos?.length || 0})</span>
             </button>
           </div>
 
@@ -1758,6 +1863,88 @@ export default function AdminDashboard() {
                         <button 
                           className="action-icon-btn action-delete-btn"
                           onClick={() => handleDeletePoster(post.id)}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {/* TAB 3: TIKTOK VIDEOS WORKSPACE */}
+          {activeTab === "tiktok" && (
+            <div className="admin-content-grid">
+              
+              {/* Form Add/Edit */}
+              <form onSubmit={handleSaveTiktok} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <h3 className="form-title">
+                  <span>{editingTiktokId ? `✏️ Cập Nhật Video: ${tiktokForm.title}` : "➕ Thêm Video Tuyên Truyền TikTok"}</span>
+                  {editingTiktokId && (
+                    <button type="button" className="cancel-form-btn" onClick={resetTiktokForm}>Hủy bỏ</button>
+                  )}
+                </h3>
+
+                <div className="input-group">
+                  <label>Tiêu Đề Video TikTok</label>
+                  <input 
+                    type="text" 
+                    placeholder="VD: Sự thật tàn khốc về ma túy tổng hợp" 
+                    value={tiktokForm.title}
+                    onChange={(e) => handleTiktokFormChange("title", e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="input-group">
+                  <label>Đường Dẫn Link TikTok (Desktop URL)</label>
+                  <input 
+                    type="url" 
+                    placeholder="VD: https://www.tiktok.com/@vtv24news/video/7183029104829287682" 
+                    value={tiktokForm.url}
+                    onChange={(e) => handleTiktokFormChange("url", e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div style={{ background: "rgba(242,153,74,0.05)", border: "1px dashed rgba(242,153,74,0.25)", padding: "12px", borderRadius: "8px", fontSize: "0.72rem", color: "#8a96a8", lineHeight: "1.4", margin: "8px 0" }}>
+                  <strong>Lưu ý định dạng:</strong> Để video có thể phát trực tiếp (embed) mượt mà trong bảo tàng, bạn nên cung cấp link TikTok định dạng máy tính: <code>https://www.tiktok.com/@tên_kênh/video/id_số</code>.
+                </div>
+
+                <button type="submit" className="submit-btn">
+                  {editingTiktokId ? "Lưu Thay Đổi Video" : "Thêm Video Vào Không Gian Tuyên Truyền"}
+                </button>
+              </form>
+
+              {/* Items List */}
+              <div>
+                <h3 className="list-title">
+                  <span>🎥 Danh Sách Video TikTok ({tiktokVideos.length})</span>
+                </h3>
+
+                <div className="items-list-container">
+                  {tiktokVideos.map(video => (
+                    <div key={video.id} className="item-row" style={{ borderColor: "rgba(242, 153, 74, 0.15)" }}>
+                      <div className="item-meta">
+                        <h4>{video.title}</h4>
+                        <p style={{ color: "#f2994a", fontSize: "0.7rem", fontWeight: "bold" }}>ID: {video.id}</p>
+                        <p style={{ fontSize: "0.68rem", color: "#8a96a8", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap", maxWidth: "260px" }} title={video.url}>
+                          Link: {video.url}
+                        </p>
+                      </div>
+                      <div className="item-actions">
+                        <button 
+                          className="action-icon-btn" 
+                          onClick={() => handleEditTiktok(video)}
+                        >
+                          <Edit size={14} />
+                        </button>
+                        <button 
+                          className="action-icon-btn action-delete-btn"
+                          onClick={() => handleDeleteTiktok(video.id)}
                         >
                           <Trash2 size={14} />
                         </button>
