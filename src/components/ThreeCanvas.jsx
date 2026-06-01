@@ -24,12 +24,43 @@ export default function ThreeCanvas({
   const joystickTouchIdRef = useRef(null);
   const joystickCenterRef = useRef({ x: 0, y: 0 });
   const maxJoystickRadius = 45;
+  const joystickZoneRef = useRef(null);
 
   useEffect(() => {
     setIsMobileDevice(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
   }, []);
 
+  // Bind standard DOM event listeners non-passively on virtual joystick zone
+  useEffect(() => {
+    const zone = joystickZoneRef.current;
+    if (!zone) return;
+
+    const onStart = (e) => {
+      handleJoystickStart(e);
+    };
+    const onMove = (e) => {
+      handleJoystickMove(e);
+    };
+    const onEnd = (e) => {
+      handleJoystickEnd(e);
+    };
+
+    zone.addEventListener("touchstart", onStart, { passive: false });
+    zone.addEventListener("touchmove", onMove, { passive: false });
+    zone.addEventListener("touchend", onEnd, { passive: false });
+    zone.addEventListener("touchcancel", onEnd, { passive: false });
+
+    return () => {
+      zone.removeEventListener("touchstart", onStart);
+      zone.removeEventListener("touchmove", onMove);
+      zone.removeEventListener("touchend", onEnd);
+      zone.removeEventListener("touchcancel", onEnd);
+    };
+  }, [isMobileDevice, exhibits]);
+
+
   const handleJoystickStart = (e) => {
+    if (e.cancelable) e.preventDefault();
     if (joystickTouchIdRef.current !== null) return;
     
     const touch = e.changedTouches[0];
@@ -45,6 +76,7 @@ export default function ThreeCanvas({
   };
 
   const handleJoystickMove = (e) => {
+    if (e.cancelable) e.preventDefault();
     if (joystickTouchIdRef.current === null) return;
     
     const touches = Array.from(e.touches);
@@ -765,6 +797,10 @@ export default function ThreeCanvas({
 
     const onTouchStart = (e) => {
       if (e.target !== renderer.domElement) return;
+      
+      // Stop dynamic browser bouncing and scrolling bar movements
+      if (e.cancelable) e.preventDefault();
+      
       if (activeLookTouchId.current !== null) return;
 
       // Find the look touch (excluding the joystick touch)
@@ -780,6 +816,9 @@ export default function ThreeCanvas({
 
     const onTouchMove = (e) => {
       if (activeLookTouchId.current === null) return;
+      
+      // Stop dynamic browser bouncing and scrolling bar movements
+      if (e.cancelable) e.preventDefault();
 
       const touches = Array.from(e.touches);
       const lookTouch = touches.find(t => t.identifier === activeLookTouchId.current);
@@ -815,8 +854,8 @@ export default function ThreeCanvas({
     window.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: false });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd);
     window.addEventListener("touchcancel", onTouchCancel);
 
@@ -1118,10 +1157,7 @@ export default function ThreeCanvas({
       {isMobileDevice && (
         <div 
           className="joystick-zone ui-element"
-          onTouchStart={handleJoystickStart}
-          onTouchMove={handleJoystickMove}
-          onTouchEnd={handleJoystickEnd}
-          onTouchCancel={handleJoystickEnd}
+          ref={joystickZoneRef}
         >
           <div className="joystick-base">
             <div 

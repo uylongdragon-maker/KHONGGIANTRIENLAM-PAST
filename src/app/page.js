@@ -126,11 +126,58 @@ export default function Home() {
     checkOrientation();
     window.addEventListener("resize", checkOrientation);
     window.addEventListener("orientationchange", checkOrientation);
+
+    // Global touch gesture isolation to block viewport bounces, address bar shifting, and pinch-to-zoom
+    const handleGlobalTouchMove = (e) => {
+      // 1. Completely disable multi-touch gestures (pinch-to-zoom)
+      if (e.touches.length > 1) {
+        if (e.cancelable) e.preventDefault();
+        return;
+      }
+
+      // 2. Prevent single-touch scrolling on the viewport unless inside a scrollable container
+      let isScrollable = false;
+      let node = e.target;
+      while (node && node !== document.body && node !== document) {
+        const style = window.getComputedStyle(node);
+        const overflowY = style.getPropertyValue("overflow-y");
+        const isScrollableStyle = overflowY === "auto" || overflowY === "scroll";
+        if (isScrollableStyle && node.scrollHeight > node.clientHeight) {
+          isScrollable = true;
+          break;
+        }
+        node = node.parentNode;
+      }
+
+      if (!isScrollable) {
+        if (e.cancelable) e.preventDefault();
+      }
+    };
+
+    // Block double-tap to zoom on Safari iOS
+    let lastTouchEnd = 0;
+    const handleGlobalTouchEnd = (e) => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        const tagName = e.target?.tagName?.toLowerCase();
+        if (tagName !== "input" && tagName !== "textarea" && tagName !== "select") {
+          if (e.cancelable) e.preventDefault();
+        }
+      }
+      lastTouchEnd = now;
+    };
+
+    window.addEventListener("touchmove", handleGlobalTouchMove, { passive: false });
+    window.addEventListener("touchend", handleGlobalTouchEnd, { passive: false });
+
     return () => {
       window.removeEventListener("resize", checkOrientation);
       window.removeEventListener("orientationchange", checkOrientation);
+      window.removeEventListener("touchmove", handleGlobalTouchMove);
+      window.removeEventListener("touchend", handleGlobalTouchEnd);
     };
   }, []);
+
   
   // HUD UI collapse states
   const [showLeftSidebar, setShowLeftSidebar] = useState(false); // Closed by default for unobstructed full 3D room experience

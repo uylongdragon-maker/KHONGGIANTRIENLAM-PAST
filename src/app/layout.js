@@ -16,6 +16,13 @@ export const metadata = {
   description: "Trải nghiệm không gian triển lãm 3D tương tác sống động về nhận thức và phòng, chống tác hại của các chất ma túy. Hãy tham gia cuộc thi trắc nghiệm để kiểm tra kiến thức và nhận chứng chỉ danh giá.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html

@@ -44,7 +44,7 @@
   border-radius: 20px;
 }
 
-body {
+html, body {
   background-color: var(--bg-primary);
   color: var(--color-primary);
   font-family: var(--font-sans);
@@ -53,6 +53,8 @@ body {
   width: 100vw;
   overflow: hidden;
   user-select: none;
+  -webkit-user-select: none;
+  overscroll-behavior: none;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -89,6 +91,9 @@ body {
   width: 100%;
   height: 100%;
   z-index: 1;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* UI Overlays container */
@@ -1223,6 +1228,7 @@ body {
   pointer-events: auto;
   user-select: none;
   -webkit-user-select: none;
+  touch-action: none;
 }
 
 .joystick-base {
@@ -1690,3 +1696,17 @@ body {
     max-width: 260px;
   }
 }
+
+/* Prevent scroll chaining / rubber-band leakage to the body */
+.sidebar-left,
+.sidebar-right,
+.detail-tab-content,
+.chat-messages,
+.modal-content,
+.hud-popup-container,
+.library-scroll-container,
+[class*="scroll"] {
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
