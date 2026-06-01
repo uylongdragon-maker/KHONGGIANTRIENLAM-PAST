@@ -112,6 +112,26 @@ export default function Home() {
   const [showQuiz, setShowQuiz] = useState(false);
   const [showInspect3D, setShowInspect3D] = useState(false);
   
+  // Mobile and Orientation states
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+  const [isPortrait, setIsPortrait] = useState(false);
+  const [bypassOrientationPrompt, setBypassOrientationPrompt] = useState(false);
+
+  useEffect(() => {
+    setIsMobileDevice(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    
+    const checkOrientation = () => {
+      setIsPortrait(window.innerHeight > window.innerWidth);
+    };
+    checkOrientation();
+    window.addEventListener("resize", checkOrientation);
+    window.addEventListener("orientationchange", checkOrientation);
+    return () => {
+      window.removeEventListener("resize", checkOrientation);
+      window.removeEventListener("orientationchange", checkOrientation);
+    };
+  }, []);
+  
   // HUD UI collapse states
   const [showLeftSidebar, setShowLeftSidebar] = useState(false); // Closed by default for unobstructed full 3D room experience
   const [showCuratorChat, setShowCuratorChat] = useState(false); // Curator Chat dialogue pop-up HUD
@@ -300,6 +320,25 @@ export default function Home() {
           exhibit={activeExhibit}
           onClose={() => setShowInspect3D(false)}
         />
+      )}
+
+      {/* ORIENTATION ROTATE DEVICE PROMPT OVERLAY */}
+      {isMobileDevice && isPortrait && !bypassOrientationPrompt && (
+        <div className="orientation-prompt-overlay ui-element">
+          <div className="orientation-prompt-card glass-panel">
+            <div className="phone-rotate-icon-container">
+              <Compass size={44} className="phone-rotate-icon" />
+            </div>
+            <h2>Xoay Ngang Thiết Bị</h2>
+            <p>Vui lòng xoay ngang điện thoại của bạn để có góc nhìn tham quan rộng mở và trải nghiệm không gian triển lãm 3D PAST tốt nhất!</p>
+            <button 
+              className="bypass-orientation-btn"
+              onClick={() => setBypassOrientationPrompt(true)}
+            >
+              Tiếp tục ở chế độ dọc
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

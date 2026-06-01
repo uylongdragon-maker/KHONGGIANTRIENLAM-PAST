@@ -1442,3 +1442,236 @@ body {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* Orientation Rotate Device Prompt Overlay Styles */
+.orientation-prompt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 7, 12, 0.94);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.orientation-prompt-card {
+  width: 100%;
+  max-width: 320px;
+  padding: 28px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid var(--border-accent);
+  box-shadow: var(--shadow-glow-gold);
+  border-radius: 20px;
+  animation: modal-enter 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.phone-rotate-icon-container {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(242, 153, 74, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--color-gold);
+  margin-bottom: 4px;
+}
+
+.phone-rotate-icon {
+  color: var(--color-gold);
+  animation: phoneRotateAnim 2.2s infinite ease-in-out;
+}
+
+@keyframes phoneRotateAnim {
+  0% { transform: rotate(0deg); }
+  45% { transform: rotate(-90deg); }
+  90% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.orientation-prompt-card h2 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.orientation-prompt-card p {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--color-secondary);
+}
+
+.bypass-orientation-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-light);
+  color: var(--color-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.bypass-orientation-btn:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Specific Mobile Landscape Layout Optimizations (height < 480px) */
+@media (max-width: 950px) and (orientation: landscape) and (max-height: 480px) {
+  .ui-overlay-container {
+    grid-template-areas:
+      "header"
+      "."
+      "footer";
+    grid-template-columns: 1fr;
+    grid-template-rows: 44px 1fr 46px;
+    padding: 6px;
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  .app-header {
+    height: 38px;
+    padding: 0 8px;
+  }
+
+  .header-logo {
+    width: 26px !important;
+    height: 26px !important;
+  }
+
+  .header-title h1 {
+    font-size: 0.78rem;
+  }
+
+  .header-tabs {
+    padding: 1px;
+  }
+
+  .header-tab-btn {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+  }
+
+  .app-footer {
+    height: 40px;
+    padding: 0 4px;
+  }
+
+  .footer-widget {
+    padding: 2px 6px;
+  }
+
+  .footer-icon-box {
+    width: 26px;
+    height: 26px;
+  }
+
+  .footer-widget-val {
+    font-size: 0.68rem;
+  }
+
+  .joystick-zone {
+    bottom: 12px;
+    left: 15px;
+    width: 80px;
+    height: 80px;
+  }
+
+  .joystick-base {
+    width: 70px;
+    height: 70px;
+  }
+
+  .joystick-handle {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* Modals landscape optimization */
+  .modal-backdrop {
+    padding: 8px;
+    z-index: 1500;
+  }
+
+  .modal-content, .hud-popup-container {
+    padding: 12px 16px;
+    max-height: 94vh !important;
+    gap: 8px;
+    border-radius: 12px;
+  }
+
+  .hud-badge {
+    padding: 2px 6px;
+    font-size: 0.58rem;
+  }
+
+  .hud-header h2 {
+    font-size: 1.1rem;
+    margin-top: 2px;
+  }
+
+  .hud-header p {
+    font-size: 0.7rem;
+    margin-top: 1px;
+  }
+
+  .hud-tab-row {
+    gap: 8px;
+  }
+
+  .hud-tab-btn {
+    padding: 6px 2px;
+    font-size: 0.7rem;
+  }
+
+  .hud-content {
+    min-height: 80px;
+    max-height: 120px;
+    font-size: 0.78rem;
+  }
+
+  .effects-box {
+    margin-top: 6px;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .hud-warning {
+    margin-top: 6px;
+    padding: 4px 8px;
+  }
+
+  .hud-action-row {
+    margin-top: 2px;
+    gap: 6px;
+  }
+
+  .hud-btn {
+    padding: 8px;
+    font-size: 0.72rem;
+    border-radius: 8px;
+  }
+
+  .sidebar-left {
+    max-width: 260px;
+  }
+}
