@@ -103,17 +103,19 @@ export default function ThreeCanvas({
     );
     camera.position.set(stateRef.current.posX, 1.6, stateRef.current.posZ);
 
+    const isMobile = typeof window !== "undefined" && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
     const renderer = new THREE.WebGLRenderer({ 
-      antialias: true, 
+      antialias: !isMobile, // Disable antialias on mobile for extreme performance gain
       alpha: false,
       powerPreference: "high-performance" // Enable dedicated GPU for maximum smoothness
     });
     renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
-    // Use full native pixel ratio to completely eliminate "răng cưa" (aliasing) on high-end Mac Retina screens
-    renderer.setPixelRatio(window.devicePixelRatio);
+    // Limit pixel ratio on mobile to 1.0 (prevents heavy lag), limit desktop to max 2.0
+    renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = false; // Completely disabled shadowMap to resolve Apple Silicon GPU pitch black rendering bugs
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35; // Enhanced phơi sáng for crisp details
+    renderer.toneMappingExposure = isMobile ? 1.55 : 1.35; // Enhanced phơi sáng for crisp details, brighter on mobile
     
     // Smooth rendering styles on the DOM element
     renderer.domElement.style.imageRendering = "auto";
@@ -122,10 +124,10 @@ export default function ThreeCanvas({
     mountRef.current.appendChild(renderer.domElement);
 
     // LIGHTS
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0); // Full daylight bright ambient fill
+    const ambientLight = new THREE.AmbientLight(0xffffff, isMobile ? 1.6 : 1.0); // Brighter fill on mobile to prevent pitch black look
     scene.add(ambientLight);
 
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0xe2e8f0, 0.75); // Clean overhead daylight gradient
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0xe2e8f0, isMobile ? 1.25 : 0.75); // Overhead skylight brightness booster
     hemiLight.position.set(0, 20, 0);
     scene.add(hemiLight);
 
@@ -134,9 +136,9 @@ export default function ThreeCanvas({
     curatorLight.position.set(0, 1.8, -0.5);
     scene.add(curatorLight);
 
-    // DUST PARTICLES
+    // DUST PARTICLES (Optimized for Mobile)
     const particleGeo = new THREE.BufferGeometry();
-    const particleCount = 120;
+    const particleCount = isMobile ? 30 : 120; // Drastically reduce particles count on mobile to save GPU processing
     const posArray = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
       posArray[i] = (Math.random() - 0.5) * 16;
@@ -306,14 +308,14 @@ export default function ThreeCanvas({
     // STRUCTURAL WALLS
     const wallGroup = new THREE.Group();
     
-    // Wall materials - Deep navy blue & glowing dark crimson
+    // Wall materials - Brighter on mobile for premium visibility, deep navy blue & glowing dark crimson on desktop
     const darkWallMat = new THREE.MeshStandardMaterial({ 
-      color: 0x0a1c36, 
+      color: isMobile ? 0x162c4a : 0x0a1c36, 
       roughness: 0.6, 
       metalness: 0.1 
     });
     const crimsonWallMat = new THREE.MeshStandardMaterial({ 
-      color: 0x8b0000, 
+      color: isMobile ? 0xaa1313 : 0x8b0000, 
       roughness: 0.4, 
       metalness: 0.2 
     });
