@@ -102,7 +102,8 @@ export async function GET() {
       audioText: e.audioText,
       waveform: e.waveform,
       inspectInfo: e.inspectInfo,
-      scale: e.scale
+      scale: e.scale,
+      modelUrl: e.modelUrl
     }));
 
     const formattedPosters = posters.map(p => ({
@@ -152,7 +153,8 @@ export async function POST(request) {
               audioText: e.audioText,
               waveform: e.waveform,
               inspectInfo: e.inspectInfo || null,
-              scale: e.scale !== undefined ? e.scale : 1.0
+              scale: e.scale !== undefined ? e.scale : 1.0,
+              modelUrl: e.modelUrl || null
             },
             create: {
               id: e.id,
@@ -169,7 +171,8 @@ export async function POST(request) {
               audioText: e.audioText,
               waveform: e.waveform,
               inspectInfo: e.inspectInfo || null,
-              scale: e.scale !== undefined ? e.scale : 1.0
+              scale: e.scale !== undefined ? e.scale : 1.0,
+              modelUrl: e.modelUrl || null
             }
           });
         }

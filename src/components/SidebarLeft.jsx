@@ -38,25 +38,25 @@ export default function SidebarLeft({
     if (key === "sanh-chinh") {
       onTeleport(0, 0); // X = 0, Z = 0
     } else if (key === "vach-1") {
-      onTeleport(-4, -1); // X = -4, Z = -1
+      onTeleport(-3.8, -1.0); // Next to Left Cabinet (X = -5)
     } else if (key === "vach-2") {
-      onTeleport(4, -1); // X = 4, Z = -1
+      onTeleport(3.8, -1.0); // Next to Right Cabinet (X = 5)
     } else if (key === "tu-lieu") {
-      onTeleport(0, 2.5); // X = 0, Z = 2.5
+      onTeleport(0, 5.2); // Next to Back Cabinet (Z = 6.5)
     } else if (key === "trai-nghiem") {
       onOpenQuiz();
     }
   };
 
-  // Convert 3D space X/Z (-8 to 8, -6 to 6) to SVG pixels (0 to 200, 0 to 150)
+  // Convert 3D space X/Z (-12 to 12, -9 to 9) to SVG pixels (0 to 200, 0 to 150)
   const mapX = (x) => {
-    // x: -8 -> 0px, 8 -> 200px
-    return ((x + 8) / 16) * 180 + 10;
+    // x: -12 -> 0px, 12 -> 200px
+    return ((x + 12) / 24) * 180 + 10;
   };
   
   const mapZ = (z) => {
-    // z: -6 -> 0px, 6 -> 150px
-    return ((z + 6) / 12) * 130 + 10;
+    // z: -9 -> 0px, 9 -> 150px
+    return ((z + 9) / 18) * 130 + 10;
   };
 
   // Player arrow rotation in degrees
@@ -135,34 +135,46 @@ export default function SidebarLeft({
               rx="4"
             />
             {/* Partitions */}
-            <line x1="70" y1="10" x2="70" y2="70" stroke="#333f52" strokeWidth="2" strokeDasharray="3,3" />
-            <line x1="130" y1="10" x2="130" y2="70" stroke="#333f52" strokeWidth="2" strokeDasharray="3,3" />
-            <line x1="40" y1="90" x2="160" y2="90" stroke="#333f52" strokeWidth="2" strokeDasharray="3,3" />
+            <line x1="62.5" y1="10" x2="62.5" y2="107.5" stroke="#333f52" strokeWidth="2" strokeDasharray="3,3" />
+            <line x1="137.5" y1="10" x2="137.5" y2="107.5" stroke="#333f52" strokeWidth="2" strokeDasharray="3,3" />
+            <line x1="40" y1="107.5" x2="160" y2="107.5" stroke="#333f52" strokeWidth="2" strokeDasharray="3,3" />
             
             {/* Exhibits (Pins on map) */}
-            {exhibits.map((ex) => (
-              <circle
-                key={ex.id}
-                cx={mapX(ex.position.x)}
-                cy={mapZ(ex.position.z)}
-                r="5"
-                fill="#f2994a"
-                className="minimap-point"
-                onClick={() => {
-                  let targetX = ex.position.x;
-                  let targetZ = ex.position.z;
-                  if (ex.cabinetId === "cabinet_left" || ex.position.x < -1) {
-                    targetX = -1.8;
-                  } else if (ex.cabinetId === "cabinet_right" || ex.position.x > 1) {
-                    targetX = 1.8;
-                  } else if (ex.cabinetId === "cabinet_back" || ex.position.z > 3) {
-                    targetZ = 3.6;
-                  }
-                  onTeleport(targetX, targetZ);
-                }}
-                title={ex.name}
-              />
-            ))}
+            {exhibits.map((ex) => {
+              let posX = ex.position.x;
+              let posZ = ex.position.z;
+              if (ex.cabinetId === "cabinet_left") {
+                posX = -5.0;
+              } else if (ex.cabinetId === "cabinet_right") {
+                posX = 5.0;
+              } else if (ex.cabinetId === "cabinet_back") {
+                posZ = 6.5;
+              }
+
+              return (
+                <circle
+                  key={ex.id}
+                  cx={mapX(posX)}
+                  cy={mapZ(posZ)}
+                  r="5"
+                  fill="#f2994a"
+                  className="minimap-point"
+                  onClick={() => {
+                    let targetX = posX;
+                    let targetZ = posZ;
+                    if (ex.cabinetId === "cabinet_left") {
+                      targetX = -3.8;
+                    } else if (ex.cabinetId === "cabinet_right") {
+                      targetX = 3.8;
+                    } else if (ex.cabinetId === "cabinet_back") {
+                      targetZ = 5.2;
+                    }
+                    onTeleport(targetX, targetZ);
+                  }}
+                  title={ex.name}
+                />
+              );
+            })}
 
             {/* AI Curator platform at center */}
             <circle

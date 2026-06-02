@@ -28,22 +28,22 @@ export default function DigitalLibraryModal({
     let targetZ = item.position.z;
 
     if (isPoster) {
-      // West wall posters are at X = -7.9. East wall posters are at X = 7.9.
+      // West wall posters are at X = -12. East wall posters are at X = 12.
       if (item.position.x < 0) {
-        targetX = -6.4; // Safe navigable distance in the West hallway
+        targetX = -10.4; // Safe navigable distance in the West hallway
       } else {
-        targetX = 6.4;  // Safe navigable distance in the East hallway
+        targetX = 10.4;  // Safe navigable distance in the East hallway
       }
       onTeleport(targetX, targetZ);
       onSelectExhibit(null);
     } else {
-      if (item.cabinetId === "cabinet_left" || item.position.x < -1) {
-        targetX = -1.8; // Safe navigable space in Left hallway (facing left cabinet)
-      } else if (item.cabinetId === "cabinet_right" || item.position.x > 1) {
-        targetX = 1.8;  // Safe navigable space in Right hallway (facing right cabinet)
-      } else if (item.cabinetId === "cabinet_back" || item.position.z > 3) {
+      if (item.cabinetId === "cabinet_left") {
+        targetX = -3.8; // Safe navigable space facing left cabinet
+      } else if (item.cabinetId === "cabinet_right") {
+        targetX = 3.8;  // Safe navigable space facing right cabinet
+      } else if (item.cabinetId === "cabinet_back") {
         targetX = item.position.x;
-        targetZ = 3.6;  // Safe navigable space in Back hallway (facing back cabinet)
+        targetZ = 5.2;  // Safe navigable space facing back cabinet
       }
       onTeleport(targetX, targetZ);
       onSelectExhibit(item.id);

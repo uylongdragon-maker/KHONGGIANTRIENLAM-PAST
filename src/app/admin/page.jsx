@@ -49,7 +49,8 @@ export default function AdminDashboard() {
     audioText: "",
     position: { x: 0, y: 0.9, z: 0 },
     cabinetId: "cabinet_left",
-    scale: 1.0
+    scale: 1.0,
+    modelUrl: ""
   });
 
   // Poster Form State
@@ -298,10 +299,19 @@ export default function AdminDashboard() {
       audioText: spec.audioText || "",
       position: spec.position ? { ...spec.position } : { x: 0, y: 0.9, z: 0 },
       cabinetId: spec.cabinetId || "cabinet_left",
-      scale: spec.scale !== undefined ? spec.scale : 1.0
+      scale: spec.scale !== undefined ? spec.scale : 1.0,
+      modelUrl: spec.modelUrl || ""
     });
-    setUpload3DStatus("idle");
-    setUploaded3DFile(null);
+    if (spec.modelUrl) {
+      setUpload3DStatus("success");
+      setUploaded3DFile({
+        name: spec.modelUrl.split("/").pop(),
+        size: "Mẫu 3D đã sẵn có trong hệ thống"
+      });
+    } else {
+      setUpload3DStatus("idle");
+      setUploaded3DFile(null);
+    }
   };
 
   const handleDeleteSpecimen = (id) => {
@@ -318,10 +328,22 @@ export default function AdminDashboard() {
       return;
     }
 
+    const defaultWaveform = Array.from({ length: 20 }, () => Math.floor(Math.random() * 80) + 10);
+    const cleanedEffects = specimenForm.effects.filter(eff => eff.trim() !== "");
+    if (cleanedEffects.length === 0) {
+      cleanedEffects.push("Thông tin tác động đang được cập nhật.");
+    }
+    
+    const finalSpecimen = {
+      ...specimenForm,
+      effects: cleanedEffects,
+      waveform: specimenForm.waveform || defaultWaveform
+    };
+
     let updated;
     if (editingSpecimenId) {
       // Edit
-      updated = exhibits.map(ex => ex.id === editingSpecimenId ? { ...specimenForm } : ex);
+      updated = exhibits.map(ex => ex.id === editingSpecimenId ? { ...finalSpecimen } : ex);
       alert(`Đã cập nhật thông tin mẫu vật [${specimenForm.name}] thành công!`);
     } else {
       // Add new
@@ -329,7 +351,7 @@ export default function AdminDashboard() {
         alert("ID mẫu vật này đã tồn tại! Vui lòng chọn một ID định danh khác.");
         return;
       }
-      updated = [...exhibits, { ...specimenForm }];
+      updated = [...exhibits, { ...finalSpecimen }];
       alert(`Đã thêm mẫu vật [${specimenForm.name}] vào phòng trưng bày thành công!`);
     }
     saveToLocalStorage(updated, null);
@@ -350,7 +372,8 @@ export default function AdminDashboard() {
       audioText: "",
       position: { x: 0, y: 0.9, z: 0 },
       cabinetId: "cabinet_left",
-      scale: 1.0
+      scale: 1.0,
+      modelUrl: ""
     });
     setUpload3DStatus("idle");
     setUploaded3DFile(null);
@@ -533,28 +556,54 @@ export default function AdminDashboard() {
     }
   };
 
-  const processMock3DUpload = (file) => {
+  const processMock3DUpload = async (file) => {
     if (!file.name.endsWith(".glb") && !file.name.endsWith(".gltf") && !file.name.endsWith(".obj")) {
       alert("Định dạng file không đúng! Vui lòng chỉ tải lên file 3D nhẹ có đuôi (.glb, .gltf, .obj)");
       return;
     }
     setUpload3DStatus("uploading");
-    setUpload3DProgress(0);
+    setUpload3DProgress(10);
 
-    const interval = setInterval(() => {
-      setUpload3DProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setUpload3DStatus("success");
-          setUploaded3DFile({
-            name: file.name,
-            size: `${(file.size / 1024).toFixed(1)} KB (Phù hợp để hiển thị mượt mà)`
-          });
-          return 100;
-        }
-        return prev + 25;
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const progInterval = setInterval(() => {
+        setUpload3DProgress(prev => (prev < 90 ? prev + 10 : prev));
+      }, 100);
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
       });
-    }, 150);
+
+      clearInterval(progInterval);
+      setUpload3DProgress(100);
+
+      if (!response.ok) {
+        throw new Error("Không thể kết nối hoặc tải file lên máy chủ.");
+      }
+
+      const result = await response.json();
+      if (result.success) {
+        setUpload3DStatus("success");
+        setUploaded3DFile({
+          name: result.name,
+          size: `${(result.size / 1024).toFixed(1)} KB (Tải lên thành công)`
+        });
+        setSpecimenForm(prev => ({
+          ...prev,
+          modelUrl: result.url
+        }));
+      } else {
+        throw new Error(result.error || "Lỗi lưu file");
+      }
+    } catch (error) {
+      console.error("Lỗi khi tải file 3D:", error);
+      setUpload3DStatus("idle");
+      setUploaded3DFile(null);
+      alert(`Lỗi upload: ${error.message}`);
+    }
   };
 
   // Mock Image Upload Handlers
@@ -1579,9 +1628,9 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                {/* Drag and Drop lightweight 3D Uploader */}
+                {/* Drag and Drop 3D Uploader */}
                 <div className="input-group" style={{ marginTop: "10px" }}>
-                  <label>Tải Lên File 3D Nhẹ Mô Phỏng (.glb, .gltf, .obj dưới 1MB)</label>
+                  <label>Tải Lên File 3D (.glb, .gltf, .obj hỗ trợ tới 20MB)</label>
                   {upload3DStatus === "idle" && (
                     <div 
                       className={`drag-uploader ${is3DDragging ? "dragging" : ""}`}

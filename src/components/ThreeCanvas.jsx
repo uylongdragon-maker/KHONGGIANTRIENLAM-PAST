@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Compass, Eye, ShieldAlert } from "lucide-react";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 export default function ThreeCanvas({
   playerPosition,
@@ -205,16 +206,15 @@ export default function ThreeCanvas({
     const isMobile = typeof window !== "undefined" && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     const renderer = new THREE.WebGLRenderer({ 
-      antialias: !isMobile, // Disable antialias on mobile for extreme performance gain
+      antialias: true, // Force antialiasing on all devices for sharp edges (no pixelation)
       alpha: false,
-      powerPreference: "high-performance" // Enable dedicated GPU for maximum smoothness
+      powerPreference: "high-performance" 
     });
     renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
-    // Limit pixel ratio on mobile to 1.0 (prevents heavy lag), limit desktop to max 2.0
-    renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 2));
-    renderer.shadowMap.enabled = false; // Completely disabled shadowMap to resolve Apple Silicon GPU pitch black rendering bugs
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); 
+    renderer.shadowMap.enabled = false; 
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = isMobile ? 1.55 : 1.35; // Enhanced phơi sáng for crisp details, brighter on mobile
+    renderer.toneMappingExposure = isMobile ? 1.55 : 1.35;
     
     // Smooth rendering styles on the DOM element
     renderer.domElement.style.imageRendering = "auto";
@@ -256,38 +256,34 @@ export default function ThreeCanvas({
     scene.add(dustParticles);
 
     // PROCEDURAL TEXTURES GENERATORS
-    // 1. Floor grid CanvasTexture (Bright white modern museum style)
+    // 1. Floor grid CanvasTexture (Roblox-style Red Carpet grid)
     const createFloorTexture = () => {
       const canvas = document.createElement("canvas");
-      canvas.width = 512;
-      canvas.height = 512;
+      canvas.width = 256;
+      canvas.height = 256;
       const ctx = canvas.getContext("2d");
       
-      // Premium deep velvet red base
-      ctx.fillStyle = "#5c0606";
-      ctx.fillRect(0, 0, 512, 512);
+      // Rich red carpet base color
+      ctx.fillStyle = "#8b0000";
+      ctx.fillRect(0, 0, 256, 256);
 
-      // Glowing golden elegant grid lines
-      ctx.strokeStyle = "rgba(212, 175, 55, 0.4)";
-      ctx.lineWidth = 6;
-      ctx.strokeRect(0, 0, 512, 512);
+      // Premium gold grid lines
+      ctx.strokeStyle = "#e5c158";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(0, 0, 256, 256);
       ctx.beginPath();
-      ctx.moveTo(256, 0); ctx.lineTo(256, 512);
-      ctx.moveTo(0, 256); ctx.lineTo(512, 256);
+      ctx.moveTo(128, 0); ctx.lineTo(128, 256);
+      ctx.moveTo(0, 128); ctx.lineTo(256, 128);
       ctx.stroke();
-
-      // Subtle gold quartz grain
-      ctx.fillStyle = "rgba(255, 255, 255, 0.02)";
-      for (let i = 0; i < 600; i++) {
-        const x = Math.random() * 512;
-        const y = Math.random() * 512;
-        ctx.fillRect(x, y, 2, 2);
-      }
 
       const tex = new THREE.CanvasTexture(canvas);
       tex.wrapS = THREE.RepeatWrapping;
       tex.wrapT = THREE.RepeatWrapping;
-      tex.repeat.set(8, 6);
+      tex.repeat.set(12, 9);
+      tex.minFilter = THREE.LinearMipmapLinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
+      tex.anisotropy = maxAnisotropy;
       return tex;
     };
 
@@ -384,20 +380,20 @@ export default function ThreeCanvas({
     };
 
     // FLOOR & CEILING (Using MeshBasicMaterial to prevent any lighting/shadow compilation bugs on large planes)
-    const floorGeo = new THREE.PlaneGeometry(16, 12);
+    const floorGeo = new THREE.PlaneGeometry(24, 18);
     const floorTexture = createFloorTexture();
     const floorMat = new THREE.MeshBasicMaterial({
       map: floorTexture,
-      color: 0xffffff // Soft bright white polished floor with grid texture
+      color: 0xffffff
     });
     const floor = new THREE.Mesh(floorGeo, floorMat);
     floor.rotation.x = -Math.PI / 2;
     scene.add(floor);
 
     // CEILING
-    const ceilGeo = new THREE.PlaneGeometry(16, 12);
+    const ceilGeo = new THREE.PlaneGeometry(24, 18);
     const ceilMat = new THREE.MeshBasicMaterial({ 
-      color: 0xffffff // Brilliant clean white plaster ceiling
+      color: 0x1e293b // Roblox dark ceiling look
     });
     const ceiling = new THREE.Mesh(ceilGeo, ceilMat);
     ceiling.rotation.x = Math.PI / 2;
@@ -407,16 +403,16 @@ export default function ThreeCanvas({
     // STRUCTURAL WALLS
     const wallGroup = new THREE.Group();
     
-    // Wall materials - Brighter on mobile for premium visibility, deep navy blue & glowing dark crimson on desktop
+    // Wall materials - Roblox style: low roughness, clean bright colors
     const darkWallMat = new THREE.MeshStandardMaterial({ 
-      color: isMobile ? 0x162c4a : 0x0a1c36, 
-      roughness: 0.6, 
+      color: 0x0f172a, // Slate base
+      roughness: 0.3, 
       metalness: 0.1 
     });
     const crimsonWallMat = new THREE.MeshStandardMaterial({ 
-      color: isMobile ? 0xaa1313 : 0x8b0000, 
-      roughness: 0.4, 
-      metalness: 0.2 
+      color: 0xbe123c, // Rose red accent columns
+      roughness: 0.3, 
+      metalness: 0.15 
     });
 
     // Create a boundary wall
@@ -427,34 +423,30 @@ export default function ThreeCanvas({
       wallGroup.add(mesh);
     };
 
-    // North Wall (Z = -6)
-    createWall(16, 4, 0.2, 0, 2, -6, darkWallMat);
-    // South Wall (Z = 6)
-    createWall(16, 4, 0.2, 0, 2, 6, darkWallMat);
+    // North Wall (Z = -9)
+    createWall(24, 4, 0.2, 0, 2, -9, darkWallMat);
+    // South Wall (Z = 9)
+    createWall(24, 4, 0.2, 0, 2, 9, darkWallMat);
     
-    // West Wall (X = -8) - non-overlapping elegant partitions (perfectly aligns with posters)
-    createWall(0.2, 4, 1.5, -8, 2, -5.25, darkWallMat);
-    createWall(0.2, 4, 3.0, -8, 2, -3.0, crimsonWallMat);
-    createWall(0.2, 4, 1.5, -8, 2, -0.75, darkWallMat);
-    createWall(0.2, 4, 3.0, -8, 2, 1.5, crimsonWallMat);
-    createWall(0.2, 4, 3.0, -8, 2, 4.5, darkWallMat);
+    // West Wall (X = -12) - Solid slate wall with accent columns
+    createWall(0.2, 4, 18, -12, 2, 0, darkWallMat);
+    createWall(0.22, 4, 2, -12, 2, -4.5, crimsonWallMat);
+    createWall(0.22, 4, 2, -12, 2, 4.5, crimsonWallMat);
     
-    // East Wall (X = 8) - non-overlapping elegant partitions (perfectly aligns with posters)
-    createWall(0.2, 4, 1.5, 8, 2, -5.25, darkWallMat);
-    createWall(0.2, 4, 3.0, 8, 2, -3.0, crimsonWallMat);
-    createWall(0.2, 4, 1.5, 8, 2, -0.75, darkWallMat);
-    createWall(0.2, 4, 3.0, 8, 2, 1.5, crimsonWallMat);
-    createWall(0.2, 4, 3.0, 8, 2, 4.5, darkWallMat);
+    // East Wall (X = 12) - Solid slate wall with accent columns
+    createWall(0.2, 4, 18, 12, 2, 0, darkWallMat);
+    createWall(0.22, 4, 2, 12, 2, -4.5, crimsonWallMat);
+    createWall(0.22, 4, 2, 12, 2, 4.5, crimsonWallMat);
 
-    // Central partition wall (Z = 3.0) dividing the main gallery and the back gallery
-    // Runs from X = -5.5 to X = 5.5 (length 11.0), Y from 0 to 3.2. Thickness is 0.2
-    createWall(11.0, 3.2, 0.2, 0, 1.6, 3.0, darkWallMat);
+    // Central partition wall (Z = 4.5) dividing the main gallery and the back gallery
+    // Runs from X = -8.0 to X = 8.0 (length 16.0), Y from 0 to 3.2. Thickness is 0.2
+    createWall(16.0, 3.2, 0.2, 0, 1.6, 4.5, darkWallMat);
     
     // Golden frame trim on top of the partition wall
-    const pTrimGeo = new THREE.BoxGeometry(11.1, 0.06, 0.26);
+    const pTrimGeo = new THREE.BoxGeometry(16.1, 0.06, 0.26);
     const pTrimMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9, roughness: 0.1 });
     const pTrim = new THREE.Mesh(pTrimGeo, pTrimMat);
-    pTrim.position.set(0, 3.2, 3.0);
+    pTrim.position.set(0, 3.2, 4.5);
     wallGroup.add(pTrim);
 
     scene.add(wallGroup);
@@ -463,10 +455,10 @@ export default function ThreeCanvas({
     const casesGroup = new THREE.Group();
     const floatingSpecimens = [];
 
-    // Base Cabinet materials (mockup's premium emerald wood look)
+    // Base Cabinet materials (Roblox sleek plastic/metallic style)
     const cabMat = new THREE.MeshStandardMaterial({ 
-      color: 0x163725, 
-      roughness: 0.25, 
+      color: 0x1e293b, 
+      roughness: 0.2, 
       metalness: 0.15 
     });
     const goldTrimMat = new THREE.MeshStandardMaterial({ 
@@ -476,67 +468,77 @@ export default function ThreeCanvas({
     });
 
     // Cabinet 1 (Left main cabinet for Opioids/Depressants)
-    // Runs along Z: X = -3, Z from -4.75 to 2.05 (center Z = -1.35, length 6.8)
-    const cab1 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.9, 6.8), cabMat);
-    cab1.position.set(-3.0, 0.45, -1.35);
+    // Widened to X = -5.0. Length 8.0 running from Z = -5.0 to 3.0 (center Z = -1.0)
+    const cab1 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.9, 8.0), cabMat);
+    cab1.position.set(-5.0, 0.45, -1.0);
     casesGroup.add(cab1);
     
-    const cab1Trim = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.04, 6.82), goldTrimMat);
-    cab1Trim.position.set(-3.0, 0.88, -1.35);
+    const cab1Trim = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.04, 8.02), goldTrimMat);
+    cab1Trim.position.set(-5.0, 0.88, -1.0);
     casesGroup.add(cab1Trim);
 
     // Cabinet 2 (Right main cabinet for Stimulants)
-    // Runs along Z: X = 3, Z from -4.75 to 2.05 (center Z = -1.35, length 6.8)
-    const cab2 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.9, 6.8), cabMat);
-    cab2.position.set(3.0, 0.45, -1.35);
+    // Widened to X = 5.0. Length 8.0 running from Z = -5.0 to 3.0 (center Z = -1.0)
+    const cab2 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.9, 8.0), cabMat);
+    cab2.position.set(5.0, 0.45, -1.0);
     casesGroup.add(cab2);
 
-    const cab2Trim = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.04, 6.82), goldTrimMat);
-    cab2Trim.position.set(3.0, 0.88, -1.35);
+    const cab2Trim = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.04, 8.02), goldTrimMat);
+    cab2Trim.position.set(5.0, 0.88, -1.0);
     casesGroup.add(cab2Trim);
 
     // Cabinet 3 (Back long cabinet for Hallucinogens behind the partition wall)
-    // Runs along X: Z = 4.5, X from -5.0 to 5.0 (center X = 0, length 10.0)
-    const cab3 = new THREE.Mesh(new THREE.BoxGeometry(10.0, 0.9, 0.8), cabMat);
-    cab3.position.set(0.0, 0.45, 4.5);
+    // Moved back to Z = 6.5. Runs along X: Z = 6.5, X from -8.0 to 8.0 (center X = 0, length 16.0)
+    const cab3 = new THREE.Mesh(new THREE.BoxGeometry(16.0, 0.9, 0.8), cabMat);
+    cab3.position.set(0.0, 0.45, 6.5);
     casesGroup.add(cab3);
 
-    const cab3Trim = new THREE.Mesh(new THREE.BoxGeometry(10.02, 0.04, 0.82), goldTrimMat);
-    cab3Trim.position.set(0.0, 0.88, 4.5);
+    const cab3Trim = new THREE.Mesh(new THREE.BoxGeometry(16.02, 0.04, 0.82), goldTrimMat);
+    cab3Trim.position.set(0.0, 0.88, 6.5);
     casesGroup.add(cab3Trim);
 
-    // 3 Premium high-performance spotlights, one for each large collective cabinet
-    // This replaces 30 individual physical spotlights to give 60fps butter-smooth rendering
+    // 3 Premium spotlights, aligned to new expanded cabinet positions
     
     // 1. Left Cabinet Spotlight
-    const spotCab1 = new THREE.SpotLight(0xffe0b2, 4.0, 6.0, Math.PI / 4, 0.5, 1);
-    spotCab1.position.set(-3.0, 3.9, -1.35);
+    const spotCab1 = new THREE.SpotLight(0xffe0b2, 4.0, 10.0, Math.PI / 4, 0.5, 1);
+    spotCab1.position.set(-5.0, 3.9, -1.0);
     const targetCab1 = new THREE.Object3D();
-    targetCab1.position.set(-3.0, 0.9, -1.35);
+    targetCab1.position.set(-5.0, 0.9, -1.0);
     scene.add(targetCab1);
     spotCab1.target = targetCab1;
     scene.add(spotCab1);
 
     // 2. Right Cabinet Spotlight
-    const spotCab2 = new THREE.SpotLight(0xffe0b2, 4.0, 6.0, Math.PI / 4, 0.5, 1);
-    spotCab2.position.set(3.0, 3.9, -1.35);
+    const spotCab2 = new THREE.SpotLight(0xffe0b2, 4.0, 10.0, Math.PI / 4, 0.5, 1);
+    spotCab2.position.set(5.0, 3.9, -1.0);
     const targetCab2 = new THREE.Object3D();
-    targetCab2.position.set(3.0, 0.9, -1.35);
+    targetCab2.position.set(5.0, 0.9, -1.0);
     scene.add(targetCab2);
     spotCab2.target = targetCab2;
     scene.add(spotCab2);
 
     // 3. Back Cabinet Spotlight
-    const spotCab3 = new THREE.SpotLight(0xb3e5fc, 5.0, 6.0, Math.PI / 3, 0.5, 1);
-    spotCab3.position.set(0.0, 3.9, 4.5);
+    const spotCab3 = new THREE.SpotLight(0xb3e5fc, 5.0, 10.0, Math.PI / 3, 0.5, 1);
+    spotCab3.position.set(0.0, 3.9, 6.5);
     const targetCab3 = new THREE.Object3D();
-    targetCab3.position.set(0.0, 0.9, 4.5);
+    targetCab3.position.set(0.0, 0.9, 6.5);
     scene.add(targetCab3);
     spotCab3.target = targetCab3;
     scene.add(spotCab3);
 
     // Loop through each of the active specimens
     exhibits.forEach((ex) => {
+      // Determine dynamic position overrides for expanded room
+      let posX = ex.position.x;
+      let posZ = ex.position.z;
+      if (ex.cabinetId === "cabinet_left") {
+        posX = -5.0;
+      } else if (ex.cabinetId === "cabinet_right") {
+        posX = 5.0;
+      } else if (ex.cabinetId === "cabinet_back") {
+        posZ = 6.5;
+      }
+
       // 1. Ceiling light fixture above the specimen
       const fixtureGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.08, 12);
       const fixtureMat = new THREE.MeshStandardMaterial({ 
@@ -545,7 +547,7 @@ export default function ThreeCanvas({
         roughness: 0.1 
       });
       const fixture = new THREE.Mesh(fixtureGeo, fixtureMat);
-      fixture.position.set(ex.position.x, 3.95, ex.position.z);
+      fixture.position.set(posX, 3.95, posZ);
       casesGroup.add(fixture);
 
       // 2. Volumetric spotlight cone (from ceiling 3.95 down to table 0.9)
@@ -559,75 +561,130 @@ export default function ThreeCanvas({
         depthWrite: false
       });
       const lightCone = new THREE.Mesh(coneGeo, coneMat);
-      lightCone.position.set(ex.position.x, 2.425, ex.position.z);
+      lightCone.position.set(posX, 2.425, posZ);
       casesGroup.add(lightCone);
 
-      // 3. Individual glass dome over the specimen on the table
-      const glassGeo = new THREE.BoxGeometry(0.38, 0.32, 0.38);
+      // 3. Individual glass dome over the specimen on the table (sleek Cylinder style)
+      const glassGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.35, 24);
       const glassMat = new THREE.MeshPhysicalMaterial({
         color: 0xffffff,
         transparent: true,
-        opacity: 0.15,
-        roughness: 0,
+        opacity: 0.22, 
+        roughness: 0.05,
         metalness: 0.1,
-        transmission: 0.9,
-        ior: 1.4,
-        thickness: 0.02,
-        side: THREE.DoubleSide
+        clearcoat: 1.0, 
+        clearcoatRoughness: 0.05,
+        side: THREE.FrontSide,
+        depthWrite: false 
       });
       const glass = new THREE.Mesh(glassGeo, glassMat);
-      glass.position.set(ex.position.x, 1.06, ex.position.z);
+      glass.position.set(posX, 1.06, posZ);
       casesGroup.add(glass);
 
       // Specimen Mesh generation
-      let specimenMesh;
-      const idStr = ex.id.toLowerCase();
-      
-      if (idStr === "heroin" || idStr === "cocaine") {
-        // Zip bag or compressed powder block
-        const bagGeo = new THREE.BoxGeometry(0.14, 0.14, 0.03);
-        const bagMat = new THREE.MeshStandardMaterial({ color: 0xf5f5f5, roughness: 0.5, transparent: true, opacity: 0.9 });
-        specimenMesh = new THREE.Mesh(bagGeo, bagMat);
-      } else if (idStr === "meth" || idStr === "lsd") {
-        // Crystals / Paper sheets
-        const cryGeo = new THREE.OctahedronGeometry(0.06);
-        const cryMat = new THREE.MeshPhysicalMaterial({ color: 0x56ccf2, roughness: 0, transmission: 0.6, thickness: 0.2 });
-        specimenMesh = new THREE.Mesh(cryGeo, cryMat);
-      } else if (idStr === "ecstasy" || idStr === "ritalin" || idStr === "adderall") {
-        // Medicine pill
-        const pillGeo = new THREE.CylinderGeometry(0.02, 0.02, 0.012, 16);
-        const pillMat = new THREE.MeshStandardMaterial({ color: idStr === "ecstasy" ? 0xeb5757 : 0xf2994a, roughness: 0.4 });
-        specimenMesh = new THREE.Mesh(pillGeo, pillMat);
-        specimenMesh.rotation.x = Math.PI / 2;
-      } else if (idStr === "cannabis" || idStr === "khat" || idStr === "kratom") {
-        // Leaf structure
-        const group = new THREE.Group();
-        const leafGeo = new THREE.ConeGeometry(0.03, 0.1, 4);
-        const leafMat = new THREE.MeshStandardMaterial({ color: 0x27ae60, roughness: 0.8 });
-        for(let i=0; i<4; i++) {
-          const leaf = new THREE.Mesh(leafGeo, leafMat);
-          leaf.rotation.set(Math.PI/3, (i * Math.PI*2)/4, 0);
-          leaf.scale.set(0.6, 0.6, 0.6);
-          group.add(leaf);
-        }
-        specimenMesh = group;
-      } else {
-        // Fallback: A beautiful general guide crystal sphere representing chemical structures
-        const sphereGeo = new THREE.SphereGeometry(0.05, 12, 12);
-        const sphereMat = new THREE.MeshPhysicalMaterial({
-          color: ex.cabinetId === "cabinet_left" ? 0xeb5757 : ex.cabinetId === "cabinet_right" ? 0xf2994a : 0x2f80ed,
-          roughness: 0.1,
-          transmission: 0.7,
-          thickness: 0.1
-        });
-        specimenMesh = new THREE.Mesh(sphereGeo, sphereMat);
-      }
-      
-      specimenMesh.position.set(ex.position.x, 1.06, ex.position.z);
+      let specimenMesh = new THREE.Group();
+      specimenMesh.position.set(posX, 1.06, posZ);
       
       // Apply custom model scale factor from admin database
       const scaleVal = ex.scale !== undefined ? ex.scale : 1.0;
       specimenMesh.scale.set(scaleVal, scaleVal, scaleVal);
+
+      if (ex.modelUrl) {
+        // Beautiful rotating holographic wireframe loading indicator
+        const loaderGeo = new THREE.BoxGeometry(0.06, 0.06, 0.06);
+        const loaderMat = new THREE.MeshBasicMaterial({
+          color: 0xf2994a,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.7
+        });
+        const loaderMesh = new THREE.Mesh(loaderGeo, loaderMat);
+        specimenMesh.add(loaderMesh);
+
+        // Load real GLB model
+        const loader = new GLTFLoader();
+        loader.load(
+          ex.modelUrl,
+          (gltf) => {
+            specimenMesh.remove(loaderMesh);
+            loaderGeo.dispose();
+            loaderMat.dispose();
+
+            const model = gltf.scene;
+            const box = new THREE.Box3().setFromObject(model);
+            const center = new THREE.Vector3();
+            box.getCenter(center);
+            model.position.sub(center);
+            
+            const size = new THREE.Vector3();
+            box.getSize(size);
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const targetSize = 0.22; // Scale custom specimen to be larger and fill the dome nicely
+            if (maxDim > 0) {
+              const modelScale = targetSize / maxDim;
+              model.scale.set(modelScale, modelScale, modelScale);
+            }
+            
+            specimenMesh.add(model);
+          },
+          undefined,
+          (error) => {
+            console.error(`Error loading GLTF model from ${ex.modelUrl}:`, error);
+            specimenMesh.remove(loaderMesh);
+            loaderGeo.dispose();
+            loaderMat.dispose();
+
+            const fallbackGeo = new THREE.SphereGeometry(0.05, 12, 12);
+            const fallbackMat = new THREE.MeshPhysicalMaterial({ color: 0xeb5757, roughness: 0.2 });
+            const fallbackMesh = new THREE.Mesh(fallbackGeo, fallbackMat);
+            specimenMesh.add(fallbackMesh);
+          }
+        );
+      } else {
+        // Procedural model based on ID
+        const idStr = ex.id.toLowerCase();
+        let internalMesh;
+        if (idStr === "heroin" || idStr === "cocaine") {
+          // Zip bag or compressed powder block
+          const bagGeo = new THREE.BoxGeometry(0.14, 0.14, 0.03);
+          const bagMat = new THREE.MeshStandardMaterial({ color: 0xf5f5f5, roughness: 0.5, transparent: true, opacity: 0.9 });
+          internalMesh = new THREE.Mesh(bagGeo, bagMat);
+        } else if (idStr === "meth" || idStr === "lsd") {
+          // Crystals / Paper sheets
+          const cryGeo = new THREE.OctahedronGeometry(0.06);
+          const cryMat = new THREE.MeshPhysicalMaterial({ color: 0x56ccf2, roughness: 0, transmission: 0.6, thickness: 0.2 });
+          internalMesh = new THREE.Mesh(cryGeo, cryMat);
+        } else if (idStr === "ecstasy" || idStr === "ritalin" || idStr === "adderall") {
+          // Medicine pill
+          const pillGeo = new THREE.CylinderGeometry(0.02, 0.02, 0.012, 16);
+          const pillMat = new THREE.MeshStandardMaterial({ color: idStr === "ecstasy" ? 0xeb5757 : 0xf2994a, roughness: 0.4 });
+          internalMesh = new THREE.Mesh(pillGeo, pillMat);
+          internalMesh.rotation.x = Math.PI / 2;
+        } else if (idStr === "cannabis" || idStr === "khat" || idStr === "kratom") {
+          // Leaf structure
+          const group = new THREE.Group();
+          const leafGeo = new THREE.ConeGeometry(0.03, 0.1, 4);
+          const leafMat = new THREE.MeshStandardMaterial({ color: 0x27ae60, roughness: 0.8 });
+          for(let i=0; i<4; i++) {
+            const leaf = new THREE.Mesh(leafGeo, leafMat);
+            leaf.rotation.set(Math.PI/3, (i * Math.PI*2)/4, 0);
+            leaf.scale.set(0.6, 0.6, 0.6);
+            group.add(leaf);
+          }
+          internalMesh = group;
+        } else {
+          // Fallback: A beautiful general guide crystal sphere representing chemical structures
+          const sphereGeo = new THREE.SphereGeometry(0.05, 12, 12);
+          const sphereMat = new THREE.MeshPhysicalMaterial({
+            color: ex.cabinetId === "cabinet_left" ? 0xeb5757 : ex.cabinetId === "cabinet_right" ? 0xf2994a : 0x2f80ed,
+            roughness: 0.1,
+            transmission: 0.7,
+            thickness: 0.1
+          });
+          internalMesh = new THREE.Mesh(sphereGeo, sphereMat);
+        }
+        specimenMesh.add(internalMesh);
+      }
       
       casesGroup.add(specimenMesh);
       floatingSpecimens.push({ mesh: specimenMesh, initialY: 1.06, id: ex.id });
@@ -638,6 +695,10 @@ export default function ThreeCanvas({
     // WALL POSTERS (4 posters)
     const postersGroup = new THREE.Group();
     posters.forEach((post) => {
+      // Determine dynamic position override for posters to align with expanded walls
+      const sideSign = post.position.x < 0 ? -1 : 1;
+      const frameX = sideSign * 11.86; // Center frame so that the back sits exactly on the X = -11.9 / 11.9 inner wall face
+
       // Premium outer frame (polished dark chrome frame border)
       // Defined as wide along X (1.84) and thin along Z (0.08) before rotation, so that
       // after a 90-degree Y rotation, it aligns flat against the East/West walls (along Z).
@@ -648,7 +709,7 @@ export default function ThreeCanvas({
         roughness: 0.1 
       });
       const frame = new THREE.Mesh(frameGeo, frameMat);
-      frame.position.set(post.position.x, post.position.y, post.position.z);
+      frame.position.set(frameX, post.position.y, post.position.z);
       frame.rotation.set(post.rotation.x, post.rotation.y, post.rotation.z);
       postersGroup.add(frame);
 
@@ -675,7 +736,7 @@ export default function ThreeCanvas({
       // Place slightly offset from inner frame to avoid z-fighting
       surface.position.copy(frame.position);
       surface.rotation.copy(frame.rotation);
-      surface.position.x += post.position.x > 0 ? -0.046 : 0.046;
+      surface.position.x += -sideSign * 0.046; // Offset towards the center of the room to sit in front of the inner frame face
       
       postersGroup.add(surface);
     });
@@ -865,24 +926,24 @@ export default function ThreeCanvas({
 
     const checkCollisions = (targetX, targetZ) => {
       // Outer boundaries
-      if (targetX < -7.5 || targetX > 7.5) return true;
-      if (targetZ < -5.5 || targetZ > 5.5) return true;
+      if (targetX < -11.5 || targetX > 11.5) return true;
+      if (targetZ < -8.5 || targetZ > 8.5) return true;
 
-      // Collision with Table 1 (Left Main Cabinet): X = -3, Z from -4.75 to 2.05
-      // Bounds: X from -3.5 to -2.5, Z from -5.25 to 2.55 (adjusted for player radius)
-      if (targetX > -3.6 && targetX < -2.4 && targetZ > -5.25 && targetZ < 2.55) return true;
+      // Collision with Table 1 (Left Main Cabinet): X = -5.0, Z runs -5.0 to 3.0
+      // Bounds: X from -5.6 to -4.4, Z from -5.6 to 3.6
+      if (targetX > -5.6 && targetX < -4.4 && targetZ > -5.6 && targetZ < 3.6) return true;
 
-      // Collision with Table 2 (Right Main Cabinet): X = 3, Z from -4.75 to 2.05
-      // Bounds: X from 2.4 to 3.6, Z from -5.25 to 2.55
-      if (targetX > 2.4 && targetX < 3.6 && targetZ > -5.25 && targetZ < 2.55) return true;
+      // Collision with Table 2 (Right Main Cabinet): X = 5.0, Z runs -5.0 to 3.0
+      // Bounds: X from 4.4 to 5.6, Z from -5.6 to 3.6
+      if (targetX > 4.4 && targetX < 5.6 && targetZ > -5.6 && targetZ < 3.6) return true;
 
-      // Collision with Table 3 (Back Long Cabinet): X from -5.0 to 5.0, Z = 4.5
-      // Bounds: X from -5.5 to 5.5, Z from 4.0 to 5.0
-      if (targetX > -5.5 && targetX < 5.5 && targetZ > 4.0 && targetZ < 5.0) return true;
+      // Collision with Table 3 (Back Long Cabinet): X from -8.0 to 8.0, Z = 6.5
+      // Bounds: X from -8.6 to 8.6, Z from 5.9 to 7.1
+      if (targetX > -8.6 && targetX < 8.6 && targetZ > 5.9 && targetZ < 7.1) return true;
 
-      // Collision with Central Partition Wall: Z = 3.0, X from -5.5 to 5.5
-      // Thickness is 0.2, so Z bounds: 2.8 to 3.2
-      if (targetX > -5.7 && targetX < 5.7 && targetZ > 2.7 && targetZ < 3.3) return true;
+      // Collision with Central Partition Wall: Z = 4.5, X from -8.0 to 8.0
+      // Thickness is 0.2, Z bounds: 4.1 to 4.9, X bounds: -8.6 to 8.6
+      if (targetX > -8.6 && targetX < 8.6 && targetZ > 4.1 && targetZ < 4.9) return true;
 
       // Collision with Curator base
       const dcx = targetX - 0;
@@ -1000,10 +1061,20 @@ export default function ThreeCanvas({
       let closestElement = null;
       let minDistance = 2.0; // Interactive trigger range (meters)
 
-      // Check display cases
+      // Check display cases with overridden coordinates
       exhibits.forEach((ex) => {
-        const dx = stateRef.current.posX - ex.position.x;
-        const dz = stateRef.current.posZ - ex.position.z;
+        let posX = ex.position.x;
+        let posZ = ex.position.z;
+        if (ex.cabinetId === "cabinet_left") {
+          posX = -5.0;
+        } else if (ex.cabinetId === "cabinet_right") {
+          posX = 5.0;
+        } else if (ex.cabinetId === "cabinet_back") {
+          posZ = 6.5;
+        }
+
+        const dx = stateRef.current.posX - posX;
+        const dz = stateRef.current.posZ - posZ;
         const dist = Math.sqrt(dx * dx + dz * dz);
         if (dist < minDistance) {
           minDistance = dist;
@@ -1016,16 +1087,24 @@ export default function ThreeCanvas({
         }
       });
 
-      // Check posters
+      // Check posters with overridden coordinates
       posters.forEach((post) => {
-        const dx = stateRef.current.posX - post.position.x;
-        const dz = stateRef.current.posZ - post.position.z;
+        let posX = post.position.x;
+        let posZ = post.position.z;
+        if (posX < 0) {
+          posX = -11.86;
+        } else {
+          posX = 11.86;
+        }
+
+        const dx = stateRef.current.posX - posX;
+        const dz = stateRef.current.posZ - posZ;
         const dist = Math.sqrt(dx * dx + dz * dz);
         if (dist < 1.8) {
           minDistance = dist;
           closestElement = {
             type: "exhibit", // Trigger detailed view on the side
-            id: activeExhibit?.id, // Keep the active exhibit or trigger poster context
+            id: post.id, // Set the poster ID correctly
             name: post.title,
             prompt: `Nhấn [F] Xem Áp phích "${post.title}"`,
             isPoster: true,

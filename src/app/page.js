@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { 
   Compass, 
   HelpCircle, 
@@ -189,8 +190,23 @@ export default function Home() {
   const [earnedBadgesCount, setEarnedBadgesCount] = useState(0);
   const [exhibitionsCount, setExhibitionsCount] = useState(0);
 
-  // Get active exhibit object
-  const activeExhibit = exhibits.find(e => e.id === activeExhibitId) || null;
+  // Get active exhibit object or format poster object if selected
+  const activeExhibit = exhibits.find(e => e.id === activeExhibitId) || (() => {
+    const poster = posters.find(p => p.id === activeExhibitId);
+    if (!poster) return null;
+    return {
+      id: poster.id,
+      name: `Áp phích: ${poster.title}`,
+      subtitle: poster.subtitle,
+      category: "Tranh cổ động tuyên truyền",
+      description: poster.description,
+      effects: [poster.impactText],
+      warning: poster.subtitle,
+      audioText: `${poster.title}. ${poster.subtitle}. ${poster.impactText}`,
+      waveform: [20, 40, 60, 20, 80, 40, 60, 30, 90, 40, 20, 50, 70, 30, 60, 40, 80, 20, 10, 40],
+      inspectInfo: "Tranh cổ động giáo dục cộng đồng phòng chống ma túy."
+    };
+  })();
 
   // Handle teleport trigger from Left Sidebar or Minimap
   const handleTeleport = (x, z) => {
@@ -321,7 +337,7 @@ export default function Home() {
       {/* 3. MODALS */}
       
       {/* EXHIBIT DETAIL HUD POP-UP MODAL */}
-      {activeExhibit && (
+      {activeExhibit && !showInspect3D && (
         <ExhibitHUDModal
           exhibit={activeExhibit}
           onClose={() => setActiveExhibitId(null)}
@@ -407,67 +423,131 @@ function InspectModal({ exhibit, onClose }) {
     camera.position.set(0, 0, 1.0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     mountRef.current.appendChild(renderer.domElement);
 
-    // Light
-    const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+    // Dynamic resize tracking to prevent 0x0 size bugs during modal scale animations
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const width = entry.contentRect.width || mountRef.current.clientWidth || 400;
+        const height = entry.contentRect.height || mountRef.current.clientHeight || 250;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      }
+    });
+    resizeObserver.observe(mountRef.current);
+
+    // Light (Brighter for premium visibility of custom models)
+    const ambient = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(ambient);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.0);
     keyLight.position.set(2, 2, 4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.PointLight(exhibit.id === 'meth' ? 0x56ccf2 : exhibit.id === 'cannabis' ? 0x27ae60 : 0xf2994a, 2, 3);
+    const rimLight = new THREE.PointLight(exhibit.id === 'meth' ? 0x56ccf2 : exhibit.id === 'cannabis' ? 0x27ae60 : 0xf2994a, 3, 3);
     rimLight.position.set(-1.5, -1, -0.5);
     scene.add(rimLight);
 
     // Dynamic procedural geometry for specimen inspection
-    let specimenMesh;
-    if (exhibit.id === "heroin") {
-      // Evidence zip bag
-      const bagGeo = new THREE.BoxGeometry(0.3, 0.35, 0.05);
-      const bagMat = new THREE.MeshStandardMaterial({ color: 0xfafafa, roughness: 0.2, transparent: true, opacity: 0.85 });
-      specimenMesh = new THREE.Mesh(bagGeo, bagMat);
-    } else if (exhibit.id === "meth") {
-      // Octahedrons cluster
-      specimenMesh = new THREE.Group();
-      const cryGeo = new THREE.OctahedronGeometry(0.08);
-      const cryMat = new THREE.MeshPhysicalMaterial({ color: 0x56ccf2, roughness: 0.1, transmission: 0.7, thickness: 0.3 });
-      
-      for(let i=0; i<6; i++) {
-        const mesh = new THREE.Mesh(cryGeo, cryMat);
-        mesh.position.set((Math.random()-0.5)*0.18, (Math.random()-0.5)*0.18, (Math.random()-0.5)*0.18);
-        mesh.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, 0);
-        specimenMesh.add(mesh);
-      }
-    } else if (exhibit.id === "cocaine") {
-      const blockGeo = new THREE.BoxGeometry(0.35, 0.18, 0.22);
-      const blockMat = new THREE.MeshStandardMaterial({ color: 0xe0e0e0, roughness: 0.9 });
-      specimenMesh = new THREE.Mesh(blockGeo, blockMat);
-    } else if (exhibit.id === "ecstasy") {
-      specimenMesh = new THREE.Group();
-      const pillGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.02, 32);
-      const redMat = new THREE.MeshStandardMaterial({ color: 0xeb5757, roughness: 0.5 });
-      const blueMat = new THREE.MeshStandardMaterial({ color: 0x2f80ed, roughness: 0.5 });
-      const orangeMat = new THREE.MeshStandardMaterial({ color: 0xf2994a, roughness: 0.5 });
-      
-      for(let i=0; i<8; i++) {
-        const mesh = new THREE.Mesh(pillGeo, i%3===0 ? redMat : i%3===1 ? blueMat : orangeMat);
-        mesh.position.set((Math.random()-0.5)*0.2, (Math.random()-0.5)*0.15, (Math.random()-0.5)*0.15);
-        mesh.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
-        specimenMesh.add(mesh);
-      }
+    let specimenMesh = new THREE.Group();
+
+    if (exhibit.modelUrl) {
+      // Rotating holographic wireframe loading placeholder
+      const loaderGeo = new THREE.BoxGeometry(0.12, 0.12, 0.12);
+      const loaderMat = new THREE.MeshBasicMaterial({
+        color: 0xf2994a,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.7
+      });
+      const loaderMesh = new THREE.Mesh(loaderGeo, loaderMat);
+      specimenMesh.add(loaderMesh);
+
+      // Load real GLB model
+      const loader = new GLTFLoader();
+      loader.load(
+        exhibit.modelUrl,
+        (gltf) => {
+          specimenMesh.remove(loaderMesh);
+          loaderGeo.dispose();
+          loaderMat.dispose();
+
+          const model = gltf.scene;
+          const box = new THREE.Box3().setFromObject(model);
+          const center = new THREE.Vector3();
+          box.getCenter(center);
+          model.position.sub(center);
+          
+          const size = new THREE.Vector3();
+          box.getSize(size);
+          const maxDim = Math.max(size.x, size.y, size.z);
+          const targetSize = 0.55; // Render the specimen larger in the inspect modal to fill the viewport
+          if (maxDim > 0) {
+            const modelScale = targetSize / maxDim;
+            model.scale.set(modelScale, modelScale, modelScale);
+          }
+          
+          specimenMesh.add(model);
+        },
+        undefined,
+        (error) => {
+          console.error("Error loading GLTF model in inspect modal:", error);
+          specimenMesh.remove(loaderMesh);
+          loaderGeo.dispose();
+          loaderMat.dispose();
+
+          const fallbackGeo = new THREE.SphereGeometry(0.15, 16, 16);
+          const fallbackMat = new THREE.MeshPhysicalMaterial({ color: 0xeb5757, roughness: 0.2 });
+          const fallbackMesh = new THREE.Mesh(fallbackGeo, fallbackMat);
+          specimenMesh.add(fallbackMesh);
+        }
+      );
     } else {
-      specimenMesh = new THREE.Group();
-      const leafGeo = new THREE.ConeGeometry(0.08, 0.25, 4);
-      const leafMat = new THREE.MeshStandardMaterial({ color: 0x27ae60, roughness: 0.8 });
-      for(let i=0; i<8; i++) {
-        const leaf = new THREE.Mesh(leafGeo, leafMat);
-        leaf.rotation.set(Math.PI/3, (i * Math.PI*2)/8, 0);
-        leaf.scale.set(0.7, 0.7, 0.7);
-        specimenMesh.add(leaf);
+      if (exhibit.id === "heroin") {
+        // Evidence zip bag
+        const bagGeo = new THREE.BoxGeometry(0.3, 0.35, 0.05);
+        const bagMat = new THREE.MeshStandardMaterial({ color: 0xfafafa, roughness: 0.2, transparent: true, opacity: 0.85 });
+        const bagMesh = new THREE.Mesh(bagGeo, bagMat);
+        specimenMesh.add(bagMesh);
+      } else if (exhibit.id === "meth") {
+        // Octahedrons cluster
+        const cryGeo = new THREE.OctahedronGeometry(0.08);
+        const cryMat = new THREE.MeshPhysicalMaterial({ color: 0x56ccf2, roughness: 0.1, transmission: 0.7, thickness: 0.3 });
+        
+        for(let i=0; i<6; i++) {
+          const mesh = new THREE.Mesh(cryGeo, cryMat);
+          mesh.position.set((Math.random()-0.5)*0.18, (Math.random()-0.5)*0.18, (Math.random()-0.5)*0.18);
+          mesh.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, 0);
+          specimenMesh.add(mesh);
+        }
+      } else if (exhibit.id === "cocaine") {
+        const blockGeo = new THREE.BoxGeometry(0.35, 0.18, 0.22);
+        const blockMat = new THREE.MeshStandardMaterial({ color: 0xe0e0e0, roughness: 0.9 });
+        const blockMesh = new THREE.Mesh(blockGeo, blockMat);
+        specimenMesh.add(blockMesh);
+      } else if (exhibit.id === "ecstasy") {
+        const pillGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.02, 32);
+        const redMat = new THREE.MeshStandardMaterial({ color: 0xeb5757, roughness: 0.5 });
+        const blueMat = new THREE.MeshStandardMaterial({ color: 0x2f80ed, roughness: 0.5 });
+        const orangeMat = new THREE.MeshStandardMaterial({ color: 0xf2994a, roughness: 0.5 });
+        
+        for(let i=0; i<8; i++) {
+          const mesh = new THREE.Mesh(pillGeo, i%3===0 ? redMat : i%3===1 ? blueMat : orangeMat);
+          mesh.position.set((Math.random()-0.5)*0.2, (Math.random()-0.5)*0.15, (Math.random()-0.5)*0.15);
+          mesh.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+          specimenMesh.add(mesh);
+        }
+      } else {
+        const leafGeo = new THREE.ConeGeometry(0.08, 0.25, 4);
+        const leafMat = new THREE.MeshStandardMaterial({ color: 0x27ae60, roughness: 0.8 });
+        for(let i=0; i<8; i++) {
+          const leaf = new THREE.Mesh(leafGeo, leafMat);
+          leaf.rotation.set(Math.PI/3, (i * Math.PI*2)/8, 0);
+          leaf.scale.set(0.7, 0.7, 0.7);
+          specimenMesh.add(leaf);
+        }
       }
     }
 
@@ -517,6 +597,7 @@ function InspectModal({ exhibit, onClose }) {
       cancelAnimationFrame(id);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
+      resizeObserver.disconnect();
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);
       }

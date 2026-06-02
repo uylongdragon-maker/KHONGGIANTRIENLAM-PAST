@@ -440,7 +440,7 @@ export default function ExhibitHUDModal({
                   <Activity size={12} /> Tác động hủy hoại sinh học:
                 </span>
                 <div className="effects-list">
-                  {exhibit.effects.map((eff, i) => (
+                  {(exhibit.effects || ["Chưa có thông tin tác động sinh học."]).map((eff, i) => (
                     <div key={i} className="effects-item">
                       <span className="effects-bullet">•</span>
                       <span>{eff}</span>
@@ -465,7 +465,7 @@ export default function ExhibitHUDModal({
                   </button>
 
                   <div className={`hud-audio-wave ${isPlaying ? "playing" : ""}`}>
-                    {exhibit.waveform.map((val, i) => (
+                    {(exhibit.waveform || [20, 40, 60, 20, 80, 40, 60, 30, 90, 40, 20, 50, 70, 30, 60, 40, 80, 20, 10, 40]).map((val, i) => (
                       <div 
                         key={i} 
                         className="hud-wave-bar" 
@@ -502,14 +502,9 @@ export default function ExhibitHUDModal({
             <span>{isSaved ? "Đã Lưu Mẫu" : "Lưu Tiêu Bản"}</span>
           </button>
           
-          <button className="hud-btn" onClick={onOpenInspect}>
-            <RotateCcw size={14} />
-            <span>Xoay 3D</span>
-          </button>
-
-          <button className="hud-btn hud-btn-primary" onClick={onOpenInspect}>
-            <Maximize size={14} />
-            <span>Xem Phóng To</span>
+          <button className="hud-btn hud-btn-primary" onClick={onClose}>
+            <X size={14} />
+            <span>Đóng Lại</span>
           </button>
         </div>
       </div>

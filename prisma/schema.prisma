@@ -23,6 +23,7 @@ model Exhibit {
   waveform    Int[]
   inspectInfo String?
   scale       Float    @default(1.0)
+  modelUrl    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
