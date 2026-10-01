@@ -1315,10 +1315,10 @@ export default function AdminDashboard() {
       {/* HEADER BAR */}
       <header className="admin-header">
         <div className="admin-header-title" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <img src="/congan_logo.png" alt="Công An Phường Tân Hưng & Phòng CSĐT Tội Phạm Về Ma Túy" style={{ height: "42px", width: "42px", objectFit: "contain", filter: "drop-shadow(0 0 8px rgba(242,153,74,0.35))" }} />
+          <img src="/congan_logo.png" alt="Công An Phường Tân Hưng" style={{ height: "42px", width: "42px", objectFit: "contain", filter: "drop-shadow(0 0 8px rgba(242,153,74,0.35))" }} />
           <div className="admin-title-text">
             <h1>Hệ Thống Quản Trị Triển Lãm</h1>
-            <p>Công An Phường Tân Hưng &bull; Phòng CSĐT Tội Phạm Về Ma Túy</p>
+            <p>Công An Phường Tân Hưng &bull; Công An TP. Hồ Chí Minh</p>
           </div>
         </div>
 

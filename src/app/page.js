@@ -265,10 +265,10 @@ export default function Home() {
         {/* HEADER */}
         <header className="app-header glass-panel ui-element">
           <div className="header-title-container" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <img src="/congan_logo.png" alt="Công An Phường Tân Hưng & Phòng CSĐT Tội Phạm Về Ma Túy" style={{ height: "46px", width: "46px", objectFit: "contain", filter: "drop-shadow(0 0 10px rgba(242,153,74,0.35))" }} />
+            <img src="/congan_logo.png" alt="Công An Phường Tân Hưng" style={{ height: "46px", width: "46px", objectFit: "contain", filter: "drop-shadow(0 0 10px rgba(242,153,74,0.35))" }} />
             <div className="header-title">
-              <h1>Triển Lãm Ma Túy 3D</h1>
-              <p>Công An Phường Tân Hưng &bull; Phòng Cảnh Sát ĐTTP Về Ma Túy</p>
+              <h1>Không Gian Triển Lãm Ma Túy</h1>
+              <p>Công An Phường Tân Hưng &bull; Công An TP. Hồ Chí Minh</p>
             </div>
           </div>
 

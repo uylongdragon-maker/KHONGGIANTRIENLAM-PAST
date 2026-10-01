@@ -327,7 +327,7 @@ export default function ThreeCanvas({
 
       ctx.fillStyle = "#f2994a";
       ctx.font = "bold 12px sans-serif";
-      ctx.fillText("CÔNG AN P. TÂN HƯNG - PHÒNG CSĐT TỘI PHẠM VỀ MA TÚY", 256, 130);
+      ctx.fillText("CÔNG AN PHƯỜNG TÂN HƯNG - CÔNG AN TP. HỒ CHÍ MINH", 256, 130);
 
       // Draw Subtitle / Slogan
       ctx.fillStyle = "#ffffff";

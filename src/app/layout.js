@@ -12,8 +12,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Triển Lãm Ma Túy Thực Tế Ảo 3D - Công An Phường Tân Hưng & Phòng Cảnh Sát Điều Tra Tội Phạm Về Ma Túy",
-  description: "Trải nghiệm không gian triển lãm 3D tương tác sống động về nhận thức và phòng, chống tác hại của các chất ma túy do Công An phường Tân Hưng phối hợp cùng Phòng Cảnh sát điều tra tội phạm về ma túy tổ chức.",
+  title: "Không Gian Triển Lãm Ma Túy - Công An Phường Tân Hưng",
+  description: "Không gian triển lãm 3D tương tác sống động về nhận thức và phòng ngừa ma túy - Công an phường Tân Hưng, Công an Thành phố Hồ Chí Minh.",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export const viewport = {

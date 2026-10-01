@@ -94,7 +94,7 @@ export default function Footer({
             Công An Phường Tân Hưng
           </span>
           <span style={{ fontSize: '0.65rem', color: 'var(--color-secondary)', fontWeight: 500, lineHeight: '1.2' }}>
-            Phòng Cảnh sát điều tra tội phạm về ma túy
+            Công An Thành Phố Hồ Chí Minh
           </span>
         </div>
       </footer>
