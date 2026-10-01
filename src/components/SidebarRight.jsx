@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { 
   Send, 
-  Sparkles, 
+  Bot, 
   Volume2
 } from "lucide-react";
 
@@ -11,7 +11,7 @@ export default function SidebarRight({
   const [chatMessages, setChatMessages] = useState([
     {
       sender: "ai",
-      text: "Chào bạn! Tôi là AI Curator của triển lãm. Tôi có thể giải đáp tất cả câu hỏi của bạn về tác hại của các chất ma túy, cơ chế gây nghiện, và cách phòng tránh. Bạn muốn tìm hiểu thông tin gì?"
+      text: "Chào bạn! Tôi là Robot 3D Hướng Dẫn Viên của không gian triển lãm. Tôi có thể giải đáp tất cả câu hỏi của bạn về tác hại của các chất ma túy, cơ chế gây nghiện, và cách phòng tránh. Bạn muốn tìm hiểu thông tin gì?"
     }
   ]);
   const [chatInput, setChatInput] = useState("");
@@ -67,8 +67,8 @@ export default function SidebarRight({
       <div className="curator-chat-box" style={{ height: "100%", display: "flex", flexDirection: "column", flexGrow: 1 }}>
         <div className="chat-header">
           <div className="chat-header-title">
-            <Sparkles size={14} style={{ color: 'var(--color-gold)' }} />
-            <span style={{ fontWeight: 800 }}>AI CURATOR HƯỚNG DẪN VIÊN</span>
+            <Bot size={15} style={{ color: 'var(--color-gold)' }} />
+            <span style={{ fontWeight: 800 }}>ROBOT 3D HƯỚNG DẪN VIÊN</span>
           </div>
           <div className="status-indicator">
             <span className="status-dot"></span>

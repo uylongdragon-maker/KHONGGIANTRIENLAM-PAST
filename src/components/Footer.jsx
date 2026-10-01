@@ -20,7 +20,7 @@ export default function Footer({
 
   // Hardcoded quest checklist based on anti-drug museum goals
   const quests = [
-    { id: "curator", label: "Gặp gỡ & Trò chuyện với AI Curator", key: "chat_curator" },
+    { id: "curator", label: "Gặp gỡ & Trò chuyện với Robot 3D Hướng Dẫn Viên", key: "chat_curator" },
     { id: "heroin", label: "Khám phá chi tiết tiêu bản Heroin", key: "explore_heroin" },
     { id: "meth", label: "Khám phá chi tiết tiêu bản Ma túy đá", key: "explore_meth" },
     { id: "cocaine", label: "Khám phá chi tiết tiêu bản Cocaine", key: "explore_cocaine" },
@@ -28,7 +28,7 @@ export default function Footer({
     { id: "cannabis", label: "Khám phá chi tiết tiêu bản Cần sa", key: "explore_cannabis" },
     { id: "poster_w1", label: "Đọc thông điệp áp phích ở Vách phân khu 1", key: "read_poster1" },
     { id: "poster_e1", label: "Đọc thông điệp áp phích ở Vách phân khu 2", key: "read_poster3" },
-    { id: "ask_ai", label: "Đặt câu hỏi thảo luận riêng với AI Curator", key: "custom_chat" },
+    { id: "ask_ai", label: "Đặt câu hỏi thảo luận riêng với Robot 3D", key: "custom_chat" },
     { id: "quiz", label: "Hoàn thành bài trắc nghiệm kiến thức ma túy", key: "pass_quiz" }
   ];
 

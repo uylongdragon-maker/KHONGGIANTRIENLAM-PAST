@@ -256,25 +256,74 @@ export default function ThreeCanvas({
     scene.add(dustParticles);
 
     // PROCEDURAL TEXTURES GENERATORS
-    // 1. Floor grid CanvasTexture (Roblox-style Red Carpet grid)
+    // 1. Floor grid CanvasTexture (Modern high-end polished granite/slate exhibition floor)
     const createFloorTexture = () => {
       const canvas = document.createElement("canvas");
-      canvas.width = 256;
-      canvas.height = 256;
+      canvas.width = 512;
+      canvas.height = 512;
       const ctx = canvas.getContext("2d");
       
-      // Rich red carpet base color
-      ctx.fillStyle = "#8b0000";
-      ctx.fillRect(0, 0, 256, 256);
+      // Modern sleek deep charcoal/slate granite base
+      const grad = ctx.createLinearGradient(0, 0, 512, 512);
+      grad.addColorStop(0, "#0c121e");
+      grad.addColorStop(0.5, "#131c2e");
+      grad.addColorStop(1, "#0a0f18");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 512, 512);
 
-      // Premium gold grid lines
-      ctx.strokeStyle = "#e5c158";
-      ctx.lineWidth = 4;
-      ctx.strokeRect(0, 0, 256, 256);
+      // Fine stone grain / granite speckles
+      for (let i = 0; i < 600; i++) {
+        const x = Math.random() * 512;
+        const y = Math.random() * 512;
+        const radius = Math.random() * 1.5;
+        const alpha = Math.random() * 0.08 + 0.02;
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 4 Tile quadrants (2x2 grid on 512x512 canvas)
+      // Tile borders with subtle beveled reflection
+      ctx.strokeStyle = "rgba(15, 23, 42, 0.9)";
+      ctx.lineWidth = 6;
+      ctx.strokeRect(0, 0, 512, 512);
       ctx.beginPath();
-      ctx.moveTo(128, 0); ctx.lineTo(128, 256);
-      ctx.moveTo(0, 128); ctx.lineTo(256, 128);
+      ctx.moveTo(256, 0); ctx.lineTo(256, 512);
+      ctx.moveTo(0, 256); ctx.lineTo(512, 256);
       ctx.stroke();
+
+      // Luxurious polished brass/gold inlay seam lines
+      ctx.strokeStyle = "rgba(212, 175, 55, 0.5)"; // Gold seam
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(3, 3, 506, 506);
+      ctx.beginPath();
+      ctx.moveTo(256, 0); ctx.lineTo(256, 512);
+      ctx.moveTo(0, 256); ctx.lineTo(512, 256);
+      ctx.stroke();
+
+      // Inner subtle glow/specular gloss on each tile
+      const drawTileGloss = (ox, oy) => {
+        const radial = ctx.createRadialGradient(ox + 128, oy + 128, 20, ox + 128, oy + 128, 120);
+        radial.addColorStop(0, "rgba(59, 130, 246, 0.07)");
+        radial.addColorStop(0.7, "rgba(30, 58, 138, 0.02)");
+        radial.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = radial;
+        ctx.fillRect(ox + 4, oy + 4, 248, 248);
+
+        // Subtle diagonal marble vein
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.09)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(ox + 20, oy + 230);
+        ctx.bezierCurveTo(ox + 80, oy + 160, ox + 170, oy + 110, ox + 230, oy + 30);
+        ctx.stroke();
+      };
+
+      drawTileGloss(0, 0);
+      drawTileGloss(256, 0);
+      drawTileGloss(0, 256);
+      drawTileGloss(256, 256);
 
       const tex = new THREE.CanvasTexture(canvas);
       tex.wrapS = THREE.RepeatWrapping;
@@ -390,6 +439,29 @@ export default function ThreeCanvas({
     floor.rotation.x = -Math.PI / 2;
     scene.add(floor);
 
+    // Decorative museum center floor ring around the robot platform
+    const floorDecalGeo = new THREE.RingGeometry(1.4, 1.46, 64);
+    const floorDecalMat = new THREE.MeshBasicMaterial({
+      color: 0xd4af37,
+      side: THREE.DoubleSide
+    });
+    const floorDecal = new THREE.Mesh(floorDecalGeo, floorDecalMat);
+    floorDecal.rotation.x = -Math.PI / 2;
+    floorDecal.position.set(0, 0.005, -0.5);
+    scene.add(floorDecal);
+
+    const floorDecalGeo2 = new THREE.RingGeometry(1.58, 1.62, 64);
+    const floorDecalMat2 = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      transparent: true,
+      opacity: 0.5,
+      side: THREE.DoubleSide
+    });
+    const floorDecal2 = new THREE.Mesh(floorDecalGeo2, floorDecalMat2);
+    floorDecal2.rotation.x = -Math.PI / 2;
+    floorDecal2.position.set(0, 0.005, -0.5);
+    scene.add(floorDecal2);
+
     // CEILING
     const ceilGeo = new THREE.PlaneGeometry(24, 18);
     const ceilMat = new THREE.MeshBasicMaterial({ 
@@ -451,11 +523,11 @@ export default function ThreeCanvas({
 
     scene.add(wallGroup);
 
-    // EXHIBITS DISPLAY CASES (3 large collective cabinets housing 30 specimens)
+    // EXHIBITS DISPLAY CASES (3 large collective cabinets housing 35 specimens: 12 + 11 + 12)
     const casesGroup = new THREE.Group();
     const floatingSpecimens = [];
 
-    // Base Cabinet materials (Roblox sleek plastic/metallic style)
+    // Base Cabinet materials (sleek dark metallic style with gold trim)
     const cabMat = new THREE.MeshStandardMaterial({ 
       color: 0x1e293b, 
       roughness: 0.2, 
@@ -467,52 +539,51 @@ export default function ThreeCanvas({
       roughness: 0.1 
     });
 
-    // Cabinet 1 (Left main cabinet for Opioids/Depressants)
-    // Widened to X = -5.0. Length 8.0 running from Z = -5.0 to 3.0 (center Z = -1.0)
-    const cab1 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.9, 8.0), cabMat);
-    cab1.position.set(-5.0, 0.45, -1.0);
+    // Cabinet 1 (Left main cabinet for Opioids/Depressants - 12 specimens)
+    // Symmetrically centered at Z = -1.5, length 7.8m (spans Z from -5.4 to 2.4, covering exhibits from -4.8 to 1.8)
+    const cab1 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.9, 7.8), cabMat);
+    cab1.position.set(-5.0, 0.45, -1.5);
     casesGroup.add(cab1);
     
-    const cab1Trim = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.04, 8.02), goldTrimMat);
-    cab1Trim.position.set(-5.0, 0.88, -1.0);
+    const cab1Trim = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.04, 7.82), goldTrimMat);
+    cab1Trim.position.set(-5.0, 0.88, -1.5);
     casesGroup.add(cab1Trim);
 
-    // Cabinet 2 (Right main cabinet for Stimulants)
-    // Widened to X = 5.0. Length 8.0 running from Z = -5.0 to 3.0 (center Z = -1.0)
-    const cab2 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.9, 8.0), cabMat);
-    cab2.position.set(5.0, 0.45, -1.0);
+    // Cabinet 2 (Right main cabinet for Stimulants - 11 specimens)
+    // Symmetrically centered at Z = -1.5, length 7.8m (spans Z from -5.4 to 2.4, covering exhibits from -4.5 to 1.5)
+    const cab2 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.9, 7.8), cabMat);
+    cab2.position.set(5.0, 0.45, -1.5);
     casesGroup.add(cab2);
 
-    const cab2Trim = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.04, 8.02), goldTrimMat);
-    cab2Trim.position.set(5.0, 0.88, -1.0);
+    const cab2Trim = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.04, 7.82), goldTrimMat);
+    cab2Trim.position.set(5.0, 0.88, -1.5);
     casesGroup.add(cab2Trim);
 
-    // Cabinet 3 (Back long cabinet for Hallucinogens behind the partition wall)
-    // Moved back to Z = 6.5. Runs along X: Z = 6.5, X from -8.0 to 8.0 (center X = 0, length 16.0)
-    const cab3 = new THREE.Mesh(new THREE.BoxGeometry(16.0, 0.9, 0.8), cabMat);
+    // Cabinet 3 (Back long cabinet for Hallucinogens - 12 specimens)
+    // At Z = 6.5, centered at X = 0.0, length 15.0m (spans X from -7.5 to 7.5, covering exhibits from -6.6 to 6.6)
+    const cab3 = new THREE.Mesh(new THREE.BoxGeometry(15.0, 0.9, 0.8), cabMat);
     cab3.position.set(0.0, 0.45, 6.5);
     casesGroup.add(cab3);
 
-    const cab3Trim = new THREE.Mesh(new THREE.BoxGeometry(16.02, 0.04, 0.82), goldTrimMat);
+    const cab3Trim = new THREE.Mesh(new THREE.BoxGeometry(15.02, 0.04, 0.82), goldTrimMat);
     cab3Trim.position.set(0.0, 0.88, 6.5);
     casesGroup.add(cab3Trim);
 
-    // 3 Premium spotlights, aligned to new expanded cabinet positions
-    
+    // 3 Premium spotlights, aligned to new cabinet centers
     // 1. Left Cabinet Spotlight
     const spotCab1 = new THREE.SpotLight(0xffe0b2, 4.0, 10.0, Math.PI / 4, 0.5, 1);
-    spotCab1.position.set(-5.0, 3.9, -1.0);
+    spotCab1.position.set(-5.0, 3.9, -1.5);
     const targetCab1 = new THREE.Object3D();
-    targetCab1.position.set(-5.0, 0.9, -1.0);
+    targetCab1.position.set(-5.0, 0.9, -1.5);
     scene.add(targetCab1);
     spotCab1.target = targetCab1;
     scene.add(spotCab1);
 
     // 2. Right Cabinet Spotlight
     const spotCab2 = new THREE.SpotLight(0xffe0b2, 4.0, 10.0, Math.PI / 4, 0.5, 1);
-    spotCab2.position.set(5.0, 3.9, -1.0);
+    spotCab2.position.set(5.0, 3.9, -1.5);
     const targetCab2 = new THREE.Object3D();
-    targetCab2.position.set(5.0, 0.9, -1.0);
+    targetCab2.position.set(5.0, 0.9, -1.5);
     scene.add(targetCab2);
     spotCab2.target = targetCab2;
     scene.add(spotCab2);
@@ -692,16 +763,15 @@ export default function ThreeCanvas({
 
     scene.add(casesGroup);
 
-    // WALL POSTERS (4 posters)
+    // WALL POSTERS (4 posters with downloaded anti-drug educational artworks)
     const postersGroup = new THREE.Group();
-    posters.forEach((post) => {
-      // Determine dynamic position override for posters to align with expanded walls
-      const sideSign = post.position.x < 0 ? -1 : 1;
-      const frameX = sideSign * 11.86; // Center frame so that the back sits exactly on the X = -11.9 / 11.9 inner wall face
+    const posterTextureLoader = new THREE.TextureLoader();
 
-      // Premium outer frame (polished dark chrome frame border)
-      // Defined as wide along X (1.84) and thin along Z (0.08) before rotation, so that
-      // after a 90-degree Y rotation, it aligns flat against the East/West walls (along Z).
+    posters.forEach((post) => {
+      const sideSign = post.position.x < 0 ? -1 : 1;
+      const frameX = sideSign * 11.86;
+
+      // 1. Outer dark titanium frame
       const frameGeo = new THREE.BoxGeometry(1.84, 2.54, 0.08);
       const frameMat = new THREE.MeshStandardMaterial({ 
         color: 0x1e293b, 
@@ -713,10 +783,10 @@ export default function ThreeCanvas({
       frame.rotation.set(post.rotation.x, post.rotation.y, post.rotation.z);
       postersGroup.add(frame);
 
-      // Inner elegant golden lining frame for a luxury 3D nested frame aesthetic
+      // 2. Inner luxury gold trim frame
       const innerFrameGeo = new THREE.BoxGeometry(1.76, 2.46, 0.09);
       const innerFrameMat = new THREE.MeshStandardMaterial({
-        color: 0xd4af37, // Polished gold trim
+        color: 0xd4af37,
         metalness: 0.9,
         roughness: 0.1
       });
@@ -725,102 +795,415 @@ export default function ThreeCanvas({
       innerFrame.rotation.copy(frame.rotation);
       postersGroup.add(innerFrame);
 
-      // High impact poster surface texture
+      // 3. Real artwork surface loaded from /public/posters/
       const surfaceGeo = new THREE.PlaneGeometry(1.7, 2.4);
+      let posterTexture;
+      if (post.imageUrl) {
+        posterTexture = posterTextureLoader.load(
+          post.imageUrl,
+          (tex) => {
+            tex.minFilter = THREE.LinearMipmapLinearFilter;
+            tex.magFilter = THREE.LinearFilter;
+            tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+            tex.needsUpdate = true;
+          },
+          undefined,
+          () => {
+            surface.material.map = createPosterTexture(post.title, post.subtitle, post.impactText);
+            surface.material.needsUpdate = true;
+          }
+        );
+      } else {
+        posterTexture = createPosterTexture(post.title, post.subtitle, post.impactText);
+      }
+
       const surfaceMat = new THREE.MeshBasicMaterial({
-        map: createPosterTexture(post.title, post.subtitle, post.impactText),
-        side: THREE.DoubleSide
+        map: posterTexture,
+        side: THREE.FrontSide
       });
       const surface = new THREE.Mesh(surfaceGeo, surfaceMat);
-      
-      // Place slightly offset from inner frame to avoid z-fighting
       surface.position.copy(frame.position);
       surface.rotation.copy(frame.rotation);
-      surface.position.x += -sideSign * 0.046; // Offset towards the center of the room to sit in front of the inner frame face
-      
+      surface.position.x += -sideSign * 0.046;
       postersGroup.add(surface);
+
+      // 4. Gallery spotlight angling on the poster
+      const posterSpot = new THREE.SpotLight(0xfff5e6, 2.5, 6.0, Math.PI / 4, 0.5, 1.2);
+      posterSpot.position.set(frameX - sideSign * 1.5, 3.8, post.position.z);
+      const posterTarget = new THREE.Object3D();
+      posterTarget.position.set(frameX, post.position.y, post.position.z);
+      scene.add(posterTarget);
+      posterSpot.target = posterTarget;
+      postersGroup.add(posterSpot);
     });
     scene.add(postersGroup);
 
-    // AI CURATOR HOLOGRAM BASE & EFFECT
-    const holoBaseGeo = new THREE.CylinderGeometry(0.9, 1.0, 0.15, 32);
-    const holoBaseMat = new THREE.MeshStandardMaterial({ color: 0x0a101d, metalness: 0.8, roughness: 0.2 });
-    const holoBase = new THREE.Mesh(holoBaseGeo, holoBaseMat);
-    holoBase.position.set(0, 0.075, -0.5);
-    scene.add(holoBase);
+    // 3D POLICE ROBOT GUIDE (Robot 3D Hướng Dẫn Viên - Công An Phường Tân Hưng)
+    const robotMasterGroup = new THREE.Group();
+    robotMasterGroup.position.set(0, 0, -0.5);
 
-    // Hologram circular light ring
-    const ringGeo = new THREE.RingGeometry(0.7, 0.75, 32);
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0x2f80ed, side: THREE.DoubleSide });
+    // 1. Pedestal Base
+    const robotBaseGeo = new THREE.CylinderGeometry(0.85, 0.95, 0.15, 32);
+    const robotBaseMat = new THREE.MeshStandardMaterial({ 
+      color: 0x0f172a, 
+      metalness: 0.85, 
+      roughness: 0.25 
+    });
+    const robotBase = new THREE.Mesh(robotBaseGeo, robotBaseMat);
+    robotBase.position.set(0, 0.075, 0);
+    robotMasterGroup.add(robotBase);
+
+    // Gold pedestal bevel ring
+    const baseTrimGeo = new THREE.TorusGeometry(0.86, 0.018, 12, 32);
+    const baseTrimMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9, roughness: 0.1 });
+    const baseTrim = new THREE.Mesh(baseTrimGeo, baseTrimMat);
+    baseTrim.rotation.x = Math.PI / 2;
+    baseTrim.position.set(0, 0.15, 0);
+    robotMasterGroup.add(baseTrim);
+
+    // Glowing cyan pedestal activation ring
+    const ringGeo = new THREE.RingGeometry(0.65, 0.72, 32);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, side: THREE.DoubleSide });
     const lightRing = new THREE.Mesh(ringGeo, ringMat);
     lightRing.rotation.x = Math.PI / 2;
-    lightRing.position.set(0, 0.16, -0.5);
-    scene.add(lightRing);
+    lightRing.position.set(0, 0.155, 0);
+    robotMasterGroup.add(lightRing);
 
-    // Simulated Volumetric hologram shape: glowing octahedron + double rings
-    const holoGroup = new THREE.Group();
-    holoGroup.position.set(0, 1.25, -0.5);
-
-    const coreGeo = new THREE.OctahedronGeometry(0.2, 0);
-    const coreMat = new THREE.MeshBasicMaterial({
-      color: 0xf2994a,
+    // Repulsor hover energy cone under robot
+    const repulsorBeamGeo = new THREE.CylinderGeometry(0.18, 0.42, 0.45, 24, 1, true);
+    const repulsorBeamMat = new THREE.MeshBasicMaterial({
+      color: 0x00f0ff,
       transparent: true,
-      opacity: 0.8,
-      wireframe: true
-    });
-    const holoCore = new THREE.Mesh(coreGeo, coreMat);
-    holoGroup.add(holoCore);
-
-    // Outer rotating energy ring
-    const ringMat2 = new THREE.MeshBasicMaterial({ color: 0x2f80ed, transparent: true, opacity: 0.5, wireframe: true });
-    const outerRing = new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.02, 8, 24), ringMat2);
-    outerRing.rotation.x = Math.PI/3;
-    holoGroup.add(outerRing);
-
-    const outerRing2 = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.015, 8, 24), ringMat2);
-    outerRing2.rotation.y = Math.PI/4;
-    holoGroup.add(outerRing2);
-
-    scene.add(holoGroup);
-
-    // Volumetric Emitter beam for hologram platform
-    const beamGeo = new THREE.CylinderGeometry(0.65, 0.85, 2.2, 32, 1, true);
-    const beamMat = new THREE.MeshBasicMaterial({
-      color: 0x2f80ed,
-      transparent: true,
-      opacity: 0.08,
+      opacity: 0.2,
       side: THREE.DoubleSide,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
-    const hologramBeam = new THREE.Mesh(beamGeo, beamMat);
-    hologramBeam.position.set(0, 1.15, -0.5);
-    scene.add(hologramBeam);
+    const repulsorBeam = new THREE.Mesh(repulsorBeamGeo, repulsorBeamMat);
+    repulsorBeam.position.set(0, 0.38, 0);
+    robotMasterGroup.add(repulsorBeam);
 
-    // Volumetric floating hologram rings that rise up and expand
-    const holoRings = [];
-    const ringColors = [0x2f80ed, 0x56ccf2, 0xf2994a];
-    for (let i = 0; i < 3; i++) {
-      const rGeo = new THREE.RingGeometry(0.65, 0.68, 32);
-      const rMat = new THREE.MeshBasicMaterial({
-        color: ringColors[i % ringColors.length],
-        transparent: true,
-        opacity: 0.4,
-        side: THREE.DoubleSide,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      });
-      const ringMesh = new THREE.Mesh(rGeo, rMat);
-      ringMesh.rotation.x = Math.PI / 2;
-      ringMesh.position.set(0, 0.2 + i * 0.6, -0.5);
-      scene.add(ringMesh);
-      holoRings.push({
-        mesh: ringMesh,
-        baseY: 0.2,
-        maxY: 2.2,
-        speed: 0.35 + i * 0.08
-      });
+    // Floating pulsing repulsor ring beneath robot
+    const repulsorRingGeo = new THREE.TorusGeometry(0.28, 0.02, 16, 32);
+    const repulsorRingMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+    const repulsorRing = new THREE.Mesh(repulsorRingGeo, repulsorRingMat);
+    repulsorRing.rotation.x = Math.PI / 2;
+    repulsorRing.position.set(0, 0.48, 0);
+    robotMasterGroup.add(repulsorRing);
+
+    // 2. Floating Robot Body Group (handles idle hovering and swaying)
+    const robotBodyGroup = new THREE.Group();
+    robotBodyGroup.position.set(0, 0.7, 0);
+
+    // Materials
+    const robotWhiteMat = new THREE.MeshStandardMaterial({
+      color: 0xf8fafc,
+      roughness: 0.15,
+      metalness: 0.15
+    });
+    const robotNavyMat = new THREE.MeshStandardMaterial({
+      color: 0x0a2540, // Police navy
+      roughness: 0.25,
+      metalness: 0.5
+    });
+    const robotDarkMat = new THREE.MeshStandardMaterial({
+      color: 0x1e293b,
+      roughness: 0.4,
+      metalness: 0.6
+    });
+    const robotGoldMat = new THREE.MeshStandardMaterial({
+      color: 0xd4af37,
+      roughness: 0.15,
+      metalness: 0.95
+    });
+    const robotEyeMat = new THREE.MeshBasicMaterial({
+      color: 0x00f0ff
+    });
+
+    // Lower repulsor thruster chassis
+    const thrusterGeo = new THREE.CylinderGeometry(0.2, 0.1, 0.18, 20);
+    const thruster = new THREE.Mesh(thrusterGeo, robotDarkMat);
+    thruster.position.set(0, 0.05, 0);
+    robotBodyGroup.add(thruster);
+
+    // Waist belt with gold police buckle
+    const beltGeo = new THREE.CylinderGeometry(0.24, 0.22, 0.08, 24);
+    const belt = new THREE.Mesh(beltGeo, robotDarkMat);
+    belt.position.set(0, 0.16, 0);
+    robotBodyGroup.add(belt);
+
+    const buckleGeo = new THREE.BoxGeometry(0.08, 0.06, 0.04);
+    const buckle = new THREE.Mesh(buckleGeo, robotGoldMat);
+    buckle.position.set(0, 0.16, 0.22);
+    robotBodyGroup.add(buckle);
+
+    // Main Torso (Sleek aerodynamic high-gloss body)
+    const torsoGeo = new THREE.CylinderGeometry(0.28, 0.24, 0.45, 24);
+    const torso = new THREE.Mesh(torsoGeo, robotWhiteMat);
+    torso.position.set(0, 0.4, 0);
+    robotBodyGroup.add(torso);
+
+    // Front Chest Armor Plate (Police Navy Blue)
+    const chestPlateGeo = new THREE.BoxGeometry(0.3, 0.24, 0.08);
+    const chestPlate = new THREE.Mesh(chestPlateGeo, robotNavyMat);
+    chestPlate.position.set(0, 0.44, 0.21);
+    robotBodyGroup.add(chestPlate);
+
+    // Golden Police Star Badge / Huy hiệu Công an on Chest
+    const starGeo = new THREE.ConeGeometry(0.045, 0.02, 5);
+    const starMesh = new THREE.Mesh(starGeo, robotGoldMat);
+    starMesh.rotation.x = Math.PI / 2;
+    starMesh.position.set(0, 0.46, 0.26);
+    robotBodyGroup.add(starMesh);
+
+    // Red police shield background for badge
+    const shieldGeo = new THREE.BoxGeometry(0.07, 0.08, 0.015);
+    const shieldMat = new THREE.MeshStandardMaterial({ color: 0xbe123c, roughness: 0.3 });
+    const shieldMesh = new THREE.Mesh(shieldGeo, shieldMat);
+    shieldMesh.position.set(0, 0.46, 0.252);
+    robotBodyGroup.add(shieldMesh);
+
+    // Chest Status LED indicator bar (pulsing green/cyan)
+    const ledBarGeo = new THREE.BoxGeometry(0.14, 0.02, 0.02);
+    const ledBarMat = new THREE.MeshBasicMaterial({ color: 0x10b981 });
+    const ledBar = new THREE.Mesh(ledBarGeo, ledBarMat);
+    ledBar.position.set(0, 0.35, 0.255);
+    robotBodyGroup.add(ledBar);
+
+    // Shoulder Chrome Ball Joints
+    const shoulderGeo = new THREE.SphereGeometry(0.065, 16, 16);
+    const shoulderMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.9, roughness: 0.1 });
+    
+    // Left Arm (Rests gracefully by side)
+    const shoulderL = new THREE.Mesh(shoulderGeo, shoulderMat);
+    shoulderL.position.set(-0.32, 0.52, 0);
+    robotBodyGroup.add(shoulderL);
+
+    const armLGeo = new THREE.CylinderGeometry(0.04, 0.035, 0.22, 12);
+    const armL = new THREE.Mesh(armLGeo, robotWhiteMat);
+    armL.position.set(-0.35, 0.38, 0.02);
+    armL.rotation.z = 0.15;
+    robotBodyGroup.add(armL);
+
+    const handLGeo = new THREE.SphereGeometry(0.045, 12, 12);
+    const handL = new THREE.Mesh(handLGeo, robotDarkMat);
+    handL.position.set(-0.37, 0.24, 0.03);
+    robotBodyGroup.add(handL);
+
+    // Right Arm (Welcoming / Waving gesture)
+    const shoulderR = new THREE.Mesh(shoulderGeo, shoulderMat);
+    shoulderR.position.set(0.32, 0.52, 0);
+    robotBodyGroup.add(shoulderR);
+
+    // Upper arm angled outward & up
+    const armRGroup = new THREE.Group();
+    armRGroup.position.set(0.32, 0.52, 0);
+    armRGroup.rotation.z = -0.55; // Angle outward
+    armRGroup.rotation.x = -0.3; // Angle forward
+
+    const upperArmR = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.038, 0.18, 12), robotWhiteMat);
+    upperArmR.position.set(0, -0.09, 0);
+    armRGroup.add(upperArmR);
+
+    // Elbow joint
+    const elbowR = new THREE.Mesh(new THREE.SphereGeometry(0.045, 12, 12), shoulderMat);
+    elbowR.position.set(0, -0.19, 0);
+    armRGroup.add(elbowR);
+
+    // Forearm & Hand in separate group for waving animation
+    const robotForearmR = new THREE.Group();
+    robotForearmR.position.set(0, -0.19, 0);
+    robotForearmR.rotation.z = -1.2; // Bend up into waving pose
+
+    const forearmR = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.035, 0.18, 12), robotNavyMat);
+    forearmR.position.set(0, 0.09, 0);
+    robotForearmR.add(forearmR);
+
+    // Hand with articulated fingers spread in wave
+    const handR = new THREE.Mesh(new THREE.SphereGeometry(0.045, 12, 12), robotDarkMat);
+    handR.position.set(0, 0.19, 0);
+    robotForearmR.add(handR);
+
+    // Friendly 3 robotic fingers
+    for (let f = -1; f <= 1; f++) {
+      const fingerGeo = new THREE.CylinderGeometry(0.01, 0.008, 0.06, 8);
+      const finger = new THREE.Mesh(fingerGeo, robotGoldMat);
+      finger.position.set(f * 0.02, 0.23, 0);
+      finger.rotation.z = f * 0.15;
+      robotForearmR.add(finger);
     }
+
+    armRGroup.add(robotForearmR);
+    robotBodyGroup.add(armRGroup);
+
+    // Neck joint
+    const neckGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.08, 16);
+    const neck = new THREE.Mesh(neckGeo, robotDarkMat);
+    neck.position.set(0, 0.65, 0);
+    robotBodyGroup.add(neck);
+
+    // 3. Robot Head Group (for looking around animation)
+    const robotHeadGroup = new THREE.Group();
+    robotHeadGroup.position.set(0, 0.72, 0);
+
+    // Main head helmet (smooth ceramic white)
+    const headGeo = new THREE.SphereGeometry(0.22, 24, 20);
+    const headMesh = new THREE.Mesh(headGeo, robotWhiteMat);
+    headMesh.scale.set(1.05, 0.95, 1.0);
+    headMesh.position.set(0, 0.16, 0);
+    robotHeadGroup.add(headMesh);
+
+    // Curved Glossy Visor Face
+    const visorGeo = new THREE.SphereGeometry(0.205, 24, 16, 0, Math.PI, 0, Math.PI * 0.65);
+    const visorMat = new THREE.MeshPhysicalMaterial({
+      color: 0x020617,
+      roughness: 0.05,
+      metalness: 0.95,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05
+    });
+    const visor = new THREE.Mesh(visorGeo, visorMat);
+    visor.rotation.x = -Math.PI / 2;
+    visor.rotation.z = -Math.PI / 2;
+    visor.position.set(0, 0.16, 0.04);
+    robotHeadGroup.add(visor);
+
+    // Digital Glowing Cyan Eyes (Dual friendly LED eyes)
+    const eyeGeo = new THREE.CapsuleGeometry(0.022, 0.055, 8, 12);
+    
+    const eyeL = new THREE.Mesh(eyeGeo, robotEyeMat);
+    eyeL.rotation.z = Math.PI / 2;
+    eyeL.position.set(-0.075, 0.18, 0.22);
+    robotHeadGroup.add(eyeL);
+
+    const eyeR = new THREE.Mesh(eyeGeo, robotEyeMat);
+    eyeR.rotation.z = Math.PI / 2;
+    eyeR.position.set(0.075, 0.18, 0.22);
+    robotHeadGroup.add(eyeR);
+
+    // Police Cap / Crest on head
+    const capBaseGeo = new THREE.CylinderGeometry(0.18, 0.2, 0.05, 24);
+    const capBase = new THREE.Mesh(capBaseGeo, robotNavyMat);
+    capBase.position.set(0, 0.35, 0.02);
+    capBase.rotation.x = 0.12;
+    robotHeadGroup.add(capBase);
+
+    // Gold cap trim band
+    const capBandGeo = new THREE.CylinderGeometry(0.202, 0.202, 0.015, 24);
+    const capBand = new THREE.Mesh(capBandGeo, robotGoldMat);
+    capBand.position.set(0, 0.33, 0.02);
+    capBand.rotation.x = 0.12;
+    robotHeadGroup.add(capBand);
+
+    // Cap Visor Bill (Glossy black patent leather visor)
+    const billGeo = new THREE.BoxGeometry(0.24, 0.015, 0.12);
+    const billMat = new THREE.MeshStandardMaterial({ color: 0x09090b, roughness: 0.1, metalness: 0.8 });
+    const bill = new THREE.Mesh(billGeo, billMat);
+    bill.position.set(0, 0.32, 0.15);
+    bill.rotation.x = 0.35;
+    robotHeadGroup.add(bill);
+
+    // Mini Golden Police Star on Cap
+    const capStar = new THREE.Mesh(new THREE.ConeGeometry(0.03, 0.015, 5), robotGoldMat);
+    capStar.rotation.x = Math.PI / 2;
+    capStar.position.set(0, 0.36, 0.19);
+    robotHeadGroup.add(capStar);
+
+    // Ear Modules with Glowing LED accents
+    const earGeo = new THREE.CylinderGeometry(0.05, 0.05, 0.04, 16);
+    const earL = new THREE.Mesh(earGeo, robotNavyMat);
+    earL.rotation.z = Math.PI / 2;
+    earL.position.set(-0.23, 0.16, 0);
+    robotHeadGroup.add(earL);
+
+    const earR = new THREE.Mesh(earGeo, robotNavyMat);
+    earR.rotation.z = Math.PI / 2;
+    earR.position.set(0.23, 0.16, 0);
+    robotHeadGroup.add(earR);
+
+    // Comms Antennae on ears with blinking tip LEDs
+    const antennaGeo = new THREE.CylinderGeometry(0.008, 0.008, 0.18, 8);
+    const antennaMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.9, roughness: 0.1 });
+    
+    const antennaL = new THREE.Mesh(antennaGeo, antennaMat);
+    antennaL.position.set(-0.23, 0.28, 0);
+    antennaL.rotation.z = 0.2;
+    robotHeadGroup.add(antennaL);
+
+    const antennaTipGeo = new THREE.SphereGeometry(0.018, 12, 12);
+    const antennaTipMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+    const antennaTipL = new THREE.Mesh(antennaTipGeo, antennaTipMat);
+    antennaTipL.position.set(-0.25, 0.38, 0);
+    robotHeadGroup.add(antennaTipL);
+
+    const antennaR = new THREE.Mesh(antennaGeo, antennaMat);
+    antennaR.position.set(0.23, 0.28, 0);
+    antennaR.rotation.z = -0.2;
+    robotHeadGroup.add(antennaR);
+
+    const antennaTipR = new THREE.Mesh(antennaTipGeo, antennaTipMat);
+    antennaTipR.position.set(0.25, 0.38, 0);
+    robotHeadGroup.add(antennaTipR);
+
+    robotBodyGroup.add(robotHeadGroup);
+    robotMasterGroup.add(robotBodyGroup);
+
+    // 4. Floating Holographic Badge Above Robot's Head
+    const createRobotBadgeTexture = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 160;
+      const ctx = canvas.getContext("2d");
+
+      // Semi-transparent high-tech HUD background
+      ctx.fillStyle = "rgba(10, 25, 47, 0.85)";
+      ctx.fillRect(0, 0, 512, 160);
+
+      // Cyan glowing neon borders
+      ctx.strokeStyle = "#00f0ff";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(6, 6, 500, 148);
+
+      // Corner tech accents
+      ctx.fillStyle = "#00f0ff";
+      ctx.fillRect(0, 0, 20, 6);
+      ctx.fillRect(0, 0, 6, 20);
+      ctx.fillRect(492, 0, 20, 6);
+      ctx.fillRect(506, 0, 6, 20);
+      ctx.fillRect(0, 154, 20, 6);
+      ctx.fillRect(0, 140, 6, 20);
+      ctx.fillRect(492, 154, 20, 6);
+      ctx.fillRect(506, 140, 6, 20);
+
+      // Line 1: Action Prompt
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 34px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("[E] ROBOT HƯỚNG DẪN VIÊN 3D", 256, 62);
+
+      // Line 2: Subtitle
+      ctx.fillStyle = "#facc15"; // Gold
+      ctx.font = "bold 24px sans-serif";
+      ctx.fillText("CÔNG AN PHƯỜNG TÂN HƯNG", 256, 114);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      return tex;
+    };
+
+    const badgePlaneGeo = new THREE.PlaneGeometry(1.4, 0.44);
+    const badgePlaneMat = new THREE.MeshBasicMaterial({
+      map: createRobotBadgeTexture(),
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.95
+    });
+    const robotBadgePlane = new THREE.Mesh(badgePlaneGeo, badgePlaneMat);
+    robotBadgePlane.position.set(0, 1.95, 0);
+    robotMasterGroup.add(robotBadgePlane);
+
+    scene.add(robotMasterGroup);
 
     // INTERACTIVE CAMERA DRAG CONTROLS
     const onMouseDown = (e) => {
@@ -929,23 +1312,23 @@ export default function ThreeCanvas({
       if (targetX < -11.5 || targetX > 11.5) return true;
       if (targetZ < -8.5 || targetZ > 8.5) return true;
 
-      // Collision with Table 1 (Left Main Cabinet): X = -5.0, Z runs -5.0 to 3.0
-      // Bounds: X from -5.6 to -4.4, Z from -5.6 to 3.6
-      if (targetX > -5.6 && targetX < -4.4 && targetZ > -5.6 && targetZ < 3.6) return true;
+      // Collision with Table 1 (Left Main Cabinet: 12 specimens): X = -5.0, Z from -5.4 to 2.4
+      // Bounds: X from -5.6 to -4.4, Z from -5.8 to 2.8
+      if (targetX > -5.6 && targetX < -4.4 && targetZ > -5.8 && targetZ < 2.8) return true;
 
-      // Collision with Table 2 (Right Main Cabinet): X = 5.0, Z runs -5.0 to 3.0
-      // Bounds: X from 4.4 to 5.6, Z from -5.6 to 3.6
-      if (targetX > 4.4 && targetX < 5.6 && targetZ > -5.6 && targetZ < 3.6) return true;
+      // Collision with Table 2 (Right Main Cabinet: 11 specimens): X = 5.0, Z from -5.4 to 2.4
+      // Bounds: X from 4.4 to 5.6, Z from -5.8 to 2.8
+      if (targetX > 4.4 && targetX < 5.6 && targetZ > -5.8 && targetZ < 2.8) return true;
 
-      // Collision with Table 3 (Back Long Cabinet): X from -8.0 to 8.0, Z = 6.5
-      // Bounds: X from -8.6 to 8.6, Z from 5.9 to 7.1
-      if (targetX > -8.6 && targetX < 8.6 && targetZ > 5.9 && targetZ < 7.1) return true;
+      // Collision with Table 3 (Back Long Cabinet: 12 specimens): X from -7.5 to 7.5, Z = 6.5
+      // Bounds: X from -7.9 to 7.9, Z from 5.9 to 7.1
+      if (targetX > -7.9 && targetX < 7.9 && targetZ > 5.9 && targetZ < 7.1) return true;
 
       // Collision with Central Partition Wall: Z = 4.5, X from -8.0 to 8.0
-      // Thickness is 0.2, Z bounds: 4.1 to 4.9, X bounds: -8.6 to 8.6
-      if (targetX > -8.6 && targetX < 8.6 && targetZ > 4.1 && targetZ < 4.9) return true;
+      // Thickness is 0.2, Z bounds: 4.1 to 4.9, X bounds: -8.2 to 8.2
+      if (targetX > -8.2 && targetX < 8.2 && targetZ > 4.1 && targetZ < 4.9) return true;
 
-      // Collision with Curator base
+      // Collision with Robot Guide Base
       const dcx = targetX - 0;
       const dcz = targetZ - (-0.5);
       if (Math.sqrt(dcx * dcx + dcz * dcz) < 1.0) return true;
@@ -963,30 +1346,32 @@ export default function ThreeCanvas({
         spec.mesh.position.y = spec.initialY + Math.sin(time * 2 + spec.mesh.position.x) * 0.04;
       });
 
-      holoGroup.rotation.y -= 0.5 * delta;
-      holoCore.rotation.x += 0.3 * delta;
-      outerRing.rotation.z += 0.8 * delta;
-      outerRing2.rotation.x -= 0.6 * delta;
+      // Animate 3D Police Robot Guide (Idling hover bob, subtle sway, look-around, friendly waving)
+      robotBodyGroup.position.y = 0.68 + Math.sin(time * 2.2) * 0.04;
+      robotBodyGroup.rotation.y = Math.sin(time * 1.2) * 0.03;
+      robotBodyGroup.rotation.z = Math.sin(time * 1.8) * 0.015;
+      
+      // Robot head looks around smoothly
+      robotHeadGroup.rotation.y = Math.sin(time * 0.8) * 0.28;
+      robotHeadGroup.rotation.x = Math.sin(time * 1.4) * 0.05;
 
-      // Emit volumetric pulse glowing effect
-      const glowScale = 1.0 + Math.sin(time * 3) * 0.08;
-      holoCore.scale.set(glowScale, glowScale, glowScale);
+      // Right arm waving animation
+      robotForearmR.rotation.z = -1.2 + Math.sin(time * 3.8) * 0.22;
 
-      // Animate Hologram volumetric rising rings
-      holoRings.forEach((r) => {
-        r.mesh.position.y += r.speed * delta;
-        const progress = (r.mesh.position.y - r.baseY) / (r.maxY - r.baseY);
-        r.mesh.material.opacity = (1 - progress) * 0.4;
-        
-        // Expand ring as it rises
-        const scale = 1.0 + progress * 0.35;
-        r.mesh.scale.set(scale, scale, 1.0);
+      // Pulsing repulsor ring & beam beneath robot
+      repulsorRing.rotation.y += 1.5 * delta;
+      const ringScale = 1.0 + Math.sin(time * 3.5) * 0.06;
+      repulsorRing.scale.set(ringScale, ringScale, 1.0);
+      repulsorBeam.material.opacity = 0.16 + Math.sin(time * 3.5) * 0.06;
 
-        if (r.mesh.position.y > r.maxY) {
-          r.mesh.position.y = r.baseY;
-          r.mesh.scale.set(1.0, 1.0, 1.0);
-        }
-      });
+      // Robot LED eyes subtle blink every few seconds
+      const blinkCycle = time % 4.0;
+      const isBlinking = blinkCycle > 3.85 && blinkCycle < 3.98;
+      eyeL.scale.y = isBlinking ? 0.1 : 1.0;
+      eyeR.scale.y = isBlinking ? 0.1 : 1.0;
+
+      // Comms Antennae LED pulse
+      antennaTipMat.color.setHex(Math.sin(time * 4.0) > 0 ? 0x00f0ff : 0x38bdf8);
 
       // Dust particles float upward
       const positions = dustParticles.geometry.attributes.position.array;
@@ -1113,14 +1498,14 @@ export default function ThreeCanvas({
         }
       });
 
-      // Check AI Curator Platform
+      // Check 3D Police Robot Platform
       const dcx = stateRef.current.posX - 0;
       const dcz = stateRef.current.posZ - (-0.5);
       const distCurator = Math.sqrt(dcx * dcx + dcz * dcz);
-      if (distCurator < 1.8 && distCurator < minDistance) {
+      if (distCurator < 2.0 && distCurator < minDistance) {
         closestElement = {
           type: "curator",
-          prompt: "Nhấn [E] Để nói chuyện với AI Curator"
+          prompt: "Nhấn [E] Để nói chuyện với Robot Hướng Dẫn Viên 3D"
         };
       }
 
@@ -1187,20 +1572,7 @@ export default function ThreeCanvas({
       wallGroup.children.forEach(disposeNode);
       casesGroup.children.forEach(disposeNode);
       postersGroup.children.forEach(disposeNode);
-      
-      holoBaseGeo.dispose();
-      holoBaseMat.dispose();
-      ringGeo.dispose();
-      ringMat.dispose();
-      coreGeo.dispose();
-      coreMat.dispose();
-      beamGeo.dispose();
-      beamMat.dispose();
-      
-      holoRings.forEach(r => {
-        r.mesh.geometry.dispose();
-        r.mesh.material.dispose();
-      });
+      disposeNode(robotMasterGroup);
 
       renderer.dispose();
     };
@@ -1270,7 +1642,7 @@ export default function ThreeCanvas({
           </div>
           <div className="hud-control-item">
             <span className="hud-key">E</span>
-            <span>Chat với Curator</span>
+            <span>Hỏi Robot 3D</span>
           </div>
         </div>
       )}

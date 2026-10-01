@@ -36,7 +36,7 @@ export default function Home() {
       try {
         const res = await fetch("/api/exhibits");
         const json = await res.json();
-        if (json.exhibits && json.exhibits.length >= 30) {
+        if (json.exhibits && json.exhibits.length >= 35) {
           setExhibits(json.exhibits);
           localStorage.setItem("mtspace_exhibits", JSON.stringify(json.exhibits));
         } else {
@@ -61,7 +61,7 @@ export default function Home() {
       const savedPosters = localStorage.getItem("mtspace_posters") || localStorage.getItem("3dpast_posters");
       const savedTiktok = localStorage.getItem("mtspace_tiktokVideos") || localStorage.getItem("3dpast_tiktokVideos");
       
-      if (savedExhibits && JSON.parse(savedExhibits).length >= 30) {
+      if (savedExhibits && JSON.parse(savedExhibits).length >= 35) {
         setExhibits(JSON.parse(savedExhibits));
       } else {
         localStorage.setItem("mtspace_exhibits", JSON.stringify(exhibitsData));

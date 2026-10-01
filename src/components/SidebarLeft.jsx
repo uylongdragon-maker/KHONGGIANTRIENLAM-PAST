@@ -26,7 +26,7 @@ export default function SidebarLeft({
 }) {
   const visitors = [
     { name: "Bạn (Khách)", role: "host", letter: "B" },
-    { name: "Curator AI", role: "bot", letter: "AI" },
+    { name: "Robot 3D", role: "bot", letter: "RB" },
     { name: "Minh Anh", role: "guest", letter: "MA" },
     { name: "Hoàng Nam", role: "guest", letter: "HN" },
     { name: "Ngọc Trâm", role: "guest", letter: "NT" }
@@ -176,19 +176,19 @@ export default function SidebarLeft({
               );
             })}
 
-            {/* AI Curator platform at center */}
+            {/* Robot 3D Guide at center */}
             <circle
               cx={mapX(0)}
               cy={mapZ(-0.5)}
               r="6"
               fill="none"
-              stroke="#2f80ed"
+              stroke="#00f0ff"
               strokeWidth="2"
               className="minimap-point"
-              onClick={() => onTeleport(0, 1.0)} // Safe distance from curator
-              title="AI Curator"
+              onClick={() => onTeleport(0, 1.0)} // Safe distance from robot
+              title="Robot 3D Hướng Dẫn Viên"
             />
-            <circle cx={mapX(0)} cy={mapZ(-0.5)} r="2" fill="#2f80ed" />
+            <circle cx={mapX(0)} cy={mapZ(-0.5)} r="2" fill="#00f0ff" />
 
             {/* Player position dot and directional arrow */}
             <g transform={`translate(${mapX(playerPosition.x)}, ${mapZ(playerPosition.z)}) rotate(${arrowDeg})`}>
