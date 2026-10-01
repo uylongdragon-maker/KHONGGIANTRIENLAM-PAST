@@ -78,7 +78,7 @@ export async function GET() {
         },
         {
           id: "tiktok3",
-          title: "Hiểm họa ma túy ảo giác tẩm trong bùa lưỡi, nấm thức thần - PAST",
+          title: "Hiểm họa ma túy ảo giác tẩm trong bùa lưỡi, nấm thức thần - CA P. Tân Hưng & CSĐT Ma Túy",
           url: "https://www.tiktok.com/@vtv24news/video/7258392019482910832"
         }
       ];

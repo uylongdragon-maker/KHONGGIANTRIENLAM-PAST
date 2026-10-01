@@ -95,21 +95,21 @@ export default function AdminDashboard() {
         const json = await res.json();
         if (json.exhibits && json.exhibits.length > 0) {
           setExhibits(json.exhibits);
-          localStorage.setItem("3dpast_exhibits", JSON.stringify(json.exhibits));
+          localStorage.setItem("mtspace_exhibits", JSON.stringify(json.exhibits));
         }
         if (json.posters && json.posters.length > 0) {
           setPosters(json.posters);
-          localStorage.setItem("3dpast_posters", JSON.stringify(json.posters));
+          localStorage.setItem("mtspace_posters", JSON.stringify(json.posters));
         }
         if (json.tiktokVideos && json.tiktokVideos.length > 0) {
           setTiktokVideos(json.tiktokVideos);
-          localStorage.setItem("3dpast_tiktokVideos", JSON.stringify(json.tiktokVideos));
+          localStorage.setItem("mtspace_tiktokVideos", JSON.stringify(json.tiktokVideos));
         }
       } catch (error) {
         console.error("Failed to fetch from Supabase, loading from cache:", error);
-        const savedExhibits = localStorage.getItem("3dpast_exhibits");
-        const savedPosters = localStorage.getItem("3dpast_posters");
-        const savedTiktok = localStorage.getItem("3dpast_tiktokVideos");
+        const savedExhibits = localStorage.getItem("mtspace_exhibits") || localStorage.getItem("3dpast_exhibits");
+        const savedPosters = localStorage.getItem("mtspace_posters") || localStorage.getItem("3dpast_posters");
+        const savedTiktok = localStorage.getItem("mtspace_tiktokVideos") || localStorage.getItem("3dpast_tiktokVideos");
         if (savedExhibits) setExhibits(JSON.parse(savedExhibits));
         if (savedPosters) setPosters(JSON.parse(savedPosters));
         if (savedTiktok) setTiktokVideos(JSON.parse(savedTiktok));
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username === "admin" && password === "past2025") {
+    if (username === "admin" && (password === "tanhung2025" || password === "past2025" || password === "admin123")) {
       setIsLoggedIn(true);
       sessionStorage.setItem("admin_session", "active");
       setLoginError("");
@@ -150,19 +150,19 @@ export default function AdminDashboard() {
 
     if (newExhibits) {
       setExhibits(newExhibits);
-      localStorage.setItem("3dpast_exhibits", JSON.stringify(newExhibits));
+      localStorage.setItem("mtspace_exhibits", JSON.stringify(newExhibits));
     } else {
       exhibitsToSave = exhibits;
     }
     if (newPosters) {
       setPosters(newPosters);
-      localStorage.setItem("3dpast_posters", JSON.stringify(newPosters));
+      localStorage.setItem("mtspace_posters", JSON.stringify(newPosters));
     } else {
       postersToSave = posters;
     }
     if (newTiktokVideos) {
       setTiktokVideos(newTiktokVideos);
-      localStorage.setItem("3dpast_tiktokVideos", JSON.stringify(newTiktokVideos));
+      localStorage.setItem("mtspace_tiktokVideos", JSON.stringify(newTiktokVideos));
     } else {
       tiktokVideosToSave = tiktokVideos;
     }
@@ -211,7 +211,7 @@ export default function AdminDashboard() {
 
     // Test 2: LocalStorage Database integrity
     addLog("💾 Test 2: Đọc dữ liệu cơ sở dữ liệu mẫu vật (Database Local)...", "info");
-    const testExhibits = localStorage.getItem("3dpast_exhibits");
+    const testExhibits = localStorage.getItem("mtspace_exhibits") || localStorage.getItem("3dpast_exhibits");
     if (testExhibits && JSON.parse(testExhibits).length > 0) {
       addLog(`✅ Kết nối Database thành công! Đã tải ${JSON.parse(testExhibits).length} mẫu vật.`, "success");
     } else {
@@ -477,7 +477,7 @@ export default function AdminDashboard() {
     if (confirm("Bạn có chắc chắn muốn xóa video TikTok này không?")) {
       const filtered = tiktokVideos.filter(v => v.id !== id);
       setTiktokVideos(filtered);
-      localStorage.setItem("3dpast_tiktokVideos", JSON.stringify(filtered));
+      localStorage.setItem("mtspace_tiktokVideos", JSON.stringify(filtered));
 
       try {
         await fetch("/api/exhibits", {
@@ -658,8 +658,12 @@ export default function AdminDashboard() {
 
   const restoreDefaults = () => {
     if (confirm("Bạn có muốn đặt lại toàn bộ dữ liệu mẫu vật và áp phích về trạng thái nguyên bản gốc không? Dữ liệu tùy chỉnh của bạn sẽ bị ghi đè.")) {
+      localStorage.removeItem("mtspace_exhibits");
+      localStorage.removeItem("mtspace_posters");
+      localStorage.removeItem("mtspace_tiktokVideos");
       localStorage.removeItem("3dpast_exhibits");
       localStorage.removeItem("3dpast_posters");
+      localStorage.removeItem("3dpast_tiktokVideos");
       window.location.reload();
     }
   };
@@ -1311,10 +1315,10 @@ export default function AdminDashboard() {
       {/* HEADER BAR */}
       <header className="admin-header">
         <div className="admin-header-title" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <img src="/past_logo.png" alt="PAST Logo" style={{ height: "42px", width: "42px", objectFit: "contain", filter: "drop-shadow(0 0 8px rgba(242,153,74,0.35))" }} />
+          <img src="/congan_logo.png" alt="Công An Phường Tân Hưng & Phòng CSĐT Tội Phạm Về Ma Túy" style={{ height: "42px", width: "42px", objectFit: "contain", filter: "drop-shadow(0 0 8px rgba(242,153,74,0.35))" }} />
           <div className="admin-title-text">
             <h1>Hệ Thống Quản Trị Triển Lãm</h1>
-            <p>Admin Dashboard: Điều chỉnh tiêu bản 3D & Áp phích thời gian thực</p>
+            <p>Công An Phường Tân Hưng &bull; Phòng CSĐT Tội Phạm Về Ma Túy</p>
           </div>
         </div>
 

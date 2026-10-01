@@ -326,8 +326,8 @@ export default function ThreeCanvas({
       ctx.fillText(title, 256, 92);
 
       ctx.fillStyle = "#f2994a";
-      ctx.font = "14px sans-serif";
-      ctx.fillText("TRIỂN LÃM MA TÚY 3D PAST", 256, 130);
+      ctx.font = "bold 12px sans-serif";
+      ctx.fillText("CÔNG AN P. TÂN HƯNG - PHÒNG CSĐT TỘI PHẠM VỀ MA TÚY", 256, 130);
 
       // Draw Subtitle / Slogan
       ctx.fillStyle = "#ffffff";

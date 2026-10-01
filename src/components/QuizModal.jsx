@@ -13,7 +13,7 @@ import {
 import { questionsData } from "../data/exhibits";
 
 function generateCertId() {
-  return `3DPAST-2026-${Math.floor(100000 + Math.random() * 900000)}`;
+  return `CAP-TANHUNG-2026-${Math.floor(100000 + Math.random() * 900000)}`;
 }
 
 export default function QuizModal({ onClose, onPassQuiz }) {
@@ -279,7 +279,7 @@ export default function QuizModal({ onClose, onPassQuiz }) {
 
                 <div className="certificate-seal">
                   <div style={{ textAlign: 'center', padding: '4px' }}>
-                    <div style={{ fontSize: '0.5rem', fontWeight: 800 }}>BTC 3D PAST</div>
+                    <div style={{ fontSize: '0.45rem', fontWeight: 800, lineHeight: 1.1 }}>BTC CA P. TÂN HƯNG</div>
                     <FileCheck2 size={16} style={{ margin: '3px auto 0 auto', color: '#000' }} />
                     <div style={{ fontSize: '0.45rem', fontWeight: 600, marginTop: '2px' }}>ĐÃ CHỨNG NHẬN</div>
                   </div>

@@ -15,7 +15,7 @@ export default function CuratorHUDModal({
   const [chatMessages, setChatMessages] = useState([
     {
       sender: "ai",
-      text: "Chào bạn! Tôi là AI Curator - hướng dẫn viên ảo của triển lãm PAST. Tôi ở đây để đồng hành cùng bạn khám phá kiến thức khoa học về tác hại của chất gây nghiện và hỗ trợ bạn bảo vệ bản thân, cộng đồng. Bạn muốn thảo luận chủ đề gì hôm nay?"
+      text: "Chào bạn! Tôi là AI Curator - hướng dẫn viên ảo của không gian triển lãm do Công An phường Tân Hưng phối hợp cùng Phòng Cảnh sát điều tra tội phạm về ma túy tổ chức. Tôi ở đây để đồng hành cùng bạn khám phá kiến thức khoa học về tác hại của chất gây nghiện và hỗ trợ bạn bảo vệ bản thân, cộng đồng. Bạn muốn thảo luận chủ đề gì hôm nay?"
     }
   ]);
   const [chatInput, setChatInput] = useState("");
@@ -317,7 +317,7 @@ export default function CuratorHUDModal({
             </div>
             <div className="curator-title-text">
               <h3>AI Curator Hướng Dẫn Viên</h3>
-              <p>Mô phỏng hologram hướng dẫn viên trực tuyến tại PAST 2026</p>
+              <p>Mô phỏng hologram hướng dẫn viên trực tuyến - CA P. Tân Hưng & CSĐT TP Ma Túy</p>
             </div>
           </div>
           <button className="curator-hud-close" onClick={onClose}>

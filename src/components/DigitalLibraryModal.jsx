@@ -479,7 +479,7 @@ export default function DigitalLibraryModal({
         {/* Header */}
         <div className="lib-header">
           <div className="lib-header-title" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <img src="/past_logo.png" alt="PAST Logo" style={{ height: "42px", width: "42px", objectFit: "contain", filter: "drop-shadow(0 0 8px rgba(242,153,74,0.35))" }} />
+            <img src="/congan_logo.png" alt="Công An Phường Tân Hưng & Phòng CSĐT Tội Phạm Về Ma Túy" style={{ height: "42px", width: "42px", objectFit: "contain", filter: "drop-shadow(0 0 8px rgba(242,153,74,0.35))" }} />
             <h1>Thư Viện Số & Không Gian Tuyên Truyền</h1>
           </div>
           <p>Tìm kiếm, tra cứu y học, xem video tuyên truyền và định vị nhanh 30 tiêu bản chất cấm & 4 áp phích trong sảnh 3D.</p>
@@ -579,7 +579,7 @@ export default function DigitalLibraryModal({
                   <div key={video.id} className="lib-card tiktok-card" style={{ borderColor: "rgba(242, 153, 74, 0.2)", background: "rgba(10, 18, 30, 0.45)", minHeight: "420px" }}>
                     <div className="lib-card-meta">
                       <h3 style={{ color: "#f2994a", fontSize: "0.9rem", fontWeight: "700" }}>{video.title}</h3>
-                      <span className="badge" style={{ color: "#f2994a", borderColor: "rgba(242, 153, 74, 0.25)", background: "rgba(242, 153, 74, 0.05)" }}>PAST TikTok</span>
+                      <span className="badge" style={{ color: "#f2994a", borderColor: "rgba(242, 153, 74, 0.25)", background: "rgba(242, 153, 74, 0.05)" }}>Video Tuyên Truyền</span>
                     </div>
                     <div className="lib-card-category" style={{ color: "#f2994a", fontSize: "0.68rem", fontWeight: "bold" }}>Video Tuyên Truyền</div>
                     

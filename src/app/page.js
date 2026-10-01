@@ -38,17 +38,17 @@ export default function Home() {
         const json = await res.json();
         if (json.exhibits && json.exhibits.length >= 30) {
           setExhibits(json.exhibits);
-          localStorage.setItem("3dpast_exhibits", JSON.stringify(json.exhibits));
+          localStorage.setItem("mtspace_exhibits", JSON.stringify(json.exhibits));
         } else {
           loadFallback();
         }
         if (json.posters && json.posters.length > 0) {
           setPosters(json.posters);
-          localStorage.setItem("3dpast_posters", JSON.stringify(json.posters));
+          localStorage.setItem("mtspace_posters", JSON.stringify(json.posters));
         }
         if (json.tiktokVideos && json.tiktokVideos.length > 0) {
           setTiktokVideos(json.tiktokVideos);
-          localStorage.setItem("3dpast_tiktokVideos", JSON.stringify(json.tiktokVideos));
+          localStorage.setItem("mtspace_tiktokVideos", JSON.stringify(json.tiktokVideos));
         }
       } catch (error) {
         console.error("Failed to load from Supabase database, using local cache fallback:", error);
@@ -57,21 +57,21 @@ export default function Home() {
     };
 
     const loadFallback = () => {
-      const savedExhibits = localStorage.getItem("3dpast_exhibits");
-      const savedPosters = localStorage.getItem("3dpast_posters");
-      const savedTiktok = localStorage.getItem("3dpast_tiktokVideos");
+      const savedExhibits = localStorage.getItem("mtspace_exhibits") || localStorage.getItem("3dpast_exhibits");
+      const savedPosters = localStorage.getItem("mtspace_posters") || localStorage.getItem("3dpast_posters");
+      const savedTiktok = localStorage.getItem("mtspace_tiktokVideos") || localStorage.getItem("3dpast_tiktokVideos");
       
       if (savedExhibits && JSON.parse(savedExhibits).length >= 30) {
         setExhibits(JSON.parse(savedExhibits));
       } else {
-        localStorage.setItem("3dpast_exhibits", JSON.stringify(exhibitsData));
+        localStorage.setItem("mtspace_exhibits", JSON.stringify(exhibitsData));
         setExhibits(exhibitsData);
       }
       
       if (savedPosters) {
         setPosters(JSON.parse(savedPosters));
       } else {
-        localStorage.setItem("3dpast_posters", JSON.stringify(postersData));
+        localStorage.setItem("mtspace_posters", JSON.stringify(postersData));
         setPosters(postersData);
       }
 
@@ -91,11 +91,11 @@ export default function Home() {
           },
           {
             id: "tiktok3",
-            title: "Hiểm họa ma túy ảo giác tẩm trong bùa lưỡi, nấm thức thần - PAST",
+            title: "Hiểm họa ma túy ảo giác tẩm trong bùa lưỡi, nấm thức thần - CA P. Tân Hưng & CSĐT Ma Túy",
             url: "https://www.tiktok.com/@vtv24news/video/7258392019482910832"
           }
         ];
-        localStorage.setItem("3dpast_tiktokVideos", JSON.stringify(initialTiktokVideos));
+        localStorage.setItem("mtspace_tiktokVideos", JSON.stringify(initialTiktokVideos));
         setTiktokVideos(initialTiktokVideos);
       }
     };
@@ -265,10 +265,10 @@ export default function Home() {
         {/* HEADER */}
         <header className="app-header glass-panel ui-element">
           <div className="header-title-container" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <img src="/past_logo.png" alt="PAST Logo" style={{ height: "46px", width: "46px", objectFit: "contain", filter: "drop-shadow(0 0 10px rgba(242,153,74,0.35))" }} />
+            <img src="/congan_logo.png" alt="Công An Phường Tân Hưng & Phòng CSĐT Tội Phạm Về Ma Túy" style={{ height: "46px", width: "46px", objectFit: "contain", filter: "drop-shadow(0 0 10px rgba(242,153,74,0.35))" }} />
             <div className="header-title">
               <h1>Triển Lãm Ma Túy 3D</h1>
-              <p>Hiểu đúng - Phòng ngừa - Vì một cộng đồng không ma túy</p>
+              <p>Công An Phường Tân Hưng &bull; Phòng Cảnh Sát ĐTTP Về Ma Túy</p>
             </div>
           </div>
 
@@ -393,7 +393,7 @@ export default function Home() {
               <Compass size={44} className="phone-rotate-icon" />
             </div>
             <h2>Xoay Ngang Thiết Bị</h2>
-            <p>Vui lòng xoay ngang điện thoại của bạn để có góc nhìn tham quan rộng mở và trải nghiệm không gian triển lãm 3D PAST tốt nhất!</p>
+            <p>Vui lòng xoay ngang điện thoại của bạn để có góc nhìn tham quan rộng mở và trải nghiệm không gian triển lãm 3D tốt nhất!</p>
             <button 
               className="bypass-orientation-btn"
               onClick={() => setBypassOrientationPrompt(true)}
