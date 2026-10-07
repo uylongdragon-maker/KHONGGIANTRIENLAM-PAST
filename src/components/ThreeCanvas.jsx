@@ -523,7 +523,8 @@ export default function ThreeCanvas({
 
     scene.add(wallGroup);
 
-    // EXHIBITS DISPLAY CASES (3 large collective cabinets housing 35 specimens: 12 + 11 + 12)
+    // EXHIBITS DISPLAY CASES (3 large collective tiered cabinets housing 36 specimens: 12 + 12 + 12)
+    // Stepped 2-tier display cabinets (6 upper row + 6 lower row)
     const casesGroup = new THREE.Group();
     const floatingSpecimens = [];
 
@@ -539,78 +540,87 @@ export default function ThreeCanvas({
       roughness: 0.1 
     });
 
-    // Cabinet 1 (Left main cabinet for Opioids/Depressants - 12 specimens)
-    // Symmetrically centered at Z = -1.5, length 7.8m (spans Z from -5.4 to 2.4, covering exhibits from -4.8 to 1.8)
-    const cab1 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.9, 7.8), cabMat);
-    cab1.position.set(-5.0, 0.45, -1.5);
-    casesGroup.add(cab1);
-    
-    const cab1Trim = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.04, 7.82), goldTrimMat);
-    cab1Trim.position.set(-5.0, 0.88, -1.5);
-    casesGroup.add(cab1Trim);
+    // Helper to build a 2-tier stepped cabinet along X axis (for Cabinet 1 & Cabinet 2)
+    // Lower tier (front): Y height 0.80m (top surface Y = 0.80m)
+    // Upper tier (back): Y height 1.02m (top surface Y = 1.02m)
+    const createTieredCabinetX = (lowerX, upperX, zCenter, zLength, width) => {
+      // Lower tier (front, facing center aisle)
+      const lowMesh = new THREE.Mesh(new THREE.BoxGeometry(width, 0.80, zLength), cabMat);
+      lowMesh.position.set(lowerX, 0.40, zCenter);
+      casesGroup.add(lowMesh);
+      const lowTrim = new THREE.Mesh(new THREE.BoxGeometry(width + 0.02, 0.03, zLength + 0.02), goldTrimMat);
+      lowTrim.position.set(lowerX, 0.79, zCenter);
+      casesGroup.add(lowTrim);
 
-    // Cabinet 2 (Right main cabinet for Stimulants - 11 specimens)
-    // Symmetrically centered at Z = -1.5, length 7.8m (spans Z from -5.4 to 2.4, covering exhibits from -4.5 to 1.5)
-    const cab2 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.9, 7.8), cabMat);
-    cab2.position.set(5.0, 0.45, -1.5);
-    casesGroup.add(cab2);
+      // Upper tier (back, raised higher against outer wall)
+      const upMesh = new THREE.Mesh(new THREE.BoxGeometry(width, 1.02, zLength), cabMat);
+      upMesh.position.set(upperX, 0.51, zCenter);
+      casesGroup.add(upMesh);
+      const upTrim = new THREE.Mesh(new THREE.BoxGeometry(width + 0.02, 0.03, zLength + 0.02), goldTrimMat);
+      upTrim.position.set(upperX, 1.01, zCenter);
+      casesGroup.add(upTrim);
+    };
 
-    const cab2Trim = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.04, 7.82), goldTrimMat);
-    cab2Trim.position.set(5.0, 0.88, -1.5);
-    casesGroup.add(cab2Trim);
+    // Helper to build a 2-tier stepped cabinet along Z axis (for Cabinet 3 Back gallery)
+    const createTieredCabinetZ = (xCenter, xLength, lowerZ, upperZ, width) => {
+      // Lower tier (front, facing visitor aisle)
+      const lowMesh = new THREE.Mesh(new THREE.BoxGeometry(xLength, 0.80, width), cabMat);
+      lowMesh.position.set(xCenter, 0.40, lowerZ);
+      casesGroup.add(lowMesh);
+      const lowTrim = new THREE.Mesh(new THREE.BoxGeometry(xLength + 0.02, 0.03, width + 0.02), goldTrimMat);
+      lowTrim.position.set(xCenter, 0.79, lowerZ);
+      casesGroup.add(lowTrim);
 
-    // Cabinet 3 (Back long cabinet for Hallucinogens - 12 specimens)
-    // At Z = 6.5, centered at X = 0.0, length 15.0m (spans X from -7.5 to 7.5, covering exhibits from -6.6 to 6.6)
-    const cab3 = new THREE.Mesh(new THREE.BoxGeometry(15.0, 0.9, 0.8), cabMat);
-    cab3.position.set(0.0, 0.45, 6.5);
-    casesGroup.add(cab3);
+      // Upper tier (back, raised higher against back wall)
+      const upMesh = new THREE.Mesh(new THREE.BoxGeometry(xLength, 1.02, width), cabMat);
+      upMesh.position.set(xCenter, 0.51, upperZ);
+      casesGroup.add(upMesh);
+      const upTrim = new THREE.Mesh(new THREE.BoxGeometry(xLength + 0.02, 0.03, width + 0.02), goldTrimMat);
+      upTrim.position.set(xCenter, 1.01, upperZ);
+      casesGroup.add(upTrim);
+    };
 
-    const cab3Trim = new THREE.Mesh(new THREE.BoxGeometry(15.02, 0.04, 0.82), goldTrimMat);
-    cab3Trim.position.set(0.0, 0.88, 6.5);
-    casesGroup.add(cab3Trim);
+    // Cabinet 1 (Left: Tủ 1 - Opioids/Kích thích - 12 mẫu: 6 hàng trên tại X=-5.35, 6 hàng dưới tại X=-4.55)
+    createTieredCabinetX(-4.55, -5.35, -1.25, 6.8, 0.65);
 
-    // 3 Premium spotlights, aligned to new cabinet centers
-    // 1. Left Cabinet Spotlight
-    const spotCab1 = new THREE.SpotLight(0xffe0b2, 4.0, 10.0, Math.PI / 4, 0.5, 1);
-    spotCab1.position.set(-5.0, 3.9, -1.5);
+    // Cabinet 2 (Right: Tủ 2 - Thực vật & Nấm - 12 mẫu: 6 hàng trên tại X=5.35, 6 hàng dưới tại X=4.55)
+    createTieredCabinetX(4.55, 5.35, -1.25, 6.8, 0.65);
+
+    // Cabinet 3 (Back: Tủ 3 - Ngụy trang & Dụng cụ - 12 mẫu: 6 hàng trên tại Z=6.85, 6 hàng dưới tại Z=6.05)
+    createTieredCabinetZ(0.0, 9.2, 6.05, 6.85, 0.65);
+
+    // 3 Premium Spotlights centered directly above each tiered cabinet
+    const spotCab1 = new THREE.SpotLight(0xffe0b2, 4.5, 12.0, Math.PI / 3, 0.5, 1);
+    spotCab1.position.set(-4.95, 3.9, -1.25);
     const targetCab1 = new THREE.Object3D();
-    targetCab1.position.set(-5.0, 0.9, -1.5);
+    targetCab1.position.set(-4.95, 0.9, -1.25);
     scene.add(targetCab1);
     spotCab1.target = targetCab1;
     scene.add(spotCab1);
 
-    // 2. Right Cabinet Spotlight
-    const spotCab2 = new THREE.SpotLight(0xffe0b2, 4.0, 10.0, Math.PI / 4, 0.5, 1);
-    spotCab2.position.set(5.0, 3.9, -1.5);
+    const spotCab2 = new THREE.SpotLight(0xffe0b2, 4.5, 12.0, Math.PI / 3, 0.5, 1);
+    spotCab2.position.set(4.95, 3.9, -1.25);
     const targetCab2 = new THREE.Object3D();
-    targetCab2.position.set(5.0, 0.9, -1.5);
+    targetCab2.position.set(4.95, 0.9, -1.25);
     scene.add(targetCab2);
     spotCab2.target = targetCab2;
     scene.add(spotCab2);
 
-    // 3. Back Cabinet Spotlight
-    const spotCab3 = new THREE.SpotLight(0xb3e5fc, 5.0, 10.0, Math.PI / 3, 0.5, 1);
-    spotCab3.position.set(0.0, 3.9, 6.5);
+    const spotCab3 = new THREE.SpotLight(0xb3e5fc, 5.0, 12.0, Math.PI / 3, 0.5, 1);
+    spotCab3.position.set(0.0, 3.9, 6.45);
     const targetCab3 = new THREE.Object3D();
-    targetCab3.position.set(0.0, 0.9, 6.5);
+    targetCab3.position.set(0.0, 0.9, 6.45);
     scene.add(targetCab3);
     spotCab3.target = targetCab3;
     scene.add(spotCab3);
 
-    // Loop through each of the active specimens
+    // Loop through each of the active specimens (36 total)
     exhibits.forEach((ex) => {
-      // Determine dynamic position overrides for expanded room
-      let posX = ex.position.x;
-      let posZ = ex.position.z;
-      if (ex.cabinetId === "cabinet_left") {
-        posX = -5.0;
-      } else if (ex.cabinetId === "cabinet_right") {
-        posX = 5.0;
-      } else if (ex.cabinetId === "cabinet_back") {
-        posZ = 6.5;
-      }
+      const posX = ex.position ? ex.position.x : 0;
+      const posY = ex.position ? ex.position.y : 0.92;
+      const posZ = ex.position ? ex.position.z : 0;
 
-      // 1. Ceiling light fixture above the specimen
+      // 1. Ceiling light fixture directly above the specimen
       const fixtureGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.08, 12);
       const fixtureMat = new THREE.MeshStandardMaterial({ 
         color: 0x1e293b, 
@@ -621,21 +631,22 @@ export default function ThreeCanvas({
       fixture.position.set(posX, 3.95, posZ);
       casesGroup.add(fixture);
 
-      // 2. Volumetric spotlight cone (from ceiling 3.95 down to table 0.9)
-      const coneGeo = new THREE.CylinderGeometry(0.03, 0.25, 3.05, 12, 1, true);
+      // 2. Volumetric spotlight cone (from ceiling 3.95 down to specimen height)
+      const coneHeight = Math.max(1.5, 3.95 - posY);
+      const coneGeo = new THREE.CylinderGeometry(0.03, 0.22, coneHeight, 12, 1, true);
       const coneMat = new THREE.MeshBasicMaterial({
         color: ex.cabinetId === "cabinet_left" ? 0xffe0b2 : ex.cabinetId === "cabinet_right" ? 0xffcc80 : 0xb3e5fc,
         transparent: true,
-        opacity: 0.08,
+        opacity: 0.07,
         blending: THREE.AdditiveBlending,
         side: THREE.DoubleSide,
         depthWrite: false
       });
       const lightCone = new THREE.Mesh(coneGeo, coneMat);
-      lightCone.position.set(posX, 2.425, posZ);
+      lightCone.position.set(posX, posY + coneHeight / 2, posZ);
       casesGroup.add(lightCone);
 
-      // 3. Individual glass dome over the specimen on the table (sleek Cylinder style)
+      // 3. Individual glass dome over specimen
       const glassGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.35, 24);
       const glassMat = new THREE.MeshPhysicalMaterial({
         color: 0xffffff,
@@ -649,19 +660,18 @@ export default function ThreeCanvas({
         depthWrite: false 
       });
       const glass = new THREE.Mesh(glassGeo, glassMat);
-      glass.position.set(posX, 1.06, posZ);
+      glass.position.set(posX, posY + 0.16, posZ);
       casesGroup.add(glass);
 
-      // Specimen Mesh generation
+      // 4. Specimen Mesh generation
       let specimenMesh = new THREE.Group();
-      specimenMesh.position.set(posX, 1.06, posZ);
+      specimenMesh.position.set(posX, posY + 0.14, posZ);
       
-      // Apply custom model scale factor from admin database
       const scaleVal = ex.scale !== undefined ? ex.scale : 1.0;
       specimenMesh.scale.set(scaleVal, scaleVal, scaleVal);
 
       if (ex.modelUrl) {
-        // Beautiful rotating holographic wireframe loading indicator
+        // Rotating holographic wireframe indicator
         const loaderGeo = new THREE.BoxGeometry(0.06, 0.06, 0.06);
         const loaderMat = new THREE.MeshBasicMaterial({
           color: 0xf2994a,
@@ -672,7 +682,6 @@ export default function ThreeCanvas({
         const loaderMesh = new THREE.Mesh(loaderGeo, loaderMat);
         specimenMesh.add(loaderMesh);
 
-        // Load real GLB model
         const loader = new GLTFLoader();
         loader.load(
           ex.modelUrl,
@@ -690,12 +699,11 @@ export default function ThreeCanvas({
             const size = new THREE.Vector3();
             box.getSize(size);
             const maxDim = Math.max(size.x, size.y, size.z);
-            const targetSize = 0.22; // Scale custom specimen to be larger and fill the dome nicely
+            const targetSize = 0.22;
             if (maxDim > 0) {
               const modelScale = targetSize / maxDim;
               model.scale.set(modelScale, modelScale, modelScale);
             }
-            
             specimenMesh.add(model);
           },
           undefined,
@@ -712,39 +720,328 @@ export default function ThreeCanvas({
           }
         );
       } else {
-        // Procedural model based on ID
+        // High-fidelity Procedural 3D Model for each forensic specimen
         const idStr = ex.id.toLowerCase();
-        let internalMesh;
-        if (idStr === "heroin" || idStr === "cocaine") {
-          // Zip bag or compressed powder block
-          const bagGeo = new THREE.BoxGeometry(0.14, 0.14, 0.03);
-          const bagMat = new THREE.MeshStandardMaterial({ color: 0xf5f5f5, roughness: 0.5, transparent: true, opacity: 0.9 });
-          internalMesh = new THREE.Mesh(bagGeo, bagMat);
-        } else if (idStr === "meth" || idStr === "lsd") {
-          // Crystals / Paper sheets
-          const cryGeo = new THREE.OctahedronGeometry(0.06);
-          const cryMat = new THREE.MeshPhysicalMaterial({ color: 0x56ccf2, roughness: 0, transmission: 0.6, thickness: 0.2 });
-          internalMesh = new THREE.Mesh(cryGeo, cryMat);
-        } else if (idStr === "ecstasy" || idStr === "ritalin" || idStr === "adderall") {
-          // Medicine pill
-          const pillGeo = new THREE.CylinderGeometry(0.02, 0.02, 0.012, 16);
-          const pillMat = new THREE.MeshStandardMaterial({ color: idStr === "ecstasy" ? 0xeb5757 : 0xf2994a, roughness: 0.4 });
-          internalMesh = new THREE.Mesh(pillGeo, pillMat);
-          internalMesh.rotation.x = Math.PI / 2;
-        } else if (idStr === "cannabis" || idStr === "khat" || idStr === "kratom") {
-          // Leaf structure
-          const group = new THREE.Group();
-          const leafGeo = new THREE.ConeGeometry(0.03, 0.1, 4);
-          const leafMat = new THREE.MeshStandardMaterial({ color: 0x27ae60, roughness: 0.8 });
-          for(let i=0; i<4; i++) {
-            const leaf = new THREE.Mesh(leafGeo, leafMat);
-            leaf.rotation.set(Math.PI/3, (i * Math.PI*2)/4, 0);
-            leaf.scale.set(0.6, 0.6, 0.6);
-            group.add(leaf);
+        let internalMesh = new THREE.Group();
+
+        if (idStr === "meth_crystal" || idStr === "ice_meth") {
+          // Cluster of translucent faceted ice-cyan crystals
+          const cryMat = new THREE.MeshPhysicalMaterial({ 
+            color: 0x67e8f9, 
+            roughness: 0.05, 
+            transmission: 0.75, 
+            thickness: 0.15,
+            clearcoat: 1.0
+          });
+          const coords = [
+            [0, 0, 0, 0.06, 0.1],
+            [-0.03, -0.02, 0.02, 0.04, 0.07],
+            [0.03, -0.01, -0.02, 0.045, 0.08],
+            [0.01, -0.03, 0.03, 0.035, 0.06],
+            [-0.02, 0.02, -0.03, 0.035, 0.065]
+          ];
+          coords.forEach(([cx, cy, cz, r, h]) => {
+            const m = new THREE.Mesh(new THREE.ConeGeometry(r, h, 6), cryMat);
+            m.position.set(cx, cy, cz);
+            m.rotation.set(cx * 5, cy * 3, cz * 4);
+            internalMesh.add(m);
+          });
+        } else if (idStr === "cocaine_pill") {
+          // Scored white medicinal pills on a sterile tray
+          const pillMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.3 });
+          const trayMat = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.8, roughness: 0.2 });
+          const tray = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.008, 24), trayMat);
+          internalMesh.add(tray);
+          for (let p = 0; p < 3; p++) {
+            const pill = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.012, 16), pillMat);
+            pill.position.set((p - 1) * 0.035, 0.01, (p % 2) * 0.01);
+            internalMesh.add(pill);
           }
-          internalMesh = group;
+        } else if (idStr === "morphine") {
+          // Glass medical ampoule with narrow neck and clear liquid
+          const ampMat = new THREE.MeshPhysicalMaterial({ color: 0xe2e8f0, transmission: 0.85, roughness: 0.05, thickness: 0.05 });
+          const body = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.09, 16), ampMat);
+          const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.03, 16), ampMat);
+          neck.position.y = 0.06;
+          const tip = new THREE.Mesh(new THREE.ConeGeometry(0.015, 0.02, 16), ampMat);
+          tip.position.y = 0.08;
+          const liquid = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.05, 16), new THREE.MeshStandardMaterial({ color: 0xfef08a, transparent: true, opacity: 0.6 }));
+          liquid.position.y = -0.015;
+          internalMesh.add(body, neck, tip, liquid);
+        } else if (idStr === "ecstasy") {
+          // Colorful stamped party pills (neon pink & orange)
+          const colors = [0xec4899, 0xf97316, 0x06b6d4];
+          colors.forEach((col, idx) => {
+            const pMat = new THREE.MeshStandardMaterial({ color: col, roughness: 0.35 });
+            const pMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.024, 0.024, 0.014, 16), pMat);
+            pMesh.position.set((idx - 1) * 0.038, 0, (idx % 2) * 0.012);
+            pMesh.rotation.x = 0.2;
+            internalMesh.add(pMesh);
+          });
+        } else if (idStr === "heroin") {
+          // Wrapped powder evidence block
+          const blockMat = new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.85 });
+          const block = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.08, 0.04), blockMat);
+          const tapeMat = new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.4 });
+          const tape = new THREE.Mesh(new THREE.BoxGeometry(0.125, 0.02, 0.042), tapeMat);
+          internalMesh.add(block, tape);
+        } else if (idStr === "ketamine") {
+          // Pharmaceutical medicine vial with label
+          const vialMat = new THREE.MeshPhysicalMaterial({ color: 0x94a3b8, transmission: 0.7, roughness: 0.1 });
+          const vial = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.09, 16), vialMat);
+          const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.015, 16), new THREE.MeshStandardMaterial({ color: 0x3b82f6, metalness: 0.8 }));
+          cap.position.y = 0.05;
+          const label = new THREE.Mesh(new THREE.CylinderGeometry(0.031, 0.031, 0.05, 16), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+          internalMesh.add(vial, cap, label);
+        } else if (idStr === "milk_tea_drug") {
+          // Disguised mini milk tea cup with domed lid and straw
+          const cupMat = new THREE.MeshStandardMaterial({ color: 0xfcd34d, roughness: 0.3 });
+          const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.025, 0.08, 16), cupMat);
+          const lid = new THREE.Mesh(new THREE.SphereGeometry(0.036, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.8 }));
+          lid.position.y = 0.04;
+          const straw = new THREE.Mesh(new THREE.CylinderGeometry(0.005, 0.005, 0.07, 8), new THREE.MeshStandardMaterial({ color: 0xef4444 }));
+          straw.position.set(0.01, 0.06, 0);
+          straw.rotation.z = -0.2;
+          internalMesh.add(cup, lid, straw);
+        } else if (idStr === "ghb") {
+          // Cobalt blue dropper bottle
+          const botMat = new THREE.MeshPhysicalMaterial({ color: 0x1d4ed8, transmission: 0.5, roughness: 0.2 });
+          const bottle = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.08, 16), botMat);
+          const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.015, 16), new THREE.MeshStandardMaterial({ color: 0x0f172a }));
+          collar.position.y = 0.045;
+          const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.015, 12, 12), new THREE.MeshStandardMaterial({ color: 0x111827 }));
+          bulb.position.y = 0.06;
+          internalMesh.add(bottle, collar, bulb);
+        } else if (idStr === "happy_water_liquid") {
+          // Neon pink glowing test tube
+          const tubeMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.9, roughness: 0.05 });
+          const tube = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.1, 16), tubeMat);
+          const liquidMat = new THREE.MeshBasicMaterial({ color: 0xff007f });
+          const liquid = new THREE.Mesh(new THREE.CylinderGeometry(0.017, 0.017, 0.07, 16), liquidMat);
+          liquid.position.y = -0.01;
+          const cork = new THREE.Mesh(new THREE.CylinderGeometry(0.019, 0.016, 0.02, 16), new THREE.MeshStandardMaterial({ color: 0xd97706 }));
+          cork.position.y = 0.055;
+          internalMesh.add(tube, liquid, cork);
+        } else if (idStr === "bath_salts") {
+          // Jar with coarse crystalline prismatic grains
+          const jarMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.75, roughness: 0.1 });
+          const jar = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.06, 16), jarMat);
+          const lid = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.042, 0.012, 16), new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9 }));
+          lid.position.y = 0.035;
+          const saltMat = new THREE.MeshPhysicalMaterial({ color: 0xf472b6, transmission: 0.5, roughness: 0.2 });
+          const salts = new THREE.Mesh(new THREE.DodecahedronGeometry(0.025), saltMat);
+          internalMesh.add(jar, lid, salts);
+        } else if (idStr === "methadone") {
+          // Amber syrup bottle with dosage measuring cup
+          const botMat = new THREE.MeshPhysicalMaterial({ color: 0xb45309, transmission: 0.6, roughness: 0.2 });
+          const bottle = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.09, 0.03), botMat);
+          const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.012, 0.025, 12), new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.8 }));
+          cup.position.set(0.035, -0.02, 0);
+          internalMesh.add(bottle, cup);
+        } else if (idStr === "poppy_flower") {
+          // Scarlet red poppy flower with black/dark center
+          const petalMat = new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.5, side: THREE.DoubleSide });
+          for (let p = 0; p < 4; p++) {
+            const petal = new THREE.Mesh(new THREE.SphereGeometry(0.04, 12, 12, 0, Math.PI, 0, Math.PI / 2), petalMat);
+            petal.rotation.set(Math.PI / 3, (p * Math.PI) / 2, 0);
+            petal.scale.set(1.0, 0.3, 1.2);
+            internalMesh.add(petal);
+          }
+          const center = new THREE.Mesh(new THREE.SphereGeometry(0.018, 12, 12), new THREE.MeshStandardMaterial({ color: 0x18181b }));
+          center.position.y = 0.015;
+          internalMesh.add(center);
+        } else if (idStr === "poppy_pod") {
+          // Bulbous green opium capsule pod with crown stigmas
+          const podMat = new THREE.MeshStandardMaterial({ color: 0x65a30d, roughness: 0.6 });
+          const pod = new THREE.Mesh(new THREE.SphereGeometry(0.04, 16, 16), podMat);
+          pod.scale.set(0.9, 1.2, 0.9);
+          const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.01, 0.015, 8), new THREE.MeshStandardMaterial({ color: 0x4d7c0f }));
+          crown.position.y = 0.048;
+          internalMesh.add(pod, crown);
+        } else if (idStr === "opium_resin") {
+          // Dark brownish-black tar resin lump on ceramic plate
+          const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 0.008, 20), new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.2 }));
+          const resinMat = new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.3, metalness: 0.1 });
+          const resin = new THREE.Mesh(new THREE.DodecahedronGeometry(0.035), resinMat);
+          resin.scale.set(1.2, 0.6, 1.0);
+          resin.position.y = 0.015;
+          internalMesh.add(plate, resin);
+        } else if (idStr === "coca_leaf") {
+          // Foliage of elliptic glossy green coca leaves
+          const leafMat = new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.4, side: THREE.DoubleSide });
+          for (let l = 0; l < 3; l++) {
+            const leaf = new THREE.Mesh(new THREE.SphereGeometry(0.045, 12, 12, 0, Math.PI, 0, Math.PI / 2), leafMat);
+            leaf.scale.set(0.6, 0.15, 1.4);
+            leaf.rotation.set(0.3, (l * Math.PI * 2) / 3, 0.2);
+            internalMesh.add(leaf);
+          }
+        } else if (idStr === "cannabis_fresh") {
+          // 7-finger serrated green cannabis fan leaf
+          const leafMat = new THREE.MeshStandardMaterial({ color: 0x16a34a, roughness: 0.7, side: THREE.DoubleSide });
+          for (let i = 0; i < 7; i++) {
+            const angle = -1.2 + (i * 2.4) / 6;
+            const length = (i === 3 ? 0.09 : i === 2 || i === 4 ? 0.075 : 0.055);
+            const cone = new THREE.Mesh(new THREE.ConeGeometry(0.012, length, 4), leafMat);
+            cone.position.set(Math.sin(angle) * (length / 2), Math.cos(angle) * (length / 2), 0);
+            cone.rotation.z = -angle;
+            cone.scale.set(1.0, 1.0, 0.2);
+            internalMesh.add(cone);
+          }
+        } else if (idStr === "cannabis_dry") {
+          // Textured brown-green dried compressed marijuana bud
+          const budMat = new THREE.MeshStandardMaterial({ color: 0x4d7c0f, roughness: 0.95 });
+          const bud = new THREE.Mesh(new THREE.DodecahedronGeometry(0.04), budMat);
+          bud.scale.set(1.2, 1.5, 1.1);
+          internalMesh.add(bud);
+        } else if (idStr === "cannabis_seed") {
+          // Cluster of tiny oval seeds in a dish
+          const dish = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.006, 18), new THREE.MeshStandardMaterial({ color: 0x475569 }));
+          const seedMat = new THREE.MeshStandardMaterial({ color: 0x78716c, roughness: 0.5 });
+          for (let s = 0; s < 8; s++) {
+            const seed = new THREE.Mesh(new THREE.SphereGeometry(0.008, 8, 8), seedMat);
+            seed.scale.set(0.8, 1.3, 0.8);
+            seed.position.set((Math.random() - 0.5) * 0.06, 0.006, (Math.random() - 0.5) * 0.06);
+            internalMesh.add(seed);
+          }
+          internalMesh.add(dish);
+        } else if (idStr === "magic_mushroom") {
+          // Cluster of 3 psilocybin mushrooms with slender stalks and umbrella caps
+          const stemMat = new THREE.MeshStandardMaterial({ color: 0xfef9c3, roughness: 0.8 });
+          const capMat = new THREE.MeshStandardMaterial({ color: 0xb45309, roughness: 0.5 });
+          const shroomConfigs = [
+            [-0.02, 0.07, 0.03, 0.1],
+            [0.02, 0.05, 0.024, -0.1],
+            [0.0, 0.08, 0.035, 0.05]
+          ];
+          shroomConfigs.forEach(([sx, sh, sr, srot], sidx) => {
+            const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.008, sh, 10), stemMat);
+            stem.position.set(sx, sh / 2, sidx * 0.02 - 0.01);
+            stem.rotation.z = srot;
+            const cap = new THREE.Mesh(new THREE.SphereGeometry(sr, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2), capMat);
+            cap.position.set(sx + Math.sin(srot) * (sh / 2), sh, sidx * 0.02 - 0.01);
+            internalMesh.add(stem, cap);
+          });
+        } else if (idStr === "cannabis_candy_bag" || idStr === "happy_water_pouch") {
+          // Shiny metallic foil sachet pouch
+          const foilMat = new THREE.MeshStandardMaterial({ 
+            color: idStr === "cannabis_candy_bag" ? 0x10b981 : 0xf59e0b, 
+            metalness: 0.8, 
+            roughness: 0.25 
+          });
+          const pouch = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.11, 0.015), foilMat);
+          const seal = new THREE.Mesh(new THREE.BoxGeometry(0.092, 0.015, 0.018), new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.9 }));
+          seal.position.y = 0.05;
+          internalMesh.add(pouch, seal);
+        } else if (idStr === "cannabis_candy") {
+          // Translucent gummy bears / gelatin gummies
+          const gumMat1 = new THREE.MeshPhysicalMaterial({ color: 0x22c55e, transmission: 0.7, roughness: 0.2 });
+          const gumMat2 = new THREE.MeshPhysicalMaterial({ color: 0xef4444, transmission: 0.7, roughness: 0.2 });
+          const bear1 = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.035, 0.02), gumMat1);
+          bear1.position.set(-0.025, 0, 0);
+          const bear2 = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.035, 0.02), gumMat2);
+          bear2.position.set(0.025, 0, 0);
+          internalMesh.add(bear1, bear2);
+        } else if (idStr === "cannabis_cake") {
+          // Square brownie cake with crumb texture
+          const cakeMat = new THREE.MeshStandardMaterial({ color: 0x451a03, roughness: 0.9 });
+          const cake = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.035, 0.07), cakeMat);
+          internalMesh.add(cake);
+        } else if (idStr === "cannabis_oil") {
+          // Gold oil dropper bottle
+          const vialMat = new THREE.MeshPhysicalMaterial({ color: 0xf59e0b, transmission: 0.7, roughness: 0.1 });
+          const vial = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.07, 16), vialMat);
+          const dropper = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.03, 10), new THREE.MeshStandardMaterial({ color: 0x111827 }));
+          dropper.position.y = 0.045;
+          internalMesh.add(vial, dropper);
+        } else if (idStr === "lsd_blotter") {
+          // Blotter grid sheet with psychedelic pattern
+          const blotterMat = new THREE.MeshStandardMaterial({ color: 0x818cf8, roughness: 0.4 });
+          const sheet = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.002), blotterMat);
+          sheet.rotation.x = 0.3;
+          internalMesh.add(sheet);
+        } else if (idStr === "heroin_lion_box") {
+          // Rectangular brick wrapped with paper seal (Song Sư Hí Cầu)
+          const brickMat = new THREE.MeshStandardMaterial({ color: 0xfef3c7, roughness: 0.8 });
+          const brick = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.04, 0.08), brickMat);
+          const sealMat = new THREE.MeshStandardMaterial({ color: 0xdc2626 });
+          const seal = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.042, 16), sealMat);
+          internalMesh.add(brick, seal);
+        } else if (idStr === "disguised_tea_drug") {
+          // Green vacuum-sealed tea pack
+          const teaMat = new THREE.MeshStandardMaterial({ color: 0x059669, metalness: 0.7, roughness: 0.3 });
+          const pack = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, 0.05), teaMat);
+          internalMesh.add(pack);
+        } else if (idStr === "disguised_toothpaste") {
+          // Toothpaste tube sliced to reveal hidden drug cache
+          const tubeMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.3 });
+          const tube = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.02, 0.12, 16), tubeMat);
+          tube.rotation.z = Math.PI / 3;
+          const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.015, 12), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+          cap.position.set(-0.055, -0.035, 0);
+          internalMesh.add(tube, cap);
+        } else if (idStr === "drug_small_packet") {
+          // Small folded lottery paper / foil packets
+          const pMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.6 });
+          for (let q = 0; q < 4; q++) {
+            const pkt = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.02, 0.008), pMat);
+            pkt.position.set((q % 2) * 0.035 - 0.018, 0, Math.floor(q / 2) * 0.025 - 0.012);
+            internalMesh.add(pkt);
+          }
+        } else if (idStr === "injection_kit") {
+          // Syringe with needle, spoon, and tourniquet
+          const sMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.8, roughness: 0.1 });
+          const syringe = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.1, 12), sMat);
+          syringe.rotation.z = Math.PI / 2;
+          const plunger = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.04, 8), new THREE.MeshStandardMaterial({ color: 0xf97316 }));
+          plunger.position.x = 0.06;
+          plunger.rotation.z = Math.PI / 2;
+          const needle = new THREE.Mesh(new THREE.CylinderGeometry(0.0015, 0.0015, 0.04, 6), new THREE.MeshStandardMaterial({ color: 0xd1d5db, metalness: 0.9 }));
+          needle.position.x = -0.065;
+          needle.rotation.z = Math.PI / 2;
+          internalMesh.add(syringe, plunger, needle);
+        } else if (idStr === "meth_pipe_handmade") {
+          // Glass pipe bulb with curved stem ("nỏ tự chế")
+          const pipeMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.85, roughness: 0.05 });
+          const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.11, 12), pipeMat);
+          stem.rotation.z = 0.4;
+          const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.025, 16, 16), pipeMat);
+          bulb.position.set(-0.045, -0.02, 0);
+          internalMesh.add(stem, bulb);
+        } else if (idStr === "cannabis_glass_pipe") {
+          // Glass colored bowl pipe
+          const pMat = new THREE.MeshPhysicalMaterial({ color: 0x0d9488, transmission: 0.6, roughness: 0.15 });
+          const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.012, 0.1, 12), pMat);
+          stem.rotation.z = Math.PI / 2;
+          const bowl = new THREE.Mesh(new THREE.SphereGeometry(0.028, 16, 16), pMat);
+          bowl.position.set(-0.05, 0.01, 0);
+          internalMesh.add(stem, bowl);
+        } else if (idStr === "powder_drug_kit") {
+          // Mirror plate, plastic card, and rolled straw
+          const mirror = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.005, 0.08), new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.9, roughness: 0.1 }));
+          const card = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.002, 0.03), new THREE.MeshStandardMaterial({ color: 0x1e293b }));
+          card.position.set(0.02, 0.005, 0.01);
+          const straw = new THREE.Mesh(new THREE.CylinderGeometry(0.005, 0.005, 0.06, 8), new THREE.MeshStandardMaterial({ color: 0x22c55e }));
+          straw.rotation.z = 0.8;
+          straw.position.set(-0.02, 0.008, -0.01);
+          internalMesh.add(mirror, card, straw);
+        } else if (idStr === "vape_pod") {
+          // Modern sleek vape pod pen
+          const podMat = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.8, roughness: 0.2 });
+          const body = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.11, 0.016), podMat);
+          const mouth = new THREE.Mesh(new THREE.BoxGeometry(0.024, 0.025, 0.01), new THREE.MeshStandardMaterial({ color: 0x0f172a }));
+          mouth.position.y = 0.06;
+          const led = new THREE.Mesh(new THREE.SphereGeometry(0.004, 8, 8), new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
+          led.position.set(0, -0.04, 0.009);
+          internalMesh.add(body, mouth, led);
+        } else if (idStr === "etomidate_pod") {
+          // Translucent pod cartridge with warning amber glow
+          const cartMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.8, roughness: 0.1 });
+          const cart = new THREE.Mesh(new THREE.BoxGeometry(0.028, 0.07, 0.015), cartMat);
+          const drugGlow = new THREE.Mesh(new THREE.BoxGeometry(0.022, 0.04, 0.011), new THREE.MeshBasicMaterial({ color: 0xf59e0b }));
+          drugGlow.position.y = -0.01;
+          internalMesh.add(cart, drugGlow);
         } else {
-          // Fallback: A beautiful general guide crystal sphere representing chemical structures
+          // Fallback crystal sphere
           const sphereGeo = new THREE.SphereGeometry(0.05, 12, 12);
           const sphereMat = new THREE.MeshPhysicalMaterial({
             color: ex.cabinetId === "cabinet_left" ? 0xeb5757 : ex.cabinetId === "cabinet_right" ? 0xf2994a : 0x2f80ed,
@@ -758,7 +1055,7 @@ export default function ThreeCanvas({
       }
       
       casesGroup.add(specimenMesh);
-      floatingSpecimens.push({ mesh: specimenMesh, initialY: 1.06, id: ex.id });
+      floatingSpecimens.push({ mesh: specimenMesh, initialY: posY + 0.14, id: ex.id });
     });
 
     scene.add(casesGroup);
@@ -1312,21 +1609,18 @@ export default function ThreeCanvas({
       if (targetX < -11.5 || targetX > 11.5) return true;
       if (targetZ < -8.5 || targetZ > 8.5) return true;
 
-      // Collision with Table 1 (Left Main Cabinet: 12 specimens): X = -5.0, Z from -5.4 to 2.4
-      // Bounds: X from -5.6 to -4.4, Z from -5.8 to 2.8
-      if (targetX > -5.6 && targetX < -4.4 && targetZ > -5.8 && targetZ < 2.8) return true;
+      // Table 1 (Left Tiered Cabinet: 12 specimens): X from -5.8 to -4.1, Z from -4.9 to 2.4
+      if (targetX > -5.8 && targetX < -4.1 && targetZ > -4.9 && targetZ < 2.4) return true;
 
-      // Collision with Table 2 (Right Main Cabinet: 11 specimens): X = 5.0, Z from -5.4 to 2.4
-      // Bounds: X from 4.4 to 5.6, Z from -5.8 to 2.8
-      if (targetX > 4.4 && targetX < 5.6 && targetZ > -5.8 && targetZ < 2.8) return true;
+      // Table 2 (Right Tiered Cabinet: 12 specimens): X from 4.1 to 5.8, Z from -4.9 to 2.4
+      if (targetX > 4.1 && targetX < 5.8 && targetZ > -4.9 && targetZ < 2.4) return true;
 
-      // Collision with Table 3 (Back Long Cabinet: 12 specimens): X from -7.5 to 7.5, Z = 6.5
-      // Bounds: X from -7.9 to 7.9, Z from 5.9 to 7.1
-      if (targetX > -7.9 && targetX < 7.9 && targetZ > 5.9 && targetZ < 7.1) return true;
+      // Table 3 (Back Tiered Cabinet: 12 specimens): X from -4.8 to 4.8, Z from 5.6 to 7.3
+      if (targetX > -4.8 && targetX < 4.8 && targetZ > 5.6 && targetZ < 7.3) return true;
 
       // Collision with Central Partition Wall: Z = 4.5, X from -8.0 to 8.0
-      // Thickness is 0.2, Z bounds: 4.1 to 4.9, X bounds: -8.2 to 8.2
-      if (targetX > -8.2 && targetX < 8.2 && targetZ > 4.1 && targetZ < 4.9) return true;
+      // Thickness is 0.2, Z bounds: 4.2 to 4.8, X bounds: -8.2 to 8.2
+      if (targetX > -8.2 && targetX < 8.2 && targetZ > 4.2 && targetZ < 4.8) return true;
 
       // Collision with Robot Guide Base
       const dcx = targetX - 0;
@@ -1446,17 +1740,10 @@ export default function ThreeCanvas({
       let closestElement = null;
       let minDistance = 2.0; // Interactive trigger range (meters)
 
-      // Check display cases with overridden coordinates
+      // Check display cases with accurate exhibit coordinates
       exhibits.forEach((ex) => {
-        let posX = ex.position.x;
-        let posZ = ex.position.z;
-        if (ex.cabinetId === "cabinet_left") {
-          posX = -5.0;
-        } else if (ex.cabinetId === "cabinet_right") {
-          posX = 5.0;
-        } else if (ex.cabinetId === "cabinet_back") {
-          posZ = 6.5;
-        }
+        const posX = ex.position ? ex.position.x : 0;
+        const posZ = ex.position ? ex.position.z : 0;
 
         const dx = stateRef.current.posX - posX;
         const dz = stateRef.current.posZ - posZ;

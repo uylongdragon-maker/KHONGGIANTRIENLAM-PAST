@@ -19,15 +19,10 @@ import {
   Play
 } from "lucide-react";
 
-function generateTiktokId() {
-  return `tiktok_${Date.now()}`;
-}
-
 export default function AdminDashboard() {
   const [exhibits, setExhibits] = useState([]);
   const [posters, setPosters] = useState([]);
-  const [tiktokVideos, setTiktokVideos] = useState([]);
-  const [activeTab, setActiveTab] = useState("specimens"); // "specimens" | "posters" | "tiktok"
+  const [activeTab, setActiveTab] = useState("specimens"); // "specimens" | "posters"
 
   // Login Gate State
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -65,14 +60,6 @@ export default function AdminDashboard() {
     rotation: { x: 0, y: 0, z: 0 }
   });
 
-  // TikTok Form State
-  const [editingTiktokId, setEditingTiktokId] = useState(null);
-  const [tiktokForm, setTiktokForm] = useState({
-    id: "",
-    title: "",
-    url: ""
-  });
-
   // 3D & Image Mock Upload States
   const [is3DDragging, setIs3DDragging] = useState(false);
   const [isImageDragging, setIsImageDragging] = useState(false);
@@ -101,18 +88,12 @@ export default function AdminDashboard() {
           setPosters(json.posters);
           localStorage.setItem("mtspace_posters", JSON.stringify(json.posters));
         }
-        if (json.tiktokVideos && json.tiktokVideos.length > 0) {
-          setTiktokVideos(json.tiktokVideos);
-          localStorage.setItem("mtspace_tiktokVideos", JSON.stringify(json.tiktokVideos));
-        }
       } catch (error) {
-        console.error("Failed to fetch from Supabase, loading from cache:", error);
-        const savedExhibits = localStorage.getItem("mtspace_exhibits") || localStorage.getItem("3dpast_exhibits");
-        const savedPosters = localStorage.getItem("mtspace_posters") || localStorage.getItem("3dpast_posters");
-        const savedTiktok = localStorage.getItem("mtspace_tiktokVideos") || localStorage.getItem("3dpast_tiktokVideos");
+        console.error("Failed to fetch from Database, loading from cache:", error);
+        const savedExhibits = localStorage.getItem("mtspace_exhibits");
+        const savedPosters = localStorage.getItem("mtspace_posters");
         if (savedExhibits) setExhibits(JSON.parse(savedExhibits));
         if (savedPosters) setPosters(JSON.parse(savedPosters));
-        if (savedTiktok) setTiktokVideos(JSON.parse(savedTiktok));
       }
     };
 
@@ -143,10 +124,9 @@ export default function AdminDashboard() {
     sessionStorage.removeItem("admin_session");
   };
 
-  const saveToLocalStorage = async (newExhibits, newPosters, newTiktokVideos) => {
+  const saveToLocalStorage = async (newExhibits, newPosters) => {
     let exhibitsToSave = newExhibits;
     let postersToSave = newPosters;
-    let tiktokVideosToSave = newTiktokVideos;
 
     if (newExhibits) {
       setExhibits(newExhibits);
@@ -160,12 +140,6 @@ export default function AdminDashboard() {
     } else {
       postersToSave = posters;
     }
-    if (newTiktokVideos) {
-      setTiktokVideos(newTiktokVideos);
-      localStorage.setItem("mtspace_tiktokVideos", JSON.stringify(newTiktokVideos));
-    } else {
-      tiktokVideosToSave = tiktokVideos;
-    }
 
     try {
       await fetch("/api/exhibits", {
@@ -175,14 +149,13 @@ export default function AdminDashboard() {
           action: "save_all",
           data: { 
             exhibits: exhibitsToSave, 
-            posters: postersToSave,
-            tiktokVideos: tiktokVideosToSave
+            posters: postersToSave
           }
         })
       });
-      console.log("Synced successfully with Supabase!");
+      console.log("Synced successfully with Database!");
     } catch (err) {
-      console.error("Failed to sync with Supabase, saved locally:", err);
+      console.error("Failed to sync with Database, saved locally:", err);
     }
   };
 
@@ -459,77 +432,6 @@ export default function AdminDashboard() {
     setUploadedImageFile(null);
   };
 
-  // TikTok Video Form Operations
-  const handleTiktokFormChange = (field, val) => {
-    setTiktokForm(prev => ({ ...prev, [field]: val }));
-  };
-
-  const handleEditTiktok = (video) => {
-    setEditingTiktokId(video.id);
-    setTiktokForm({
-      id: video.id,
-      title: video.title,
-      url: video.url
-    });
-  };
-
-  const handleDeleteTiktok = async (id) => {
-    if (confirm("Bạn có chắc chắn muốn xóa video TikTok này không?")) {
-      const filtered = tiktokVideos.filter(v => v.id !== id);
-      setTiktokVideos(filtered);
-      localStorage.setItem("mtspace_tiktokVideos", JSON.stringify(filtered));
-
-      try {
-        await fetch("/api/exhibits", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            action: "delete",
-            type: "tiktokVideo",
-            data: { id }
-          })
-        });
-        alert("Đã xóa video TikTok khỏi cơ sở dữ liệu Supabase!");
-      } catch (err) {
-        console.error("Failed to delete video from Supabase:", err);
-      }
-    }
-  };
-
-  const handleSaveTiktok = (e) => {
-    e.preventDefault();
-    if (!tiktokForm.title || !tiktokForm.url) {
-      alert("Vui lòng nhập Tiêu đề và Link video TikTok!");
-      return;
-    }
-
-    let updated;
-    if (editingTiktokId) {
-      updated = tiktokVideos.map(v => v.id === editingTiktokId ? { ...tiktokForm } : v);
-      alert(`Đã cập nhật video TikTok [${tiktokForm.title}] thành công!`);
-    } else {
-      const newId = generateTiktokId();
-      const newVideo = {
-        id: newId,
-        title: tiktokForm.title,
-        url: tiktokForm.url
-      };
-      updated = [...tiktokVideos, newVideo];
-      alert(`Đã thêm video TikTok [${tiktokForm.title}] thành công!`);
-    }
-    saveToLocalStorage(null, null, updated);
-    resetTiktokForm();
-  };
-
-  const resetTiktokForm = () => {
-    setEditingTiktokId(null);
-    setTiktokForm({
-      id: "",
-      title: "",
-      url: ""
-    });
-  };
-
   // Mock Upload Handlers
   const handle3DDragOver = (e) => {
     e.preventDefault();
@@ -660,10 +562,8 @@ export default function AdminDashboard() {
     if (confirm("Bạn có muốn đặt lại toàn bộ dữ liệu mẫu vật và áp phích về trạng thái nguyên bản gốc không? Dữ liệu tùy chỉnh của bạn sẽ bị ghi đè.")) {
       localStorage.removeItem("mtspace_exhibits");
       localStorage.removeItem("mtspace_posters");
-      localStorage.removeItem("mtspace_tiktokVideos");
       localStorage.removeItem("3dpast_exhibits");
       localStorage.removeItem("3dpast_posters");
-      localStorage.removeItem("3dpast_tiktokVideos");
       window.location.reload();
     }
   };
@@ -1352,14 +1252,6 @@ export default function AdminDashboard() {
               <ImageIcon size={18} />
               <span>Khung Áp Phích Treo Tường</span>
             </button>
-            <button 
-              className={`tab-btn ${activeTab === "tiktok" ? "active" : ""}`}
-              onClick={() => setActiveTab("tiktok")}
-              style={{ color: activeTab === "tiktok" ? "#f2994a" : "#8a96a8", borderColor: activeTab === "tiktok" ? "rgba(242,153,74,0.2)" : "transparent" }}
-            >
-              <Play size={18} />
-              <span>Tuyên Truyền TikTok ({tiktokVideos?.length || 0})</span>
-            </button>
           </div>
 
           {/* AUTOMATED HEALTH CHECK CONSOLE (Fulfills 'Kiểm tra các nút hoạt động') */}
@@ -1407,37 +1299,34 @@ export default function AdminDashboard() {
             <div style={{ display: "flex", flexDirection: "column", gap: "12px", fontSize: "0.75rem", lineHeight: "1.4" }}>
               {/* Cabinet 1 */}
               <div style={{ background: "rgba(255, 255, 255, 0.02)", padding: "10px", borderRadius: "8px", borderLeft: "3px solid #eb5757" }}>
-                <strong style={{ color: "#ffffff", display: "block", marginBottom: "4px" }}>Tủ 1: Tả Ngạn (Left Cabinet)</strong>
-                <span style={{ color: "#8a96a8" }}>Phân loại: </span><span style={{ color: "#eb5757", fontWeight: "bold" }}>Opioids & Depressants</span><br/>
-                <span style={{ color: "#8a96a8" }}>Kích thước: </span><strong style={{ color: "#ffffff" }}>Rộng 0.8m × Cao 0.9m × Dài 6.8m</strong><br/>
-                <span style={{ color: "#8a96a8" }}>Vị trí tâm 3D: </span><code>X: -3.0, Y: 0.45, Z: -1.35</code><br/>
-                <span style={{ color: "#8a96a8" }}>Sức chứa: </span><strong style={{ color: "#f2994a" }}>10 mẫu vật</strong> (Tiêu bản 1 - 10)
+                <strong style={{ color: "#ffffff", display: "block", marginBottom: "4px" }}>Tủ 1: Tả Ngạn (Tủ Trái 2 Tầng)</strong>
+                <span style={{ color: "#8a96a8" }}>Phân loại: </span><span style={{ color: "#eb5757", fontWeight: "bold" }}>Ma Túy Kích Thích Tổng Hợp & Opioids</span><br/>
+                <span style={{ color: "#8a96a8" }}>Quy cách bục: </span><strong style={{ color: "#ffffff" }}>Bục bậc thang 2 tầng (Dài 6.8m × Rộng 1.3m)</strong><br/>
+                <span style={{ color: "#8a96a8" }}>Bố cục trưng bày: </span><strong style={{ color: "#f2994a" }}>12 mẫu vật</strong> (6 hàng trên Y=1.14m & 6 hàng dưới Y=0.92m)
               </div>
 
               {/* Cabinet 2 */}
               <div style={{ background: "rgba(255, 255, 255, 0.02)", padding: "10px", borderRadius: "8px", borderLeft: "3px solid #f2994a" }}>
-                <strong style={{ color: "#ffffff", display: "block", marginBottom: "4px" }}>Tủ 2: Hữu Ngạn (Right Cabinet)</strong>
-                <span style={{ color: "#8a96a8" }}>Phân loại: </span><span style={{ color: "#f2994a", fontWeight: "bold" }}>Stimulants</span><br/>
-                <span style={{ color: "#8a96a8" }}>Kích thước: </span><strong style={{ color: "#ffffff" }}>Rộng 0.8m × Cao 0.9m × Dài 6.8m</strong><br/>
-                <span style={{ color: "#8a96a8" }}>Vị trí tâm 3D: </span><code>X: 3.0, Y: 0.45, Z: -1.35</code><br/>
-                <span style={{ color: "#8a96a8" }}>Sức chứa: </span><strong style={{ color: "#f2994a" }}>10 mẫu vật</strong> (Tiêu bản 11 - 20)
+                <strong style={{ color: "#ffffff", display: "block", marginBottom: "4px" }}>Tủ 2: Hữu Ngạn (Tủ Phải 2 Tầng)</strong>
+                <span style={{ color: "#8a96a8" }}>Phân loại: </span><span style={{ color: "#f2994a", fontWeight: "bold" }}>Thực Vật Tự Nhiên & Nấm Thức Thần</span><br/>
+                <span style={{ color: "#8a96a8" }}>Quy cách bục: </span><strong style={{ color: "#ffffff" }}>Bục bậc thang 2 tầng (Dài 6.8m × Rộng 1.3m)</strong><br/>
+                <span style={{ color: "#8a96a8" }}>Bố cục trưng bày: </span><strong style={{ color: "#f2994a" }}>12 mẫu vật</strong> (6 hàng trên Y=1.14m & 6 hàng dưới Y=0.92m)
               </div>
 
               {/* Cabinet 3 */}
               <div style={{ background: "rgba(255, 255, 255, 0.02)", padding: "10px", borderRadius: "8px", borderLeft: "3px solid #2f80ed" }}>
-                <strong style={{ color: "#ffffff", display: "block", marginBottom: "4px" }}>Tủ 3: Hậu Sảnh (Back Long Cabinet)</strong>
-                <span style={{ color: "#8a96a8" }}>Phân loại: </span><span style={{ color: "#2f80ed", fontWeight: "bold" }}>Hallucinogens & Dissociatives</span><br/>
-                <span style={{ color: "#8a96a8" }}>Kích thước: </span><strong style={{ color: "#ffffff" }}>Rộng 10.0m × Cao 0.9m × Dài 0.8m</strong><br/>
-                <span style={{ color: "#8a96a8" }}>Vị trí tâm 3D: </span><code>X: 0.0, Y: 0.45, Z: 4.5</code><br/>
-                <span style={{ color: "#8a96a8" }}>Sức chứa: </span><strong style={{ color: "#f2994a" }}>10 mẫu vật</strong> (Tiêu bản 21 - 30)
+                <strong style={{ color: "#ffffff", display: "block", marginBottom: "4px" }}>Tủ 3: Hậu Sảnh (Tủ Sau 2 Tầng)</strong>
+                <span style={{ color: "#8a96a8" }}>Phân loại: </span><span style={{ color: "#2f80ed", fontWeight: "bold" }}>Ngụy Trang Tinh Vi & Dụng Cụ Trái Phép</span><br/>
+                <span style={{ color: "#8a96a8" }}>Quy cách bục: </span><strong style={{ color: "#ffffff" }}>Bục bậc thang 2 tầng (Rộng 9.2m × Dài 1.3m)</strong><br/>
+                <span style={{ color: "#8a96a8" }}>Bố cục trưng bày: </span><strong style={{ color: "#f2994a" }}>12 mẫu vật</strong> (6 hàng trên Y=1.14m & 6 hàng dưới Y=0.92m)
               </div>
 
               {/* Partition wall */}
               <div style={{ background: "rgba(255, 255, 255, 0.02)", padding: "10px", borderRadius: "8px", borderLeft: "3px solid #8a96a8" }}>
                 <strong style={{ color: "#ffffff", display: "block", marginBottom: "4px" }}>Vách Ngăn Chia Phòng (Partition Wall)</strong>
-                <span style={{ color: "#8a96a8" }}>Mục đích: </span>Che chắn tủ dài phía sau sảnh<br/>
-                <span style={{ color: "#8a96a8" }}>Kích thước: </span><strong style={{ color: "#ffffff" }}>Rộng 11.0m × Cao 3.2m × Dày 0.2m</strong><br/>
-                <span style={{ color: "#8a96a8" }}>Vị trí tâm 3D: </span><code>X: 0.0, Y: 1.6, Z: 3.0</code>
+                <span style={{ color: "#8a96a8" }}>Mục đích: </span>Phân tách khu trưng bày chính và gian triển lãm chuyên đề phía sau<br/>
+                <span style={{ color: "#8a96a8" }}>Kích thước: </span><strong style={{ color: "#ffffff" }}>Rộng 16.0m × Cao 3.2m × Dày 0.2m</strong><br/>
+                <span style={{ color: "#8a96a8" }}>Vị trí tâm 3D: </span><code>X: 0.0, Y: 1.6, Z: 4.5</code>
               </div>
 
               {/* Floor and walls */}
@@ -1923,88 +1812,6 @@ export default function AdminDashboard() {
                         <button 
                           className="action-icon-btn action-delete-btn"
                           onClick={() => handleDeletePoster(post.id)}
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-          )}
-
-          {/* TAB 3: TIKTOK VIDEOS WORKSPACE */}
-          {activeTab === "tiktok" && (
-            <div className="admin-content-grid">
-              
-              {/* Form Add/Edit */}
-              <form onSubmit={handleSaveTiktok} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                <h3 className="form-title">
-                  <span>{editingTiktokId ? `✏️ Cập Nhật Video: ${tiktokForm.title}` : "➕ Thêm Video Tuyên Truyền TikTok"}</span>
-                  {editingTiktokId && (
-                    <button type="button" className="cancel-form-btn" onClick={resetTiktokForm}>Hủy bỏ</button>
-                  )}
-                </h3>
-
-                <div className="input-group">
-                  <label>Tiêu Đề Video TikTok</label>
-                  <input 
-                    type="text" 
-                    placeholder="VD: Sự thật tàn khốc về ma túy tổng hợp" 
-                    value={tiktokForm.title}
-                    onChange={(e) => handleTiktokFormChange("title", e.target.value)}
-                    required
-                  />
-                </div>
-
-                <div className="input-group">
-                  <label>Đường Dẫn Link TikTok (Desktop URL)</label>
-                  <input 
-                    type="url" 
-                    placeholder="VD: https://www.tiktok.com/@vtv24news/video/7183029104829287682" 
-                    value={tiktokForm.url}
-                    onChange={(e) => handleTiktokFormChange("url", e.target.value)}
-                    required
-                  />
-                </div>
-
-                <div style={{ background: "rgba(242,153,74,0.05)", border: "1px dashed rgba(242,153,74,0.25)", padding: "12px", borderRadius: "8px", fontSize: "0.72rem", color: "#8a96a8", lineHeight: "1.4", margin: "8px 0" }}>
-                  <strong>Lưu ý định dạng:</strong> Để video có thể phát trực tiếp (embed) mượt mà trong bảo tàng, bạn nên cung cấp link TikTok định dạng máy tính: <code>https://www.tiktok.com/@tên_kênh/video/id_số</code>.
-                </div>
-
-                <button type="submit" className="submit-btn">
-                  {editingTiktokId ? "Lưu Thay Đổi Video" : "Thêm Video Vào Không Gian Tuyên Truyền"}
-                </button>
-              </form>
-
-              {/* Items List */}
-              <div>
-                <h3 className="list-title">
-                  <span>🎥 Danh Sách Video TikTok ({tiktokVideos.length})</span>
-                </h3>
-
-                <div className="items-list-container">
-                  {tiktokVideos.map(video => (
-                    <div key={video.id} className="item-row" style={{ borderColor: "rgba(242, 153, 74, 0.15)" }}>
-                      <div className="item-meta">
-                        <h4>{video.title}</h4>
-                        <p style={{ color: "#f2994a", fontSize: "0.7rem", fontWeight: "bold" }}>ID: {video.id}</p>
-                        <p style={{ fontSize: "0.68rem", color: "#8a96a8", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap", maxWidth: "260px" }} title={video.url}>
-                          Link: {video.url}
-                        </p>
-                      </div>
-                      <div className="item-actions">
-                        <button 
-                          className="action-icon-btn" 
-                          onClick={() => handleEditTiktok(video)}
-                        >
-                          <Edit size={14} />
-                        </button>
-                        <button 
-                          className="action-icon-btn action-delete-btn"
-                          onClick={() => handleDeleteTiktok(video.id)}
                         >
                           <Trash2 size={14} />
                         </button>

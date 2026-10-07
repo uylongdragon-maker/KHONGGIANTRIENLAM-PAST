@@ -1,642 +1,721 @@
-// Detailed exhibits and posters database for the 3D Anti-Drug Exhibition - Công An Phường Tân Hưng
-// 35 specimens distributed across 3 display cabinets:
-// Table 1 (Left): Opioids & Depressants (12 specimens)
-// Table 2 (Right): Stimulants & Synthetic ATS (11 specimens)
-// Table 3 (Back): Hallucinogens & Dissociatives (12 specimens)
+// Detailed exhibits, posters, and questions database for the 3D Anti-Drug Exhibition
+// Công An Phường Tân Hưng - Công An Thành Phố Hồ Chí Minh
+// 36 Tiêu bản mẫu vật nghiệp vụ phân bổ chính xác theo 3 tủ (Mỗi tủ 12 mẫu: 6 hàng trên & 6 hàng dưới)
 
 export const exhibitsData = [
-{
-    id: "heroin",
-    name: "Heroin",
-    subtitle: "Chất bán tổng hợp cực độc từ thuốc phiện",
-    category: "Chất bán tổng hợp opioid",
-    description: "Heroin là chất bột màu trắng hoặc xám nâu. Nó bám chặt vào các thụ thể opioid trong não bộ, gây nghiện cực nhanh và tàn phá cơ thể nghiêm trọng.",
+  // =========================================================================
+  // TỦ 1 (Phía Trái - cabinet_left): 12 MẪU VẬT
+  // Nhóm 1: Ma túy kích thích tổng hợp, bán tổng hợp & dược chất gây nghiện
+  // =========================================================================
+
+  // --- HÀNG TRÊN (Tủ 1 - 6 Mẫu: Bậc cao Y = 1.14m, lùi sát vách X = -5.35m) ---
+  {
+    id: "meth_crystal",
+    name: "Methamphetamine tinh thể",
+    subtitle: "D-Methamphetamine tinh thể nguyên chất",
+    category: "Chất kích thích tổng hợp ATS",
+    description: "Methamphetamine dạng tinh thể trong suốt không màu hoặc màu trắng đục. Đây là dạng muối hydroclorid tinh khiết nhất của methamphetamine, có độc lực kích thích thần kinh trung ương cực kỳ dữ dội.",
     effects: [
-      "Hệ thần kinh: Gây hoại tử tế bào thần kinh, suy giảm trí nhớ kéo dài.",
-      "Hệ hô hấp: Ức chế trung tâm hô hấp ở hành tủy gây ngừng thở tử vong.",
-      "Hệ thống miễn dịch: Suy kiệt miễn dịch, tăng tối đa nguy cơ nhiễm trùng."
+      "Hệ thần kinh: Phá hủy thụ thể dopamine, gây teo não thùy trán, thoái hóa tế bào thần kinh vĩnh viễn.",
+      "Tâm thần học: Gây loạn thần cấp, hoang tưởng bị truy hại, ảo thị và ảo thanh kinh dị.",
+      "Hệ tim mạch: Gây co thắt mạch vành, nhồi máu cơ tim, vỡ phình mạch não dẫn đến đột tử."
     ],
-    warning: "Gây nghiện cực mạnh ngay từ lần sử dụng đầu tiên!",
-    position: { x: -5.0, y: 0.9, z: -4.8 },
+    warning: "Độc tính phá hủy tế bào não cực nhanh, gây nghiện tâm thần nặng nề không thể đảo ngược!",
+    position: { x: -5.35, y: 1.14, z: -3.75 },
     cabinetId: "cabinet_left",
-    audioText: "Bạn đang đứng trước tiêu bản Heroin. Đây là chất ma túy bán tổng hợp cực kỳ nguy hiểm, được điều chế từ morphine chiết xuất từ nhựa cây thuốc phiện. Heroin tác động trực tiếp lên hệ thần kinh trung ương, tạo ra trạng thái phê pha giả tạo nhưng nhanh chóng chuyển thành sự lệ thuộc thể chất và tinh thần sâu sắc. Chỉ sau một vài lần sử dụng, cơ thể sẽ bị tàn phá toàn diện, phá hủy hệ miễn dịch và gây suy hô hấp cấp dẫn đến tử vong.",
-    waveform: [20, 40, 60, 20, 80, 40, 60, 30, 90, 40, 20, 50, 70, 30, 60, 40, 80, 20, 10, 40],
-    inspectInfo: "Bột mịn màu trắng ngà, đóng gói trong túi zip nylon niêm phong tang vật của cảnh sát."
+    row: "upper",
+    audioText: "Bạn đang quan sát tiêu bản Methamphetamine dạng tinh thể nguyên chất. Dưới kính hiển vi quang học, các tinh thể hình kim hoặc lăng trụ trong suốt này bám chặt vào tế bào thần kinh, ép não bộ phóng thích lượng dopamine gấp nhiều chục lần mức tự nhiên. Sau cảm giác hưng phấn giả tạo ban đầu, người dùng sẽ rơi vào trạng thái suy kiệt thần kinh, mất ngủ kéo dài, phát sinh chứng hoang tưởng ngáo đá hoại tử nhân cách.",
+    waveform: [25, 60, 85, 45, 90, 70, 40, 85, 95, 60, 30, 75, 90, 50, 80, 65, 90, 40, 20, 50],
+    inspectInfo: "Tinh thể lăng trụ trong suốt, sáng lấp lánh như mảnh băng vụn, đựng trong túi zip tang vật niêm phong chuyên dụng của Công an."
   },
-{
+  {
+    id: "ice_meth",
+    name: "Ma túy đá",
+    subtitle: "Methamphetamine dạng đá vụn lóng lánh",
+    category: "Chất kích thích tổng hợp ATS",
+    description: "Thường được gọi lóng là 'đá', 'pha lê' hoặc 'ice'. Đây là methamphetamine thương phẩm đường phố, thường bị pha tạp hóa chất độc hại để tăng trọng lượng và tạo hiệu ứng kích thích bạo lực.",
+    effects: [
+      "Hành vi: Gây hội chứng ngáo đá mất kiểm soát, tự hủy hoại bản thân hoặc gây án bạo lực nghiêm trọng.",
+      "Ngoại hình: Hội chứng miệng ma túy đá (meth mouth) làm rụng mục toàn bộ hàm răng, lở loét da.",
+      "Thể trạng: Sụt cân cực độ, teo cơ, suy kiệt đa tạng và mất ngủ triền miên nhiều tuần."
+    ],
+    warning: "Nguyên nhân hàng đầu của các vụ án giết người, chém người thân trong cơn ngáo đá điên loạn!",
+    position: { x: -5.35, y: 1.14, z: -2.75 },
+    cabinetId: "cabinet_left",
+    row: "upper",
+    audioText: "Tiêu bản ma túy đá thương phẩm thu giữ từ các tụ điểm mua bán trái phép. Kẻ thủ ác thường sử dụng nỏ thủy tinh để đốt bốc khói hít trực tiếp. Ma túy đá đẩy nhịp tim người dùng lên tới 160 nhịp một phút, tăng thân nhiệt cực đoan và dẫn truyền xung đột dữ dội trong não bộ, gây ra hiện tượng ảo giác sâu bọ bò dưới da khiến người nghiện tự cào xé nát cơ thể.",
+    waveform: [35, 75, 90, 60, 85, 40, 70, 95, 80, 50, 40, 85, 70, 60, 90, 75, 85, 30, 25, 60],
+    inspectInfo: "Khối tinh thể vỡ vụn màu trắng đục lẫn vẩn mờ tạp chất phốt-pho đỏ, đựng trong túi ni-lông niêm phong hình chữ nhật."
+  },
+  {
+    id: "cocaine_pill",
+    name: "Cocaine dạng viên",
+    subtitle: "Viên nén alkaloid kích thích cực mạnh",
+    category: "Chất kích thích tự nhiên alkaloid",
+    description: "Cocaine được dập ép thành dạng viên nén để dễ cất giấu và vận chuyển qua đường tiêu hóa hoặc đường bưu chính. Có nguồn gốc từ lá cây Erythroxylum coca, cocaine là chất ức chế tái hấp thu dopamine và norepinephrine cực mạnh.",
+    effects: [
+      "Tim mạch: Co thắt mạch vành đột ngột, loạn nhịp thất chết người ngay khi sử dụng liều nhỏ.",
+      "Thần kinh: Gây hoang tưởng cực độ, kích động hưng cảm, mất cảm giác đau đớn.",
+      "Đột quỵ: Gây xuất huyết não dưới nhện do tăng huyết áp kịch phát."
+    ],
+    warning: "Độc lực tim mạch cực cao, dễ gây đột tử tức khắc chỉ sau vài phút!",
+    position: { x: -5.35, y: 1.14, z: -1.75 },
+    cabinetId: "cabinet_left",
+    row: "upper",
+    audioText: "Đây là mẫu cocaine dập viên nén do các đường dây ma túy quốc tế ngụy trang. Khác với dạng bột hít truyền thống, viên nén cocaine dễ dàng bị nuốt trôi để vận chuyển lậu. Khi một viên nén bị vỡ trong ruột, cơ thể sẽ hấp thụ một lượng cực độc khiến huyết áp tăng vọt, tim đập loạn nhịp và tử vong gần như ngay tức khắc.",
+    waveform: [40, 65, 80, 50, 70, 85, 90, 60, 45, 80, 75, 60, 85, 90, 70, 55, 40, 60, 30, 20],
+    inspectInfo: "Viên nén hình tròn dập chìm ký hiệu số, bề mặt nhẵn mịn màu trắng ngà, bảo quản trong lọ nghiệm thu y tế."
+  },
+  {
     id: "morphine",
     name: "Morphine",
-    subtitle: "Dược chất giảm đau y tế bị lạm dụng",
+    subtitle: "Dược chất giảm đau y tế bị lạm dụng nghiêm trọng",
     category: "Chất tự nhiên opioid",
-    description: "Morphine là chất chiết xuất trực tiếp từ nhựa quả thuốc phiện. Trong y tế dùng để giảm đau cấp tính cực mạnh, nhưng lạm dụng gây nghiện sâu sắc.",
+    description: "Alkaloid tự nhiên chính chiết xuất từ nhựa cây thuốc phiện. Trong y khoa là thuốc giảm đau nhóm opioid bậc 3 kiểm soát nghiêm ngặt, nhưng khi bị tuồn ra ngoài trở thành độc chất gây nghiện tàn khốc.",
     effects: [
-      "Phụ thuộc thể chất: Hội chứng cai nghiện đau đớn, vật vã kinh hoàng.",
-      "Hệ tim mạch: Gây hạ huyết áp cấp, loạn nhịp tim đe dọa tính mạng.",
-      "Hệ tiêu hóa: Táo bón mãn tính nặng, co thắt cơ vòng túi mật."
+      "Lệ thuộc cơ thể: Gây hội chứng cai nghiện đau đớn tột cùng xé thịt, toát mồ hôi lạnh, tiêu chảy dữ dội.",
+      "Hô hấp: Ức chế phản xạ hô hấp tại hành não, gây ngạt thở và hôn mê sâu.",
+      "Tiêu hóa: Liệt nhu động ruột, táo bón ác tính, co thắt cơ vòng túi mật."
     ],
-    warning: "Chỉ được phép sử dụng dưới sự kiểm soát nghiêm ngặt của bác sĩ y khoa!",
-    position: { x: -5.0, y: 0.9, z: -4.2 },
+    warning: "Thuộc danh mục Dược phẩm Gây nghiện đặc biệt nguy hiểm, cấm lưu hành tự do!",
+    position: { x: -5.35, y: 1.14, z: -0.75 },
     cabinetId: "cabinet_left",
-    audioText: "Morphine là một alkaloid tự nhiên của cây thuốc phiện. Dù có đóng góp to lớn trong y tế như một chất giảm đau tầng cuối, morphine lại là kẻ thù nguy hiểm khi bị lạm dụng. Sử dụng morphine ngoài mục đích điều trị sẽ dẫn tới chứng nghiện ngập nhanh chóng với cơ chế dung nạp thuốc tăng dần, đòi hỏi liều lượng ngày một cao hơn.",
-    waveform: [30, 25, 40, 50, 20, 60, 45, 50, 30, 70, 20, 30, 50, 40, 60, 20, 30, 40, 20, 10],
-    inspectInfo: "Ống dung dịch tiêm y tế trong suốt, dán nhãn kiểm soát đặc biệt của Bộ Y Tế."
-  },
-{
-    id: "codeine",
-    name: "Codeine",
-    subtitle: "Dược chất ho/giảm đau dễ bị sa ngã lạm dụng",
-    category: "Chất tự nhiên opioid",
-    description: "Codeine là hoạt chất có trong thuốc ho hoặc thuốc giảm đau nhẹ. Lạm dụng liều cao liên tục sẽ chuyển hóa thành morphine trong gan gây nghiện.",
-    effects: [
-      "Hệ thần kinh: Gây lờ đờ, buồn ngủ cấp tính, mất khả năng tập trung.",
-      "Ức chế hô hấp: Gây khó thở, thở nông, tích tụ CO2 trong máu.",
-      "Hệ tiêu hóa: Gây buồn nôn, đau dạ dày dữ dội do lạm dụng thuốc."
-    ],
-    warning: "Nhiều người trẻ bị nghiện Codeine từ thói quen tự ý uống siro ho liều cao!",
-    position: { x: -5.0, y: 0.9, z: -3.6 },
-    cabinetId: "cabinet_left",
-    audioText: "Codeine thường xuất hiện trong các chai siro ho và thuốc giảm đau thông thường. Do tính phổ biến, nhiều thanh thiếu niên đã lạm dụng Codeine để pha chế các loại đồ uống kích thích có hại. Ít ai biết rằng, gan sẽ chuyển hóa Codeine thành morphine thầm lặng, trói buộc người dùng vào cơn nghiện ngập kinh hoàng.",
-    waveform: [10, 20, 15, 30, 40, 25, 20, 35, 50, 30, 20, 15, 30, 40, 25, 10, 20, 30, 15, 5],
-    inspectInfo: "Các viên nén thuốc Tây màu trắng dập chìm mã vạch dược phẩm, kèm vỏ hộp siro ho."
-  },
-{
-    id: "fentanyl",
-    name: "Fentanyl",
-    subtitle: "Tử thần hóa học thế hệ mới",
-    category: "Chất tổng hợp opioid cực độc",
-    description: "Fentanyl là chất ma túy tổng hợp mạnh gấp 50 lần heroin và 100 lần morphine. Chỉ cần 2 miligam (bằng hạt muối) đã đủ cướp đi một sinh mạng.",
-    effects: [
-      "Ngừng thở lập tức: Dập tắt trung tâm hô hấp chỉ sau vài giây hấp thụ.",
-      "Hội chứng ngộ độc: Gây hôn mê sâu, co đồng tử tối đa (đồng tử đinh ghim).",
-      "Hủy hoại ý thức: Gây ngủ li bì, mất hoàn toàn nhận thức xung quanh."
-    ],
-    warning: "Tử thần thế hệ mới! Một liều lượng nhỏ li ti bằng hạt bụi cũng đủ gây tử vong chớp nhoáng.",
-    position: { x: -5.0, y: 0.9, z: -3.0 },
-    cabinetId: "cabinet_left",
-    audioText: "Chào mừng bạn đến với tiêu bản Fentanyl. Đây được coi là thảm họa ma túy tổng hợp nguy hiểm nhất hiện nay. Mạnh gấp hàng trăm lần morphine, Fentanyl lấn át các thụ thể hô hấp cực nhanh, khiến nạn nhân ngừng thở hoàn toàn trước khi kịp nhận ra điều gì xảy ra. Hàng chục ngàn ca tử vong đột ngột mỗi năm trên thế giới là lời cảnh tỉnh đanh thép nhất chống lại độc chất này.",
-    waveform: [50, 70, 90, 80, 100, 90, 80, 95, 100, 70, 60, 80, 90, 70, 80, 50, 30, 60, 40, 20],
-    inspectInfo: "Bột tinh thể màu trắng đục cực nhỏ đựng trong lọ thủy tinh kín niêm phong cảnh báo độc chất cao."
-  },
-{
-    id: "oxycodone",
-    name: "Oxycodone",
-    subtitle: "Thuốc giảm đau kê đơn gây bão nghiện ngập",
-    category: "Chất bán tổng hợp opioid",
-    description: "Oxycodone là thuốc giảm đau kê đơn bán tổng hợp dòng opioid mạnh. Nó hoạt động tương tự như heroin trong não và gây ra cơn bão nghiện ngập y tế toàn cầu.",
-    effects: [
-      "Hệ thần kinh: Gây hưng phấn giả tạo mạnh mẽ kèm theo chứng trầm cảm cấp.",
-      "Tổn thương gan thận: Hủy hoại các tế bào nhu mô gan nếu dùng kéo dài.",
-      "Suy hô hấp: Giảm thể tích thở phút, dẫn đến thiếu oxy não mãn tính."
-    ],
-    warning: "Lạm dụng thuốc giảm đau kê đơn là con đường ngắn nhất dẫn tới nghiện Heroin!",
-    position: { x: -5.0, y: 0.9, z: -2.4 },
-    cabinetId: "cabinet_left",
-    audioText: "Oxycodone phản ánh mặt tối của ngành công nghiệp dược phẩm thương mại. Được tiếp thị là thuốc giảm đau an toàn, chất này đã châm ngòi cho cuộc khủng hoảng opioid tồi tệ. Khi các đơn thuốc y tế bị siết chặt, những người lệ thuộc Oxycodone buộc phải tìm đến Heroin và Fentanyl ngoài chợ đen để thay thế.",
-    waveform: [25, 30, 45, 35, 50, 40, 30, 55, 60, 45, 35, 40, 50, 30, 45, 20, 25, 30, 20, 15],
-    inspectInfo: "Các viên thuốc nang màu xanh ngọc đựng trong vỉ nhựa dược phẩm ghi rõ cảnh báo gây nghiện."
+    row: "upper",
+    audioText: "Morphine là chuẩn mực đo lường độc lực của các opioid. Được phát hiện từ đầu thế kỷ 19, morphine cứu rỗi những cơn đau ung thư giai đoạn cuối nhưng lại là xiềng xích gông cùm người nghiện. Khi lạm dụng, cơ thể nhanh chóng dung nạp thuốc, buộc con nghiện phải tăng liều liên tục cho đến khi chạm ngưỡng tử vong vì ngừng thở.",
+    waveform: [20, 35, 50, 40, 60, 45, 30, 55, 70, 50, 30, 45, 60, 55, 40, 35, 50, 25, 20, 15],
+    inspectInfo: "Ống tiêm thủy tinh y tế dung tích 10mg/ml trong suốt dán nhãn đỏ kiểm soát đặc biệt, kèm kim tiêm vô trùng."
   },
   {
-    id: "hydrocodone",
-    name: "Hydrocodone (Vicodin)",
-    subtitle: "Opioid giảm đau gây bão nghiện ngập học đường",
-    category: "Chất bán tổng hợp opioid",
-    description: "Hydrocodone là dược chất opioid bán tổng hợp cực mạnh, thường được bào chế chung với paracetamol dưới tên biệt dược Vicodin. Gây nghiện nhanh và hủy hoại gan thận nghiêm trọng khi lạm dụng.",
+    id: "ecstasy",
+    name: "Ecstasy / MDMA / Thuốc lắc",
+    subtitle: "Viên nén kích thích & gây ảo cảm giác tiệc tùng",
+    category: "Chất kích thích & ảo giác nhân tạo",
+    description: "3,4-Methylenedioxymethamphetamine (MDMA), thường gọi là thuốc lắc, 'kẹo', 'vương miện'. Thường được dập logo bắt mắt như khiên, sao, siêu nhân, ngụy trang thành kẹo ngậm để lôi kéo giới trẻ trong vũ trường, quán bar.",
     effects: [
-      "Gây ức chế hệ thần kinh: Lơ mơ, mất khả năng nhận thức và phản xạ.",
-      "Hủy hoại nhu mô gan: Ngộ độc paracetamol liều cao kèm suy gan cấp.",
-      "Hội chứng cai nghiện: Co giật, lo âu tột độ và suy sụp tinh thần khi ngưng thuốc."
+      "Tăng thân nhiệt ác tính: Làm thân nhiệt vọt lên 42-43°C gây tan rã cơ vân và đông máu nội mạch.",
+      "Tâm lý: Phá hủy hệ thống dẫn truyền serotonin, để lại chứng trầm cảm tự sát kéo dài sau tiệc.",
+      "Nhiễm độc nước: Hội chứng bài tiết ADH không thích hợp gây phù não cấp tử vong do uống quá nhiều nước."
     ],
-    warning: "Thuốc giảm đau kê đơn nhưng có khả năng gây nghiện tương đương morphine!",
-    position: { x: -5.0, y: 0.9, z: -1.8 },
+    warning: "Cạm bẫy cực kỳ phổ biến trong các cuộc tụ tập 'bay lắc', phá hủy toàn diện não bộ thanh thiếu niên!",
+    position: { x: -5.35, y: 1.14, z: 0.25 },
     cabinetId: "cabinet_left",
-    audioText: "Hydrocodone là hoạt chất giảm đau opioid tổng hợp. Lạm dụng Vicodin tạo ra cảm giác khoan khoái giả tạo nhưng nhanh chóng dẫn tới lệ thuộc thể chất và phá hủy gan thận.",
-    waveform: [20, 35, 45, 30, 60, 40, 50, 30, 70, 45, 30, 40, 55, 35, 45, 25, 30, 40, 20, 10],
-    inspectInfo: "Vỉ thuốc nén con nhộng màu vàng cam in mã dập nổi dược phẩm quốc tế."
+    row: "upper",
+    audioText: "Thuốc lắc hay MDMA là loại ma túy tổng hợp đánh lừa người dùng bằng cảm giác hòa đồng, hưng phấn và thăng hoa âm thanh. Tuy nhiên, thuốc làm tê liệt trung tâm điều nhiệt của vùng dưới đồi não. Kết hợp với việc nhảy múa cường độ cao trong không gian kín, thân nhiệt người dùng tăng vọt dẫn tới suy gan thận cấp, xuất huyết não và đột tử ngay tại sàn nhảy.",
+    waveform: [50, 80, 95, 70, 90, 85, 60, 90, 100, 75, 55, 85, 95, 70, 85, 90, 65, 45, 30, 50],
+    inspectInfo: "Các viên nén màu hồng neon, xanh dương và cam dập nổi logo hình khiên và khiên vương miện sắc sảo."
   },
-{
-    id: "opium",
-    name: "Thuốc phiện (Opium)",
-    subtitle: "Nguồn gốc cổ xưa của mọi Opioid",
-    category: "Chất tự nhiên tự sinh",
-    description: "Thuốc phiện là nhựa khô thu hoạch từ quả cây anh túc (Papaver somniferum). Nhựa này chứa morphine, codeine và nhiều alkaloid độc hại khác.",
+  {
+    id: "heroin",
+    name: "Heroin",
+    subtitle: "Diacetylmorphine - Đệ nhất độc chất tàn phá xã hội",
+    category: "Chất bán tổng hợp opioid cực độc",
+    description: "Heroin được tổng hợp bằng cách acetyl hóa morphine tự nhiên. Tồn tại dưới dạng bột mịn màu trắng ngà hoặc nâu xám (Heroin số 4), tan nhanh trong máu và vượt qua hàng rào máu não chỉ trong 7 giây.",
     effects: [
-      "Hủy hoại tạng phủ: Gây suy kiệt cơ thể thần tốc, lão hóa tạng nội.",
-      "Hệ tiêu hóa: Táo bón kinh niên, làm hỏng hoàn toàn nhu động ruột.",
-      "Hệ sinh sản: Triệt tiêu nội tiết tố sinh dục, suy giảm nòi giống."
+      "Nghiện tức thì: Khả năng gây nghiện tâm lý và thể xác chỉ sau 1 đến 2 lần thử đầu tiên.",
+      "Lây nhiễm HIV/Viêm gan: Con đường tiêm chích chung kim truyền nhiễm đại dịch HIV, viêm gan B, C.",
+      "Sốc thuốc tử vong: Ngừng tim ngừng thở đột ngột khi nồng độ thuốc vượt ngưỡng dung nạp."
     ],
-    warning: "Thuốc phiện chôn vùi tương lai và sinh mạng của hàng triệu người từ nhiều thế kỷ qua.",
-    position: { x: -5.0, y: 0.9, z: -1.2 },
+    warning: "Kẻ hủy diệt tàn khốc nhất đối với giống nòi, đạo đức và cuộc sống gia đình người nghiện!",
+    position: { x: -5.35, y: 1.14, z: 1.25 },
     cabinetId: "cabinet_left",
-    audioText: "Thuốc phiện, hay nàng tiên nâu, là chất ma túy có lịch sử tàn phá cổ xưa nhất. Nhựa cây anh túc phơi khô chứa hỗn hợp các alkaloid cực độc. Sử dụng thuốc phiện làm suy kiệt cơ thể nhanh chóng, tước đoạt toàn bộ ý chí tự chủ, đẩy người dùng vào cuộc sống nô lệ tinh thần tối tăm.",
-    waveform: [15, 25, 35, 30, 45, 40, 25, 35, 50, 40, 30, 20, 35, 30, 40, 25, 20, 30, 15, 10],
-    inspectInfo: "Bánh nhựa màu đen dẻo quánh, xù xì, bốc mùi hăng đặc trưng, đặt trên đĩa nung cổ."
+    row: "upper",
+    audioText: "Heroin là bóng ma kinh hoàng nhất trong lịch sử các chất ma túy. Khi vào cơ thể, nó biến đổi thành morphine bám chặt vào các thụ thể mu-opioid ở cuống não. Người dùng đánh mất toàn bộ lương tri, công ăn việc làm, danh dự nhân phẩm chỉ để kiếm tiền phục vụ cho các cữ thuốc ngày càng dày đặc. Tỷ lệ tái nghiện của heroin lên tới trên 90 phần trăm nếu không có sự can thiệp y tế và pháp luật nghiêm ngặt.",
+    waveform: [30, 50, 70, 40, 85, 60, 75, 40, 95, 50, 30, 60, 80, 45, 70, 55, 85, 35, 20, 45],
+    inspectInfo: "Bột mịn màu trắng ngà ép thành khối vuông vức bọc nhiều lớp nylon chống ẩm, kèm mẫu thử phản ứng Marquis."
   },
-{
+
+  // --- HÀNG DƯỚI (Tủ 1 - 6 Mẫu: Bậc thấp Y = 0.92m, hướng ra lối đi X = -4.55m) ---
+  {
+    id: "ketamine",
+    name: "Ketamine",
+    subtitle: "Dung dịch gây mê phân ly & dạng bột 'Ke/Khay'",
+    category: "Chất phân ly & gây mê điều chế",
+    description: "Ketamine hydrochloride vốn là thuốc gây mê trong phẫu thuật. Khi bị lạm dụng, đối tượng hít dạng bột ('xào ke') để rơi vào trạng thái 'K-hole' - tách rời tâm trí khỏi thể xác.",
+    effects: [
+      "Hệ tiết niệu: Hoại tử và co teo bàng quang nghiêm trọng (bàng quang ketamine), tiểu ra máu đau đớn, phải đeo túi nước tiểu nhân tạo suốt đời.",
+      "Trí nhớ: Mất trí nhớ phân ly trầm trọng, suy thoái nhận thức tương đương bệnh nhân Alzheimer.",
+      "Hô hấp: Co thắt thanh quản cấp tính, trào ngược dịch dạ dày gây sặc tử vong."
+    ],
+    warning: "Tàn phá bàng quang vĩnh viễn, biến người trẻ tuổi thành phế nhân tiểu tiện không tự chủ!",
+    position: { x: -4.55, y: 0.92, z: -3.75 },
+    cabinetId: "cabinet_left",
+    row: "lower",
+    audioText: "Bạn đang nhìn vào mẫu vật Ketamine, thường được dân chơi gọi là Khay hoặc Ke. Tác hại đặc trưng kinh hoàng nhất của Ketamine là hội chứng viêm bàng quang xuất huyết mạn tính. Độc chất ăn mòn niêm mạc bàng quang khiến dung tích chứa từ 500ml co rút chỉ còn chưa đầy 50ml, người bệnh phải đi tiểu từng giọt máu buốt rát sau mỗi 10 phút và không thể chữa lành.",
+    waveform: [35, 40, 65, 30, 75, 50, 60, 40, 80, 65, 35, 50, 70, 60, 75, 45, 80, 30, 20, 40],
+    inspectInfo: "Lọ thủy tinh chứa dung dịch tiêm trong suốt 500mg/10ml, bên cạnh là đĩa thủy tinh phủ một lớp bột trắng mịn."
+  },
+  {
+    id: "milk_tea_drug",
+    name: "Ma túy trà sữa",
+    subtitle: "Bột ma túy tổng hợp pha chế ngụy trang đồ uống",
+    category: "Ma túy trá hình thế hệ mới",
+    description: "Hỗn hợp bột nghiền màu xám hoặc vàng kem có mùi hương trà sữa béo ngọt nhân tạo. Thực chất là sự pha trộn tinh vi giữa Methamphetamine, Ketamine và Diazepam nhằm dụ dỗ học sinh, sinh viên.",
+    effects: [
+      "Ngộ độc cấp: Tác động hiệp đồng giữa chất kích thích và chất ức chế làm tim loạn nhịp, ngừng tim đột ngột.",
+      "Mất kiểm soát: Làm nạn nhân mất khả năng kháng cự, dễ bị lợi dụng xâm hại tình dục.",
+      "Nghiện thầm lặng: Nạn nhân bị nghiện mà không hề hay biết mình đang uống ma túy."
+    ],
+    warning: "Ngụy trang tinh vi thành thức uống yêu thích của giới trẻ, cực kỳ nguy hiểm trong trường học!",
+    position: { x: -4.55, y: 0.92, z: -2.75 },
+    cabinetId: "cabinet_left",
+    row: "lower",
+    audioText: "Ma túy trà sữa là thủ đoạn ngụy trang ma quái của tội phạm ma túy nhắm vào giới trẻ. Bột ma túy được tẩm hương liệu sữa bột, ca cao và hương trà, đóng gói trong các gói thiếc nhỏ in hình hoạt hình bắt mắt. Khi hòa vào nước ngọt hay trà sữa, ma túy tan biến không màu không vị khác lạ, biến nạn nhân thành con nghiện chỉ sau vài lần tụ tập bè bạn.",
+    waveform: [20, 55, 70, 40, 65, 80, 60, 45, 75, 85, 50, 40, 65, 80, 55, 45, 60, 30, 25, 40],
+    inspectInfo: "Gói thiếc bạc in họa tiết hoạt hình ngộ nghĩnh, bên trong chứa bột màu be có mùi thơm ngậy nồng nặc."
+  },
+  {
+    id: "ghb",
+    name: "GHB (Nước biển)",
+    subtitle: "Gamma-Hydroxybutyrate - Ma túy cưỡng bức tình dục",
+    category: "Chất ức chế thần kinh trung ương",
+    description: "Chất lỏng trong suốt không màu, không mùi, vị hơi mặn nhẹ. Thường được gọi là 'nước biển', 'nước thần'. Đây là chất ức chế thụ thể GABA mạnh, thường bị kẻ xấu lén nhỏ vào ly đồ uống của nạn nhân trong các bữa tiệc.",
+    effects: [
+      "Mất trí nhớ tức thì: Xóa sạch toàn bộ ký ức trong khoảng thời gian bị đánh thuốc mê.",
+      "Liệt vận động: Nạn nhân hoàn toàn bất lực không thể cử động chân tay hay kêu cứu dù ý thức mơ màng.",
+      "Ức chế hô hấp: Hôn mê sâu và tử vong nhanh chóng nếu uống kèm với rượu bia."
+    ],
+    warning: "Vũ khí cưỡng bức tình dục nguy hiểm hàng đầu trong các vũ trường, quán bar!",
+    position: { x: -4.55, y: 0.92, z: -1.75 },
+    cabinetId: "cabinet_left",
+    row: "lower",
+    audioText: "GHB hay còn gọi là Nước Biển là chất độc nguy hiểm chuyên được tội phạm dùng để vô hiệu hóa nạn nhân. Khi nhỏ vài giọt vào ly rượu, mùi vị mặn của GHB bị cồn át hoàn toàn. Chỉ sau 15 phút, nạn nhân rơi vào trạng thái mềm nhũn cơ bắp, mất hoàn toàn khả năng phản kháng và quên sạch toàn bộ sự việc sau khi tỉnh lại, gây khó khăn lớn cho công tác điều tra.",
+    waveform: [25, 40, 60, 35, 50, 70, 45, 30, 65, 55, 40, 35, 60, 50, 40, 45, 30, 25, 15, 30],
+    inspectInfo: "Lọ thủy tinh màu xanh biển đậm dung tích 15ml, chứa chất lỏng sánh trong suốt không màu."
+  },
+  {
+    id: "happy_water_liquid",
+    name: "Dung dịch nước vui",
+    subtitle: "Cocktail ma túy dạng lỏng đa hoạt chất",
+    category: "Hỗn hợp ma túy tổng hợp thế hệ mới",
+    description: "Dung dịch màu sắc rực rỡ (hồng, cam, xanh dương) được pha chế từ Ketamine, Ecstasy, Methamphetamine và Cafein. Có tác dụng kích thích cực mạnh kèm theo hưng phấn ảo giác hỗn loạn.",
+    effects: [
+      "Tương tác độc hại: Sự kết hợp nhiều chất kích thích gây suy tim cấp, đột tử do rung thất.",
+      "Hành vi cuồng loạn: Người dùng mất nhận thức không gian thời gian, nhảy lầu hoặc bơi trên cạn.",
+      "Phá hủy não: Gây thiếu máu não cục bộ, co giật toàn thân dạng động kinh liên tục."
+    ],
+    warning: "Tỷ lệ sốc thuốc và tử vong tức thì cực kỳ cao do độc tính đa thành phần!",
+    position: { x: -4.55, y: 0.92, z: -0.75 },
+    cabinetId: "cabinet_left",
+    row: "lower",
+    audioText: "Dung dịch nước vui là sản phẩm cocktail ma túy cực kỳ độc hại. Các băng nhóm tội phạm trộn lẫn nhiều loại tiền chất và chất ma túy khác nhau vào dung dịch cồn ngọt để bán với giá cắt cổ. Vì không thể biết chính xác nồng độ các chất trong một chai nước vui, người dùng rất dễ bị quá liều, co giật sùi bọt mép và ngừng tim trước khi kịp đưa tới bệnh viện cấp cứu.",
+    waveform: [45, 70, 85, 60, 95, 75, 65, 80, 90, 70, 50, 80, 85, 65, 75, 85, 60, 40, 30, 55],
+    inspectInfo: "Ống nghiệm thủy tinh chứa dung dịch màu hồng phát quang dưới ánh đèn UV, dán nhãn niêm phong tang vật."
+  },
+  {
+    id: "bath_salts",
+    name: "Ma túy muối tắm",
+    subtitle: "Dẫn xuất Cathinone tổng hợp gây cuồng loạn ăn thịt người",
+    category: "Chất kích thích Cathinone tổng hợp",
+    description: "Synthetic Cathinones (Mephedrone, MDPV, Alpha-PVP). Có hình dạng bên ngoài giống như muối khoáng tắm bồn nên được đặt tên lóng là muối tắm. Tác động lên hệ thần kinh tương tự cocaine kết hợp methamphetamine nhưng mạnh gấp 10 lần.",
+    effects: [
+      "Hội chứng mê sảng kích động: Thân nhiệt tăng trên 41°C, lột trần truồng gào thét, sức mạnh cơ bắp phi thường do mất cảm giác đau.",
+      "Hành vi ăn thịt người (Zombie): Ảo giác hoang tưởng khiến người dùng cắn xé mặt mũi và cơ thể người khác.",
+      "Tiêu cơ vân cấp: Cơ bắp bị phân hủy, myoglobin làm tắc nghẽn ống thận dẫn đến suy thận cấp tử vong."
+    ],
+    warning: "Loại ma túy tạo nên các 'xác sống ăn thịt người' gây rúng động xã hội toàn cầu!",
+    position: { x: -4.55, y: 0.92, z: 0.25 },
+    cabinetId: "cabinet_left",
+    row: "lower",
+    audioText: "Muối tắm là tên gọi ngụy trang của nhóm Cathinone tổng hợp cực độc. Khi sử dụng loại ma túy này, người nghiện rơi vào cơn mê sảng kích động tột độ, cảm thấy da thịt nóng như bị thiêu đốt nên thường xé bỏ quần áo, tấn công điên cuồng cắn xé bất cứ ai xung quanh. Cảnh sát nhiều nước đã phải nổ súng trấn áp vì đối tượng hoàn toàn mất cảm giác đau đớn.",
+    waveform: [40, 85, 100, 75, 90, 95, 80, 70, 95, 90, 60, 85, 100, 75, 90, 85, 70, 45, 30, 65],
+    inspectInfo: "Hũ nhựa trong suốt chứa các hạt tinh thể màu trắng đục thô ráp, nắp vặn dán nhãn cảnh báo độc chất sinh học."
+  },
+  {
     id: "methadone",
     name: "Methadone",
-    subtitle: "Chất thay thế điều trị nghiện Opioid",
-    category: "Chất tổng hợp opioid",
-    description: "Methadone là chất opioid tổng hợp tác dụng kéo dài. Dùng trong y tế như liệu pháp thay thế cai nghiện Heroin, giúp người nghiện cắt cơn vật vã.",
+    subtitle: "Chất đồng vận Opioid tổng hợp điều trị thay thế",
+    category: "Opioid tổng hợp kiểm soát y tế",
+    description: "Methadone hydrochloride là chất đồng vận toàn phần với thụ thể opioid nhưng có thời gian bán thải kéo dài (24-36 giờ). Được ngành y tế sử dụng trong chương trình điều trị nghiện các chất dạng thuốc phiện thay thế có kiểm soát.",
     effects: [
-      "Tác dụng phụ: Gây tăng tiết mồ hôi dữ dội, táo bón, khô miệng.",
-      "Tích lũy cơ thể: Gây đau nhức xương khớp sâu sắc nếu ngừng đột ngột.",
-      "Nguy cơ lạm dụng: Vẫn có khả năng gây nghiện nếu tự ý tăng liều ngoài chỉ định."
+      "Kiểm soát cơn thèm: Cắt đứt hội chứng cai heroin mà không tạo cảm giác phê pha đột ngột.",
+      "Nguy cơ quá liều: Uống quá liều chỉ định hoặc kết hợp với rượu/heroin sẽ gây suy hô hấp chết người.",
+      "Quản lý ngặt nghèo: Phải uống trực tiếp dưới sự giám sát của nhân viên y tế tại cơ sở cai nghiện."
     ],
-    warning: "Chỉ được uống dưới sự giám sát trực tiếp tại cơ sở y tế xã hội!",
-    position: { x: -5.0, y: 0.9, z: -0.6 },
+    warning: "Dược phẩm điều trị nghiện có kiểm soát đặc biệt, nghiêm cấm mua bán tàng trữ trái phép!",
+    position: { x: -4.55, y: 0.92, z: 1.25 },
     cabinetId: "cabinet_left",
-    audioText: "Methadone là một công cụ y tế xã hội quan trọng. Với cơ chế tác dụng kéo dài, Methadone giúp người nghiện Heroin không rơi vào trạng thái đói thuốc vật vã, giảm động cơ phạm tội và hành vi tiêm chích chung kim tiêm nguy hiểm. Tuy nhiên, nó vẫn là một chất opioid và đòi hỏi sự giám sát chuyên môn chặt chẽ.",
-    waveform: [20, 22, 28, 32, 24, 30, 35, 28, 40, 32, 26, 24, 30, 28, 32, 20, 22, 26, 18, 12],
-    inspectInfo: "Chai nhựa chứa dung dịch Methadone màu hồng cánh sen đặc trưng dùng cho chương trình cai nghiện."
+    row: "lower",
+    audioText: "Methadone là giải pháp y tế cộng đồng giúp người nghiện heroin từng bước từ bỏ hành vi tiêm chích ma túy bất hợp pháp, giảm thiểu lây nhiễm HIV và tái hòa nhập gia đình. Tuy nhiên, methadone vẫn là một chất gây nghiện mạnh. Nếu mang ra ngoài mua bán trái phép hoặc sử dụng sai phác đồ, nó sẽ trở thành nguyên nhân gây ngộ độc và tử vong do ngừng thở.",
+    waveform: [20, 30, 45, 35, 50, 40, 30, 45, 55, 40, 25, 35, 50, 45, 35, 30, 40, 25, 15, 20],
+    inspectInfo: "Chai nhựa màu nâu sẫm chứa siro Methadone 10mg/ml, kèm cốc đong chia vạch mi-li-lít tiêu chuẩn y tế."
   },
-{
-    id: "tramadol",
-    name: "Tramadol",
-    subtitle: "Thuốc giảm đau tổng hợp bị lạm dụng rộng rãi",
-    category: "Chất tổng hợp opioid",
-    description: "Tramadol là thuốc giảm đau tổng hợp tác dụng trung ương dòng opioid nhẹ hơn. Thường bị lạm dụng trái phép rộng rãi ở giới trẻ do dễ mua ngoài hiệu thuốc.",
+
+  // =========================================================================
+  // TỦ 2 (Phía Phải - cabinet_right): 12 MẪU VẬT
+  // Nhóm 2: Thực vật tự nhiên, nấm thức thần & các chế phẩm cần sa biến tướng
+  // =========================================================================
+
+  // --- HÀNG TRÊN (Tủ 2 - 6 Mẫu: Bậc cao Y = 1.14m, lùi sát vách X = 5.35m) ---
+  {
+    id: "poppy_flower",
+    name: "Hoa anh túc",
+    subtitle: "Hoa cây thuốc phiện (Papaver somniferum)",
+    category: "Thực vật tự nhiên chứa chất ma túy",
+    description: "Cây anh túc nở hoa màu sắc sặc sỡ từ đỏ thắm, hồng, tím đến trắng. Dù mang vẻ đẹp quyến rũ, toàn bộ thân cây và đài hoa đều chứa các alkaloid gây nghiện chết người, là nguồn gốc của thuốc phiện và heroin.",
     effects: [
-      "Hệ thần kinh: Gây chóng mặt dữ dội, co giật động kinh nếu uống quá liều.",
-      "Hội chứng Serotonin: Gây kích ứng, tăng thân nhiệt cơ thể nguy hiểm.",
-      "Phụ thuộc tâm lý: Tạo cảm giác lệ thuộc tinh thần sâu sắc kéo dài."
+      "Pháp luật nghiêm cấm: Hành vi trồng cây thuốc phiện dù chỉ 1 cây đều vi phạm pháp luật hình sự Việt Nam.",
+      "Độc tính: Phấn hoa và dịch tiết chứa morphine và codeine gây say xẩm, lơ mơ và buồn ngủ.",
+      "Tác hại xã hội: Nguồn gốc của các cuộc chiến tranh thuốc phiện và thảm họa ma túy toàn cầu."
     ],
-    warning: "Tự ý sử dụng Tramadol liều cao để tạo ảo giác có thể châm ngòi co giật ngạt thở!",
-    position: { x: -5.0, y: 0.9, z: 0.0 },
-    cabinetId: "cabinet_left",
-    audioText: "Tramadol là chất ma túy âm thầm ẩn náu trong tủ thuốc gia đình. Giới trẻ thường lạm dụng Tramadol liều cao để đạt trạng thái hưng phấn nhẹ. Thế nhưng quá liều Tramadol cực kỳ nguy hiểm, châm ngòi cho các cơn co giật toàn thân giống như động kinh và hội chứng độc tính Serotonin nguy kịch.",
-    waveform: [12, 18, 22, 20, 30, 25, 20, 28, 35, 30, 24, 20, 25, 22, 28, 16, 18, 22, 14, 8],
-    inspectInfo: "Hộp thuốc giấy chứa các viên nang cứng màu xanh-vàng dán nhãn biệt dược y tế."
-  },
-{
-    id: "buprenorphine",
-    name: "Buprenorphine",
-    subtitle: "Liệu pháp cắt cơn nghiện opioid thế hệ mới",
-    category: "Chất bán tổng hợp opioid",
-    description: "Buprenorphine là chất chủ vận opioid bán phần. Dùng trong điều trị cai nghiện nhờ tác dụng khóa thụ thể opioid, triệt tiêu cảm giác thèm muốn thuốc phiện.",
-    effects: [
-      "Hệ tim mạch: Gây chóng mặt tư thế đứng, hạ huyết áp nhẹ.",
-      "Hệ thần kinh: Gây đau đầu mãn tính, rối loạn giấc ngủ tạm thời.",
-      "Hội chứng cai: Gây khó chịu thể chất nhẹ khi ngắt liều điều trị."
-    ],
-    warning: "Hỗ trợ cắt cơn thèm ma túy vô cùng hiệu quả nếu tuân thủ lộ trình y khoa.",
-    position: { x: -5.0, y: 0.9, z: 0.6 },
-    cabinetId: "cabinet_left",
-    audioText: "Buprenorphine là một tiến bộ y học hiện đại trong điều trị nghiện chất. Bằng cách chiếm giữ các thụ thể opioid nhưng chỉ kích hoạt một phần, nó loại bỏ cảm giác thèm nhớ Heroin mà không gây phê pha quá độ, giúp bệnh nhân tái hòa nhập cộng đồng thuận lợi.",
-    waveform: [15, 17, 24, 22, 20, 28, 30, 26, 32, 28, 24, 22, 26, 24, 28, 18, 16, 20, 14, 10],
-    inspectInfo: "Dạng phim mỏng ngậm dưới lưỡi đóng trong gói giấy bạc kín chuyên dụng y tế."
+    warning: "Nghiêm cấm gieo trồng dưới mọi hình thức, bị truy cứu trách nhiệm hình sự phạt tù nghiêm khắc!",
+    position: { x: 5.35, y: 1.14, z: -3.75 },
+    cabinetId: "cabinet_right",
+    row: "upper",
+    audioText: "Trước mắt bạn là hoa cây thuốc phiện hay hoa anh túc. Cây thuốc phiện có tên khoa học là Papaver somniferum. Vẻ đẹp kiều diễm của cánh hoa đỏ rực này đã từng gieo rắc bao nỗi kinh hoàng cho nhân loại. Pháp luật Việt Nam nghiêm cấm triệt để việc gieo trồng cây thuốc phiện ở bất kỳ đâu, kể cả làm cảnh hay ngâm rượu.",
+    waveform: [20, 35, 50, 60, 40, 55, 70, 50, 35, 60, 50, 40, 65, 55, 45, 35, 50, 30, 20, 25],
+    inspectInfo: "Tiêu bản hoa anh túc ép khô ngâm formol trong lọ thủy tinh quang học trong suốt, nhìn rõ 4 cánh đỏ nhụy thẫm."
   },
   {
-    id: "diazepam",
-    name: "Seduxen (Diazepam)",
-    subtitle: "Thuốc an thần gây nghiện và ức chế trung ương",
-    category: "Nhóm Benzodiazepine ức chế thần kinh",
-    description: "Diazepam (Seduxen) là thuốc hướng thần nhóm benzodiazepine làm dịu thần kinh và gây ngủ. Lạm dụng gây giảm trương lực cơ, mất trí nhớ ngắn hạn và lệ thuộc thuốc nặng nề.",
+    id: "poppy_pod",
+    name: "Quả anh túc",
+    subtitle: "Quả nang chứa mủ thuốc phiện nguyên khai",
+    category: "Thực vật tự nhiên chứa chất ma túy",
+    description: "Quả cây thuốc phiện hình trứng hoặc quả lê, trên đỉnh có núm hình sao tỏa rạng. Khi quả chín bánh tẻ, đối tượng dùng dao rạch nhẹ vỏ quả để mủ trắng ứa ra, đông lại thành mủ thuốc phiện sống.",
     effects: [
-      "Liệt cơ vận động: Gây loạng choạng, mất thăng bằng, té ngã nguy hiểm.",
-      "Mất trí nhớ tức thời: Xóa nhòa ký ức ngắn hạn (hiệu ứng quên ngược chiều).",
-      "Ngừng thở khi kết hợp rượu: Tác dụng hiệp đồng làm ngừng thở đột ngột."
+      "Hàm lượng morphine cao: Mủ quả non chứa từ 10% đến 15% morphine nguyên chất.",
+      "Ngộ độc ngâm rượu: Rượu ngâm quả anh túc (rượu 138) gây tổn thương gan thận cấp, nghiện ngầm.",
+      "Chiết xuất ma túy: Nguyên liệu ban đầu để tinh chế morphine và bán tổng hợp heroin."
     ],
-    warning: "Nguy cơ tử vong cực cao khi dùng chung với rượu bia hoặc các chất ức chế khác!",
-    position: { x: -5.0, y: 0.9, z: 1.2 },
-    cabinetId: "cabinet_left",
-    audioText: "Seduxen hay Diazepam là thuốc an thần hướng thần thuộc danh mục quản lý đặc biệt. Khi bị lạm dụng ngoài chỉ định của bác sĩ, nó phá hủy khả năng điều khiển vận động và gây suy hô hấp cấp.",
-    waveform: [15, 25, 35, 20, 40, 30, 25, 35, 50, 30, 20, 30, 40, 25, 30, 15, 20, 25, 15, 5],
-    inspectInfo: "Vỉ thuốc viên tròn nhỏ màu trắng có logo chữ D dập chìm niêm phong trong hộp dược y tế."
-  },
-{
-    id: "kratom",
-    name: "Lá Kratom (Ketum)",
-    subtitle: "Chất thảo mộc hướng thần nguy hại",
-    category: "Chất tự nhiên tự sinh",
-    description: "Kratom là loại lá cây nhiệt đới chứa hoạt chất mitragynine. Liều nhỏ gây kích thích, liều cao gây ức chế thần kinh tương tự thuốc phiện.",
-    effects: [
-      "Hệ thần kinh: Gây ảo giác hoang tưởng bị hại, kích động hung hãn.",
-      "Tổn thương gan thận: Gây nhiễm độc tế bào gan mãn tính nặng.",
-      "Hệ bài tiết: Bí tiểu cấp, táo bón dữ dội do ngộ độc alkaloids."
-    ],
-    warning: "Bị cấm tại Việt Nam và nhiều quốc gia vì nguy cơ gây nghiện tàn phá tâm thần!",
-    position: { x: -5.0, y: 0.9, z: 1.8 },
-    cabinetId: "cabinet_left",
-    audioText: "Kratom là chất thảo mộc hướng thần tự nhiên bị lạm dụng tại Đông Nam Á. Hoạt chất mitragynine tác động kép lên cả hệ dopamine và thụ thể opioid, tạo ra sự pha trộn nguy hiểm giữa kích thích thần kinh và an thần, dẫn tới ảo giác hung hãn và suy hoại tế bào gan.",
-    waveform: [18, 24, 28, 26, 35, 30, 24, 32, 40, 35, 28, 26, 30, 28, 32, 22, 20, 24, 16, 12],
-    inspectInfo: "Bột lá Kratom sấy khô màu xanh rêu nghiền mịn, kèm theo lá cây tươi có gân đỏ."
-  },
-{
-    id: "meth",
-    name: "Ma túy đá (Methamphetamine)",
-    subtitle: "Chất kích thích hệ thần kinh cực mạnh",
-    category: "Chất tổng hợp hoàn toàn",
-    description: "Ma túy đá tồn tại dưới dạng tinh thể như phèn chua. Nó kích thích giải phóng ồ ạt chất dẫn truyền dopamine trong não, gây hưng phấn tột độ tạm thời nhưng tàn phá hệ thần kinh vĩnh viễn.",
-    effects: [
-      "Trạng thái ngáo đá: Gây ảo giác nặng, hoang tưởng bị hại dẫn đến bạo lực.",
-      "Tàn phá ngoại hình: Lão hóa da, hoại tử răng miệng dữ dội (meth mouth).",
-      "Tổn thương cơ quan: Gây suy thận cấp, co thắt mạch gây đột quỵ não."
-    ],
-    warning: "Ảo giác ngáo đá cực kỳ nguy hiểm, biến người dùng thành quái thú mất kiểm soát!",
-    position: { x: 5.0, y: 0.9, z: -4.5 },
+    warning: "Ngâm rượu uống là hành vi tàng trữ sử dụng chất ma túy trái phép, có thể bị xử lý hình sự!",
+    position: { x: 5.35, y: 1.14, z: -2.75 },
     cabinetId: "cabinet_right",
-    audioText: "Bạn đang đứng trước tiêu bản Methamphetamine, thường được gọi là ma túy đá. Khác với heroin có nguồn gốc tự nhiên, ma túy đá là chất hóa học tổng hợp hoàn toàn. Nó kích hoạt não bộ giải phóng dopamine vượt ngưỡng tự nhiên hàng chục lần, tạo ra sự tỉnh táo giả tạo và hoang tưởng quyền lực. Khi hết thuốc, người dùng rơi vào trầm cảm cực độ và ảo giác 'ngáo đá', biến họ thành những mối đe dọa cực kỳ nguy hiểm cho xã hội.",
-    waveform: [30, 20, 70, 50, 40, 90, 80, 30, 60, 70, 40, 50, 80, 60, 20, 40, 70, 50, 90, 10],
-    inspectInfo: "Tinh thể đá trong suốt óng ánh, tiêu bản mô phỏng độ tinh khiết cao của ma túy đá."
-  },
-{
-    id: "amphetamine",
-    name: "Amphetamine (Hồng Phiến)",
-    subtitle: "Chất kích thích nền tảng thế hệ đầu",
-    category: "Chất tổng hợp kích thích",
-    description: "Amphetamine kích thích thần kinh làm co mạch, tăng nhịp tim. Hồng phiến là hỗn hợp của chất này và cafein cực kỳ phổ biến tại Đông Nam Á.",
-    effects: [
-      "Hệ tim mạch: Tăng nhịp tim cấp tính gây suy tim co thắt đột ngột.",
-      "Tác động tâm lý: Lo âu dữ dội, mất ngủ kinh niên dẫn đến loạn thần.",
-      "Kiệt quệ năng lượng: Đốt sạch năng lượng cơ thể gây suy kiệt thể chất."
-    ],
-    warning: "Hủy hoại hoàn toàn tế bào não thùy trán, suy kiệt trí tuệ nhanh chóng!",
-    position: { x: 5.0, y: 0.9, z: -3.9 },
-    cabinetId: "cabinet_right",
-    audioText: "Amphetamine, hay thường gặp dưới dạng Hồng Phiến, ép ép năng lượng cơ thể hoạt động vượt công suất tối đa. Người dùng hồng phiến sẽ nhanh chóng rơi vào suy nhược nghiêm trọng, mất ngủ kinh niên và loạn thần hoang tưởng cực độ, tàn phá não bộ không thể phục hồi.",
-    waveform: [25, 20, 40, 50, 30, 70, 60, 25, 50, 55, 35, 40, 60, 50, 20, 30, 50, 40, 70, 10],
-    inspectInfo: "Các viên nén màu hồng cam sặc sỡ có in chữ WY viết tắt đặc trưng của hồng phiến."
-  },
-{
-    id: "ecstasy",
-    name: "Thuốc lắc (MDMA)",
-    subtitle: "Kẻ hủy diệt các buổi tiệc âm nhạc",
-    category: "Chất tổng hợp gây ảo giác",
-    description: "MDMA thường được ép thành những viên nén nhiều màu sắc sặc sỡ và ký hiệu dễ thương. Nó làm biến đổi nhận thức, tăng nhiệt độ cơ thể đến mức nguy kịch.",
-    effects: [
-      "Tăng thân nhiệt cực đoan: Đẩy nhiệt độ lên 42 độ C gây suy đa phủ tạng.",
-      "Hủy hoại Serotonin: Gây trầm cảm lâm sàng sâu sắc sau khi hết thuốc.",
-      "Ngộ độc tạp chất: Thường bị trộn thuốc thú y, thuốc diệt chuột cực độc."
-    ],
-    warning: "Uống thuốc lắc kích động nhảy múa quá sức có thể đột tử do suy tim mất nước!",
-    position: { x: 5.0, y: 0.9, z: -3.3 },
-    cabinetId: "cabinet_right",
-    audioText: "Bạn đang quan sát các viên thuốc lắc MDMA. Thường được ngụy trang dưới những hình thù dễ thương và màu sắc sặc sỡ tại các vũ trường, quán bar. Thuốc lắc kích thích phóng thích ồ ạt hormone hạnh phúc giả tạo, đồng thời gây mất nước nghiêm trọng. Người dùng nhảy múa điên cuồng không biết mệt mỏi, đẩy cơ thể đến trạng thái kiệt quệ lâm sàng, tăng thân nhiệt cực đoan phá hủy phủ tạng.",
-    waveform: [50, 30, 60, 80, 40, 70, 90, 30, 50, 40, 80, 60, 70, 30, 40, 90, 60, 20, 50, 40],
-    inspectInfo: "Lọ thủy tinh chứa hàng chục viên nén hình tròn, hình tim màu hồng, xanh lục và cam dập nổi logo."
-  },
-{
-    id: "cocaine",
-    name: "Cocaine",
-    subtitle: "Chất gây nghiện chiết xuất từ lá Coca",
-    category: "Chất tự nhiên tinh chế",
-    description: "Cocaine là một alkaloid dạng bột tinh thể màu trắng, thu hoạch từ lá cây Coca ở Nam Mỹ. Nó làm co thắt mạnh mạch máu, tăng nhịp tim và huyết áp lên mức cực đoan chỉ trong vài giây.",
-    effects: [
-      "Đột tử tim mạch: Co thắt mạch vành đột ngột gây nhồi máu cơ tim xuất huyết não.",
-      "Hoại tử đường thở: Hủy hoại hoàn toàn vách ngăn mũi nếu hít trực tiếp.",
-      "Rối loạn tâm thần: Hoang tưởng cực độ, lo âu cấp tính dữ dội."
-    ],
-    warning: "Gây co thắt tim đột ngột trực tiếp giết chết người sử dụng ngay lập tức!",
-    position: { x: 5.0, y: 0.9, z: -2.7 },
-    cabinetId: "cabinet_right",
-    audioText: "Đây là khu vực trưng bày Cocaine, một chất kích thích cực mạnh chiết xuất từ lá cây Coca. Cocaine ngăn cản não hấp thu lại dopamine, tích tụ chất này tạo cảm giác hưng phấn ngắn hạn. Tuy nhiên, cái giá phải trả là vô cùng đắt. Cocaine tàn phá hệ tim mạch khủng khiếp, làm co hẹp động mạch vành và có thể châm ngòi cho các cơn đột quỵ hoặc nhồi máu cơ tim giết người chớp nhoáng.",
-    waveform: [40, 50, 30, 60, 80, 50, 30, 70, 40, 60, 90, 50, 40, 30, 60, 80, 20, 70, 50, 30],
-    inspectInfo: "Bột tinh thể màu trắng tinh nén nén thành bánh hình chữ nhật có ký hiệu hải quan."
-  },
-{
-    id: "crack",
-    name: "Crack Cocaine (Đá Cocaine)",
-    subtitle: "Cocaine dạng hút gây nghiện siêu tốc",
-    category: "Chất tự nhiên tinh chế",
-    description: "Crack là cocaine base tinh thể được chế biến để hút. Tạo ra tiếng nổ lách tách khi đốt, hấp thụ vào phổi lên não chỉ trong 8 giây gây hưng phấn và nghiện ngay lập tức.",
-    effects: [
-      "Nghiện tức thì: Cơn thèm khát tột độ bùng phát ngay khi hết tác dụng phê thuốc.",
-      "Hội chứng phổi crack: Hủy hoại phế nang phổi, ho ra máu, xơ hóa nhu mô phổi.",
-      "Hoại tử mô mặt: Gây bỏng miệng, hoại tử mô vòm họng nghiêm trọng."
-    ],
-    warning: "Gây nghiện siêu tốc độ và phá hủy tâm thần chỉ sau vài tuần sử dụng!",
-    position: { x: 5.0, y: 0.9, z: -2.1 },
-    cabinetId: "cabinet_right",
-    audioText: "Crack Cocaine là biến thể nguy hiểm hơn của cocaine thông thường. Hấp thu cực nhanh qua phổi, nó kích hoạt cơn nghiện tức thì chỉ sau một hơi hút. Sự hụt hẫng hưng phấn đột ngột đẩy người dùng vào trạng thái thèm muốn điên cuồng, sẵn sàng thực hiện mọi hành vi phạm pháp để có thuốc.",
-    waveform: [45, 55, 35, 65, 85, 60, 40, 75, 50, 65, 95, 60, 45, 35, 65, 85, 30, 75, 55, 35],
-    inspectInfo: "Các mẩu tinh thể thô vụn màu vàng nhạt trông giống như sỏi đá thô đựng trong lọ nhựa."
+    row: "upper",
+    audioText: "Quả anh túc là bộ phận tập trung nồng độ chất gây nghiện cao nhất của cây. Nhiều người dân lầm tưởng ngâm quả thuốc phiện vào rượu sẽ bổ dương tăng lực, nhưng thực chất là đang tự đầu độc cơ thể bằng morphine và các alkaloid thô, dẫn tới suy gan, xơ gan và nghiện ngập không lối thoát.",
+    waveform: [25, 45, 60, 50, 65, 75, 55, 40, 70, 60, 45, 55, 65, 50, 40, 45, 50, 30, 20, 30],
+    inspectInfo: "Tiêu bản quả thuốc phiện sấy khô màu xanh xám, trên vỏ quả còn in hằn các vết khía rạch lấy mủ song song."
   },
   {
-    id: "nuoc_vui",
-    name: "Nước Vui (Happy Water)",
-    subtitle: "Ma túy tổng hợp mới ngụy trang nước trái cây",
-    category: "Hỗn hợp ma túy tổng hợp cực độc",
-    description: "Nước vui là hỗn hợp ma túy pha trộn phức tạp gồm Ketamine, MDMA (thuốc lắc), Diazepam và Methamphetamine. Thường đóng gói trong các gói bột hòa tan hương dâu, xoài để lừa gạt giới trẻ.",
+    id: "opium_resin",
+    name: "Nhựa cây thuốc phiện",
+    subtitle: "Thuốc phiện sống / Thuốc phiện chín (Opium)",
+    category: "Chất ma túy tự nhiên",
+    description: "Mủ khô thu hoạch từ quả anh túc. Thuốc phiện sống có màu nâu sẫm, mềm dẻo, mùi ngái hắc đặc trưng. Khi đun sôi lọc cặn thành thuốc phiện chín màu đen nhánh, mùi thơm khen khét khi đốt trên tẩu.",
     effects: [
-      "Đột quỵ não cấp: Huyết áp tăng vọt tức thì, vỡ mạch máu não.",
-      "Rối loạn nhịp tim ác tính: Tim đập nhanh loạn xạ, co thắt động mạch vành.",
-      "Ảo giác kích động cuồng loạn: Gây hoang tưởng bạo lực, mất kiểm soát hành vi."
+      "Tàn tạ cơ thể: Gây hội chứng phù thủng thuốc phiện, da vàng bủng, mắt lờ đờ trũng sâu.",
+      "Hủy hoại ý chí: Người nghiện mất hết động lực sống, chỉ nằm ôm bàn đèn hút thuốc phiện.",
+      "Lão hóa sớm: Rụng răng, suy giảm sinh dục, teo cơ và tuổi thọ suy giảm nghiêm trọng."
     ],
-    warning: "Ma túy thế hệ mới ngụy trang tinh vi! Tuyệt đối không uống nước lạ từ người không quen!",
-    position: { x: 5.0, y: 0.9, z: -1.5 },
+    warning: "Gông cùm đầu độc lịch sử dân tộc suốt hàng thế kỷ, bị cấm tuyệt đối theo luật pháp!",
+    position: { x: 5.35, y: 1.14, z: -1.75 },
     cabinetId: "cabinet_right",
-    audioText: "Nước vui là một trong những loại ma túy tổng hợp ngụy trang nguy hiểm nhất hiện nay. Được đóng gói bắt mắt như nước trái cây hòa tan, bên trong là hỗn hợp chết người giữa thuốc lắc, ma túy đá và ketamine. Chỉ một gói nhỏ có thể gây loạn nhịp tim cấp và tử vong tại chỗ.",
-    waveform: [45, 65, 85, 75, 95, 85, 70, 90, 100, 80, 65, 75, 85, 70, 80, 55, 40, 65, 45, 25],
-    inspectInfo: "Gói bột màu sắc rực rỡ in hình hoa quả hương xoài/dâu nhưng chứa chất ma túy tổng hợp hỗn hợp."
-  },
-{
-    id: "ritalin",
-    name: "Ritalin (Methylphenidate)",
-    subtitle: "Thuốc hướng thần ADHD bị lạm dụng học đường",
-    category: "Chất tổng hợp kích thích",
-    description: "Ritalin là dược chất kích thích thần kinh kê đơn cho trẻ tăng động giảm chú ý (ADHD). Bị lạm dụng trái phép làm 'thuốc thông minh' để ôn thi.",
-    effects: [
-      "Rối loạn nhịp tim: Tăng huyết áp đột ngột, loạn nhịp gây đột tử.",
-      "Tâm lý cực đoan: Gây lo âu cấp tính, kích động và trầm cảm sâu sắc.",
-      "Suy giảm nhận thức: Làm tổn thương khả năng ghi nhớ tự nhiên khi hết thuốc."
-    ],
-    warning: "Không tự ý lạm dụng làm thuốc bổ não! Nguy hiểm suy tim loạn thần tiềm ẩn.",
-    position: { x: 5.0, y: 0.9, z: -0.9 },
-    cabinetId: "cabinet_right",
-    audioText: "Ritalin bị gắn mác sai lệch là 'thuốc thông minh' tại các môi trường học đường và công sở. Lạm dụng Ritalin để thức đêm học tập gây áp lực cực lớn lên hệ tim mạch, làm biến đổi sinh hóa não bộ và châm ngòi cho các cơn hoảng loạn nghiêm trọng.",
-    waveform: [15, 20, 25, 22, 35, 28, 20, 32, 42, 30, 24, 20, 28, 25, 30, 18, 16, 22, 14, 10],
-    inspectInfo: "Hộp thuốc biệt dược vỉ 10 viên nén màu vàng nhạt dập chìm ký hiệu của nhà sản xuất."
-  },
-{
-    id: "adderall",
-    name: "Adderall (Hỗn Hợp Muối Amphetamine)",
-    subtitle: "Chất kích thích học tập học đường nguy hại",
-    category: "Chất tổng hợp kích thích",
-    description: "Adderall chứa muối amphetamine tổng hợp mạnh. Lạm dụng liều lượng cao để duy trì sự tỉnh táo thức đêm ôn thi, tàn phá thể trạng nhanh chóng.",
-    effects: [
-      "Nguy cơ đột quỵ: Gây co thắt động mạch não làm xuất huyết đột quỵ.",
-      "Ảo giác ảo ảnh: Gây hoang tưởng, ảo thanh kích động loạn thần.",
-      "Nghiện ngập thể chất: Gây phụ thuộc sâu sắc, kiệt quệ sinh lực."
-    ],
-    warning: "Tàn phá chất xám thần kinh thầm lặng! Đừng bao giờ lạm dụng để ôn thi.",
-    position: { x: 5.0, y: 0.9, z: -0.3 },
-    cabinetId: "cabinet_right",
-    audioText: "Adderall là con quỷ ẩn mình dưới danh nghĩa bổ não ôn thi. Kích thích ồ ạt hệ thần kinh trung ương, nó vắt kiệt giọt năng lượng cuối cùng của cơ thể, đẩy người lạm dụng vào vòng xoáy hoại tử thùy trán, suy giảm nhận thức nặng nề.",
-    waveform: [18, 22, 28, 24, 38, 30, 22, 35, 45, 32, 26, 22, 30, 28, 32, 20, 18, 24, 16, 12],
-    inspectInfo: "Viên nang cứng màu cam đất chứa các hạt vi nang giải phóng chậm hướng thần."
-  },
-{
-    id: "nicotine",
-    name: "Nicotine (Thuốc Lá Điện Tử/Vape)",
-    subtitle: "Chất gây nghiện học đường thế hệ mới",
-    category: "Chất tự nhiên độc hại",
-    description: "Nicotine tinh chế liều cao có trong tinh dầu Vape/Pod. Kích thích dopamine ngắn hạn gây nghiện siêu tốc và tàn phá hệ hô hấp non nớt.",
-    effects: [
-      "Tổn thương phổi: Gây xơ hóa phổi, viêm tiểu phế quản cấp (phổi bỏng ngô).",
-      "Hệ tim mạch: Làm xơ vữa động mạch sớm, tăng nguy cơ nhồi máu cơ tim.",
-      "Nghiện ngập học đường: Trói buộc giới trẻ vào thói quen hút Vape liên tục."
-    ],
-    warning: "Thuốc lá điện tử pod/vape thường pha trộn chất hướng thần tổng hợp chết người!",
-    position: { x: 5.0, y: 0.9, z: 0.3 },
-    cabinetId: "cabinet_right",
-    audioText: "Nicotine là hoạt chất gây nghiện cực mạnh ẩn mình sau làn khói thơm ngọt của thuốc lá điện tử Pod, Vape. Nicotine tinh chế tàn phá phổi non nớt của giới trẻ, cướp đi sự tập trung và châm ngòi cho chứng xơ vữa mạch máu sớm.",
-    waveform: [12, 16, 20, 18, 26, 22, 16, 24, 30, 25, 20, 18, 22, 20, 24, 14, 12, 16, 10, 6],
-    inspectInfo: "Các thiết bị Pod dùng một lần nhiều màu sắc bắt mắt kèm lọ tinh dầu thơm hướng thần."
-  },
-{
-    id: "caffeine",
-    name: "Caffeine nguyên chất",
-    subtitle: "Chất kích thích phổ biến nhất thế giới",
-    category: "Chất tự nhiên an toàn tương đối",
-    description: "Caffeine chiết xuất tinh khiết liều cao. Sử dụng liều cao cực đoan gây ngộ độc kích ứng tim mạch nguy hiểm.",
-    effects: [
-      "Nhiễm độc caffeine: Nhịp tim nhanh trên 120 nhịp/phút, lo âu cấp tính.",
-      "Hệ tiêu hóa: Kích ứng dạ dày dữ dội, tăng tiết axit gây loét.",
-      "Hệ bài tiết: Gây lợi tiểu mạnh gây mất nước và khoáng chất cấp."
-    ],
-    warning: "Bột caffeine nguyên chất liều cao cực kỳ nguy hiểm, có thể gây ngưng tim đột ngột!",
-    position: { x: 5.0, y: 0.9, z: 0.9 },
-    cabinetId: "cabinet_right",
-    audioText: "Mặc dù caffeine trong trà hay cà phê là tương đối an toàn, bột caffeine nguyên chất liều cao lại là độc chất tim mạch nguy hiểm, có thể châm ngòi loạn nhịp thất đe dọa tính mạng nếu lạm dụng vô độ.",
-    waveform: [8, 12, 16, 14, 20, 18, 14, 22, 25, 20, 16, 14, 18, 16, 20, 12, 10, 14, 8, 4],
-    inspectInfo: "Bột tinh thể màu trắng tinh chất đựng trong lọ thí nghiệm dán nhãn kiểm soát liều lượng."
-  },
-{
-    id: "khat",
-    name: "Lá Khat (Lá Thiên Đường)",
-    subtitle: "Thảo mộc kích thích gây ảo giác cực mạnh",
-    category: "Chất tự nhiên tự sinh",
-    description: "Lá Khat chứa hoạt chất Cathinone mạnh tương tự amphetamine. Nhai lá tươi gây hưng phấn mạnh nhưng kéo theo loạn thần hoang tưởng nghiêm trọng.",
-    effects: [
-      "Răng miệng: Gây rụng răng hoại tử lợi, ung thư vòm họng mãn tính.",
-      "Tâm thần loạn thần: Ảo giác hoang tưởng bị hại, xu hướng tự sát hung ác.",
-      "Hệ tim mạch: Nhồi máu cơ tim cấp do co thắt mạch vành đột ngột."
-    ],
-    warning: "Bị cấm nghiêm ngặt tại Việt Nam vì độc tính phá hủy tâm thần tột độ!",
-    position: { x: 5.0, y: 0.9, z: 1.5 },
-    cabinetId: "cabinet_right",
-    audioText: "Lá Khat, hay lá Thiên Đường ảo giả, chứa hoạt chất cathinone hướng thần cực mạnh. Lạm dụng nhai lá Khat tàn phá khoang miệng khủng khiếp, gây hoại tử lợi răng và đẩy người dùng vào chứng bệnh hoang tưởng, ảo giác điên cuồng dữ tợn.",
-    waveform: [20, 26, 32, 28, 42, 35, 26, 38, 48, 38, 30, 26, 32, 30, 36, 24, 20, 28, 18, 12],
-    inspectInfo: "Bó lá Khat khô gân đỏ tía giống lá trà xanh, kèm theo lọ tinh chế hướng thần Cathinone."
-  },
-{
-    id: "cannabis",
-    name: "Cần sa (Marijuana)",
-    subtitle: "Chất thảo mộc hướng thần ảo giác",
-    category: "Chất tự nhiên hướng thần",
-    description: "Cần sa gồm lá, hoa khô của cây Cannabis sativa. Nó chứa hoạt chất THC gây biến đổi trạng thái tâm lý, làm suy yếu trí nhớ ngắn hạn và giảm khả năng phối hợp vận động.",
-    effects: [
-      "Hủy hoại trí tuệ: Suy giảm IQ vĩnh viễn ở thanh thiếu niên.",
-      "Tác hại phổi: Khói cần sa chứa lượng hắc ín độc hại gấp 5 lần thuốc lá thường.",
-      "Tâm thần loạn thần: Kích hoạt trầm cảm lâm sàng và tâm thần phân liệt."
-    ],
-    warning: "Cần sa không hề an toàn! Nó là chất dẫn dụ mở đường đến các ma túy nặng hơn.",
-    position: { x: -6.6, y: 0.9, z: 6.5 },
-    cabinetId: "cabinet_back",
-    audioText: "Chào mừng bạn đến với tiêu bản Cần sa. Mặc dù có nguồn gốc thảo mộc tự nhiên, cần sa chứa chất THC cực kỳ nguy hại cho não bộ đang phát triển. Hút cần sa thường xuyên làm tổn thương nghiêm trọng vùng dưới đồi thị và thùy trán, tước đoạt trí nhớ và động lực sống của giới trẻ. Hơn nữa, nó là bước đệm tinh vi dẫn dắt người trẻ dấn thân vào các con đường sử dụng ma túy tổng hợp chết người.",
-    waveform: [20, 30, 50, 40, 70, 50, 30, 60, 80, 40, 20, 50, 60, 30, 40, 70, 50, 30, 40, 20],
-    inspectInfo: "Mẫu lá cây hình chân chim có 7 thùy răng cưa khô đặc trưng bảo quản trong hộp mica."
+    row: "upper",
+    audioText: "Nhựa thuốc phiện là chất ma túy có lịch sử tàn phá cổ xưa nhất. Người hút thuốc phiện phải dùng bàn đèn, tiêm đèn đốt nóng viên nhựa để hút khói qua tẩu dài. Thuốc phiện bào mòn sinh lực nhanh chóng, biến người khỏe mạnh thành những bóng ma tiều tụy nằm chờ cữ hút, mở đường cho nạn buôn bán ma túy toàn cầu.",
+    waveform: [30, 40, 55, 45, 60, 50, 35, 65, 75, 50, 35, 45, 60, 55, 40, 35, 45, 25, 20, 25],
+    inspectInfo: "Khối nhựa dẻo quánh màu nâu đen đóng bánh tròn, bọc ngoài bằng giấy bóng kính phong ấn dấu tang vật."
   },
   {
-    id: "co_my",
-    name: "Cỏ Mỹ (K2 / Spice)",
-    subtitle: "Cần sa tổng hợp tẩm hóa chất cực độc",
-    category: "Hợp chất cannabinoid tổng hợp",
-    description: "Cỏ Mỹ là lá thực vật khô được tẩm ướp các hóa chất cannabinoid tổng hợp (JWH, XLR-11). Độc tính gấp hàng trăm lần cần sa tự nhiên, gây ảo giác kinh hoàng và suy thận cấp.",
+    id: "coca_leaf",
+    name: "Lá coca",
+    subtitle: "Lá cây Erythroxylum coca vùng Andes",
+    category: "Thực vật tự nhiên chứa chất ma túy",
+    description: "Lá cây bụi có nguồn gốc Nam Mỹ, màu xanh lục bóng, có hai đường gân phụ song song với gân chính. Lá chứa alkaloid cocaine được chiết xuất và tinh chế thành chất ma túy kích thích nguy hiểm bậc nhất thế giới.",
     effects: [
-      "Loạn thần cấp tính: Hoang tưởng bị truy sát, tự hủy hoại bản thân.",
-      "Suy thận và suy tim cấp: Gây co thắt mạch máu thận và suy tạng chớp nhoáng.",
-      "Co giật toàn thân: Các cơn co giật động kinh liên tục gây tổn thương não."
+      "Tăng huyết áp kịch phát: Kích thích tim đập dữ dội, dễ đứt mạch máu não.",
+      "Nguồn gốc ma túy xuyên quốc gia: Nguyên liệu cơ bản nuôi sống các băng đảng ma túy khét tiếng.",
+      "Gây lệ thuộc: Gây kích thích tâm thần vận động và suy sụp khi hết tác dụng."
     ],
-    warning: "Gây loạn thần điên loạn và tử vong tức thì ngay từ lần đầu tiên hút thử!",
-    position: { x: -5.4, y: 0.9, z: 6.5 },
-    cabinetId: "cabinet_back",
-    audioText: "Cỏ Mỹ là cần sa tổng hợp nguy hiểm tột độ. Không phải là thảo mộc tự nhiên, cỏ Mỹ là các sợi thực vật khô bị xịt đẫm hóa chất cannabinoid nhân tạo độc hại. Nó kích hoạt thụ thể thần kinh với cường độ khủng khiếp, gây ảo giác điên loạn và suy đa phủ tạng.",
-    waveform: [35, 50, 70, 60, 80, 65, 55, 75, 85, 65, 50, 60, 70, 55, 65, 40, 30, 50, 35, 15],
-    inspectInfo: "Gói nylon bọc kín chứa sợi thảo mộc khô màu xanh nâu nồng nặc mùi hương liệu hóa chất nhân tạo."
-  },
-{
-    id: "lsd",
-    name: "Bùa lưỡi (LSD)",
-    subtitle: "Vua ảo giác tổng hợp hướng thần",
-    category: "Chất tổng hợp gây ảo giác",
-    description: "LSD là chất gây ảo giác cực mạnh được tẩm vào các mẩu giấy in hoạt hình dễ thương. Gây hoang tưởng biến dạng không gian, thời gian tột độ.",
-    effects: [
-      "Chuyến đi bão táp (Bad Trip): Ảo giác kinh hoàng gây hoảng loạn tột độ dẫn đến tự sát.",
-      "Flashback (Tái hiện): Ảo giác bùng phát bất chợt sau nhiều năm ngừng sử dụng.",
-      "Loạn thần mãn tính: Mất hoàn toàn ranh giới giữa đời thực và ảo ảnh phân liệt."
-    ],
-    warning: "Biến dạng nhận thức cực đoan đẩy người dùng nhảy lầu tự sát do nghĩ mình biết bay!",
-    position: { x: -4.2, y: 0.9, z: 6.5 },
-    cabinetId: "cabinet_back",
-    audioText: "LSD là chất gây ảo giác hóa học kinh điển nhất. Tác dụng ở liều lượng siêu nhỏ tính bằng microgam, LSD bẻ cong hoàn toàn nhận thức giác quan của người dùng. Họ có thể thấy âm thanh có màu sắc, hình ảnh chuyển động kỳ quái, và những cơn ác mộng bad trip rùng rợn đẩy họ tới hành vi tự hủy hoại bản thân.",
-    waveform: [40, 60, 80, 50, 90, 70, 50, 85, 95, 60, 40, 55, 75, 50, 70, 40, 30, 50, 30, 15],
-    inspectInfo: "Tờ giấy thấm bùa lưỡi chia thành các ô vuông nhỏ in hình nhân vật hoạt hình ngụy trang tinh vi."
-  },
-{
-    id: "psilocybin",
-    name: "Nấm Thức Thần (Magic Mushroom)",
-    subtitle: "Thảo mộc gây ảo giác chứa Psilocybin",
-    category: "Chất tự nhiên gây ảo giác",
-    description: "Nấm thức thần chứa hoạt chất psilocybin gây ảo giác tự nhiên. Khi ăn vào gan chuyển hóa thành psilocin bẻ cong hệ thống serotonin gây ảo ảnh mạnh mẽ.",
-    effects: [
-      "Rối loạn giác quan: Nhận thức sai lệch hoàn toàn thực tại xung quanh.",
-      "Cơn hoảng loạn cấp: Gây lo âu cực độ, mất tự chủ hành vi bạo lực.",
-      "Nhiễm độc cơ thể: Buồn nôn dữ dội, ngộ độc độc tố nấm hoại tử cơ."
-    ],
-    warning: "Nấm ma thuật độc tính cao hủy hoại tế bào thần kinh thầm lặng!",
-    position: { x: -3.0, y: 0.9, z: 6.5 },
-    cabinetId: "cabinet_back",
-    audioText: "Nấm thức thần chứa psilocybin kích hoạt ảo ảnh bóp méo không gian, thời gian sâu sắc. Dưới tác dụng của nấm thức thần, người dùng mất khả năng tự vệ và có thể thực hiện những hành vi bạo lực không tự chủ do hoang tưởng bị ma quỷ truy đuổi.",
-    waveform: [30, 40, 60, 50, 80, 60, 40, 70, 85, 60, 30, 45, 65, 50, 60, 35, 25, 40, 20, 10],
-    inspectInfo: "Cây nấm sấy khô màu xám đen, thân dài mảnh, mũ nấm hình nón có viền vàng nhạt."
-  },
-{
-    id: "dmt",
-    name: "DMT (Phân tử thần linh)",
-    subtitle: "Chất thức thần ảo giác tột độ nhanh chóng",
-    category: "Chất tự nhiên hướng thần",
-    description: "DMT là chất thức thần ảo giác mạnh nhất được chiết xuất từ rễ cây Nam Mỹ. Hút vào phổi tạo ra ảo ảnh thoát xác, biến đổi thực tại kinh hoàng chỉ sau vài giây.",
-    effects: [
-      "Thoát xác ảo tưởng: Mất hoàn toàn liên kết với thân thể vật lý.",
-      "Tim mạch cực đoan: Tăng nhịp tim cấp tính gây co thắt động mạch vành.",
-      "Rối loạn tâm thần sâu sắc: Sang chấn tâm lý kéo dài do ảo ảnh bão táp."
-    ],
-    warning: "Ảo giác cực độ bẻ cong hệ thống nhận thức ý thức chỉ trong chớp mắt!",
-    position: { x: -1.8, y: 0.9, z: 6.5 },
-    cabinetId: "cabinet_back",
-    audioText: "DMT tạo ra những cơn ảo giác thoát xác dữ dội. Chỉ sau vài giây sử dụng, thế giới thực tại biến mất hoàn toàn, thay thế bằng không gian đa chiều kỳ dị. Sự bẻ cong nhận thức quá nhanh này châm ngòi cho các cơn hoảng loạn nghiêm trọng và chấn thương tâm lý vĩnh viễn.",
-    waveform: [45, 65, 85, 75, 95, 80, 60, 90, 100, 75, 50, 70, 80, 60, 75, 45, 35, 55, 35, 20],
-    inspectInfo: "Bột tinh thể màu cam vàng lấp lánh chiết xuất thực vật độc hướng thần đặc hiệu."
-  },
-{
-    id: "ketamine",
-    name: "Ketamine (Khay)",
-    subtitle: "Chất gây mê y tế bị lạm dụng tàn nhẫn",
-    category: "Chất tổng hợp phân ly ảo giác",
-    description: "Ketamine là chất gây mê phân ly dùng trong thú y và y tế. Lạm dụng trái phép gây ra hiệu ứng tách rời cơ thể khỏi tâm trí (hố K), tàn phá thể xác thảm hại.",
-    effects: [
-      "Hủy hoại bàng quang: Gây viêm bàng quang xuất huyết mãn tính, teo bàng quang phải cắt bỏ.",
-      "Tổn thương não bộ: Gây hoại tử nhu mô não tạo các ổ khuyết vĩnh viễn.",
-      "K-Hole (Hố K): Rơi vào trạng thái liệt vận động hoàn toàn, ảo ảnh kinh dị cô độc."
-    ],
-    warning: "Ketamine phá hủy bàng quang vĩnh viễn, bắt buộc phải đeo túi nước tiểu nhân tạo cả đời!",
-    position: { x: -0.6, y: 0.9, z: 6.5 },
-    cabinetId: "cabinet_back",
-    audioText: "Bạn đang đối mặt với tiêu bản Ketamine, thường gọi là Ke. Vốn là chất gây mê, Ke phân lập đường truyền cảm giác từ tủy sống lên não. Lạm dụng Ke đẩy người dùng vào trạng thái liệt cứng thể chất trong khi não bộ chìm trong ác mộng K-hole. Đặc biệt, Ke phá hủy hệ tiết niệu tàn khốc, làm teo và chảy máu bàng quang, khiến nạn nhân phải đeo túi nước tiểu giả suốt đời.",
-    waveform: [35, 45, 65, 55, 75, 65, 45, 70, 85, 65, 40, 50, 70, 55, 65, 38, 28, 48, 30, 15],
-    inspectInfo: "Lọ dung dịch lỏng y tế dán mác biệt dược kèm đĩa mica có bột trắng mịn dập khay."
+    warning: "Cây trồng ngoại lai cấm nhập khẩu, gieo trồng và lưu hành tại Việt Nam!",
+    position: { x: 5.35, y: 1.14, z: -0.75 },
+    cabinetId: "cabinet_right",
+    row: "upper",
+    audioText: "Lá coca là nguồn gốc duy nhất sản sinh ra chất ma túy Cocaine. Để chiết xuất được một kilôgam cocaine nguyên chất, các nghiệp đoàn tội phạm phải tiêu tốn hàng trăm kilôgam lá coca tươi kết hợp với xăng, axit sunfuric và hóa chất tẩy rửa công nghiệp cực độc. Việc du nhập lá coca vào Việt Nam bị nghiêm cấm hoàn toàn.",
+    waveform: [20, 35, 45, 55, 65, 50, 40, 60, 70, 55, 40, 50, 65, 60, 45, 40, 50, 30, 20, 20],
+    inspectInfo: "Tiêu bản lá sấy khô màu xanh ô-liu hình bầu dục thon dài, nổi rõ hai đường gân phụ cong dọc thân lá."
   },
   {
-    id: "xylazine",
-    name: "Xylazine (Thuốc Zombie)",
-    subtitle: "Thuốc an thần thú y gây hoại tử da thịt",
-    category: "Chất an thần không opioid pha tạp ma túy",
-    description: "Xylazine là thuốc an thần, giảm đau dùng trong thú y. Khi bị pha vào heroin và fentanyl, nó biến người nghiện thành các xác sống lờ đờ, gây viêm loét và hoại tử da thịt ăn sâu tận xương.",
+    id: "cannabis_fresh",
+    name: "Lá cần sa tươi",
+    subtitle: "Lá cây Cannabis sativa xẻ 7-9 thùy răng cưa",
+    category: "Thực vật tự nhiên chứa chất ma túy",
+    description: "Cây cần sa (Gai dầu / Bồ đà) có lá kép chân vịt gồm 5 đến 9 lá chét hẹp thuôn dài, mép có răng cưa rất nhọn và đều đặn. Lá tiết ra chất nhựa chứa Tetrahydrocannabinol (THC) gây ảo giác và biến đổi nhận thức.",
     effects: [
-      "Hoại tử lở loét da thịt: Vết thương hở ăn sâu hoại tử mô dù tiêm ở bất cứ đâu.",
-      "Hạ huyết áp và nhịp tim chạm đáy: Gây ngưng tim đột ngột không hồi phục.",
-      "Kháng thuốc giải độc Naloxone: Không thể cứu bằng thuốc giải opioid thông thường."
+      "Biến đổi nhận thức: Gây ảo thị, bóp méo cảm giác về không gian và thời gian.",
+      "Khai mở nghiện ngập (Gateway drug): Cầu nối dẫn dắt người dùng tiến tới sử dụng ma túy đá và heroin.",
+      "Hội chứng vô cảm: Mất hứng thú học tập, mất trí nhớ ngắn hạn và sa sút trí tuệ ở thanh thiếu niên."
     ],
-    warning: "Độc dược zombie! Hủy hoại thịt xương dẫn tới phải cắt cụt chi thể!",
-    position: { x: 0.6, y: 0.9, z: 6.5 },
-    cabinetId: "cabinet_back",
-    audioText: "Xylazine là thảm họa ma túy đường phố mới nhất. Vốn là thuốc gây mê cho động vật lớn, xylazine khi trộn vào ma túy gây co mạch ngoại vi nghiêm trọng, khiến các tế bào da và cơ bắp chết dần, hoại tử lở loét kinh hoàng và vô hiệu hóa các thuốc giải ngộ độc thông thường.",
-    waveform: [40, 60, 75, 80, 90, 85, 70, 85, 95, 75, 60, 70, 80, 65, 75, 50, 35, 55, 40, 20],
-    inspectInfo: "Lọ thủy tinh chứa dung dịch an thần thú y kèm hình ảnh minh họa cảnh báo vết hoại tử mô mềm."
+    warning: "Mầm mống lôi kéo giới trẻ sa đà vào con đường nghiện ngập, vi phạm pháp luật!",
+    position: { x: 5.35, y: 1.14, z: 0.25 },
+    cabinetId: "cabinet_right",
+    row: "upper",
+    audioText: "Hình ảnh chiếc lá cần sa 7 ngón thường bị các đối tượng xấu lãng mạn hóa trên mạng xã hội như một loại thảo dược vô hại. Tuy nhiên, y học đã chứng minh chất THC trong cần sa phá hủy các liên kết thần kinh ở não bộ đang phát triển của người trẻ, làm giảm chỉ số IQ vĩnh viễn và là cánh cửa mở đường dẫn tới các chất ma túy nguy hiểm hơn.",
+    waveform: [30, 45, 60, 50, 70, 80, 65, 50, 75, 70, 55, 60, 75, 65, 50, 45, 55, 35, 25, 35],
+    inspectInfo: "Tiêu bản lá tươi ép phẳng giữa hai lớp kính mica trong suốt, giữ nguyên màu xanh diệp lục và mép răng cưa sắc nét."
   },
-{
-    id: "pcp",
-    name: "PCP (Bụi Thiên Thần)",
-    subtitle: "Chất gây mê phân ly tàn bạo nhất",
-    category: "Chất tổng hợp phân ly",
-    description: "PCP gây mất cảm giác đau đớn hoàn toàn kèm theo hưng phấn hung hãn điên cuồng. Người ngộ độc PCP sở hữu sức mạnh bạo lực hoang dã do mất cảm giác tự vệ.",
+  {
+    id: "cannabis_dry",
+    name: "Cần sa khô",
+    subtitle: "Búp và ngọn hoa cần sa sấy khô ép bánh ('Tài mà')",
+    category: "Thực vật tự nhiên chế biến ma túy",
+    description: "Phần búp hoa cái và lá ngọn chứa nồng độ THC cao nhất được sấy khô, ép thành từng bánh hoặc vụn nhỏ màu xanh nâu xám, mùi khét nồng đặc trưng giống cỏ cháy khi đốt.",
     effects: [
-      "Cuồng loạn bạo lực: Xu hướng tấn công điên cuồng, tự cắn xé cơ thể mà không đau.",
-      "Co thắt cơ vân: Gây hủy hoại cơ vân cấp dẫn đến suy thận cấp tử vong.",
-      "Đột tử tim mạch: Gây tăng huyết áp kịch phát dẫn đến đứt mạch máu não."
+      "Tổn thương phổi: Khói cần sa chứa lượng chất gây ung thư và hắc ín cao gấp 4 lần khói thuốc lá điếu.",
+      "Khởi phát tâm thần phân liệt: Tăng gấp 5 lần nguy cơ phát bệnh tâm thần phân liệt ở người có tiền sử gen.",
+      "Suy giảm khả năng lái xe: Phản xạ chậm chạp gây tai nạn giao thông thảm khốc."
     ],
-    warning: "Chất ma túy tàn bạo kích hoạt xu hướng bạo lực hoang dã điên cuồng nhất!",
-    position: { x: 1.8, y: 0.9, z: 6.5 },
-    cabinetId: "cabinet_back",
-    audioText: "PCP, hay Bụi Thiên Thần độc hại, triệt tiêu cảm giác đau của cơ thể đồng thời kích hoạt trạng thái điên loạn hung bạo cấp tính. Người ngộ độc PCP trở nên cực kỳ hung hãn, tấn công mọi người xung quanh và tự cào xé bản thân mà không hề hay biết do dây thần kinh cảm giác đau đã bị phân lập hoàn toàn.",
-    waveform: [48, 58, 78, 68, 88, 78, 58, 80, 95, 78, 50, 60, 80, 68, 78, 48, 38, 58, 38, 22],
-    inspectInfo: "Bột tinh thể màu vàng đục, đóng trong túi bằng nylon tang vật chống buôn lậu chất cấm."
+    warning: "Nhiều đối tượng trẻ tuổi bị lôi kéo sử dụng 'cỏ', 'bồ đà' dẫn tới hoang tưởng tâm thần!",
+    position: { x: 5.35, y: 1.14, z: 1.25 },
+    cabinetId: "cabinet_right",
+    row: "upper",
+    audioText: "Cần sa khô hay còn gọi là Tài Mà, Bồ Đà thường được quấn thành điếu thuốc hoặc nhồi vào boong tẩu để hút. Khói cần sa bay xa có mùi khét nồng rất dễ nhận biết. Hút cần sa thường xuyên gây nghiện tâm lý dai dẳng, làm teo thùy hồi hải mã trong não gây mất trí nhớ nghiêm trọng.",
+    waveform: [25, 40, 55, 45, 65, 75, 60, 45, 70, 65, 50, 55, 70, 60, 45, 40, 50, 30, 20, 30],
+    inspectInfo: "Búp cần sa khô màu nâu xanh kết dính nhiều sợi tơ nhựa óng ánh, đóng gói trong túi zip chống ẩm."
   },
-{
-    id: "salvia",
-    name: "Lá Tiên Thảo (Salvia)",
-    subtitle: "Thảo mộc gây ảo giác phân ly siêu tốc",
-    category: "Chất tự nhiên hướng thần",
-    description: "Salvia divinorum chứa chất salvinorin A hướng thần mạnh nhất tự nhiên. Hút lá khô gây mất định hướng không gian hoàn toàn chỉ sau 30 giây.",
+
+  // --- HÀNG DƯỚI (Tủ 2 - 6 Mẫu: Bậc thấp Y = 0.92m, hướng ra lối đi X = 4.55m) ---
+  {
+    id: "cannabis_seed",
+    name: "Hạt cần sa",
+    subtitle: "Hạt giống cây cần sa dùng để ươm trồng bất hợp pháp",
+    category: "Hạt giống cây chứa chất ma túy",
+    description: "Hạt nhỏ hình bầu dục, vỏ cứng nhẵn bóng có hoa văn vân đá cẩm thạch màu nâu xám hoặc đốm đen. Thường bị các đối tượng lén lút đặt mua qua mạng Internet để trồng trọt trái phép thủy canh tại nhà.",
     effects: [
-      "Mất định hướng cấp: Không nhận biết được cơ thể mình đang ở đâu.",
-      "Ảo giác biến hình: Ảo ảnh biến thành đồ vật vô tri như tủ, ghế, tường.",
-      "Chấn thương tâm lý: Cơn hoảng loạn kịch liệt do biến đổi thực tại đột ngột."
+      "Hành vi phạm tội: Tàng trữ hạt giống để ươm trồng cây ma túy bị xử phạt hành chính và truy cứu hình sự.",
+      "Phát tán mầm độc: Mỗi hạt giống có thể phát triển thành cây cao 2-3 mét, thu hoạch hàng kilôgam cần sa búp.",
+      "Công nghệ lai tạo: Nhiều hạt giống bị biến đổi gen tạo hàm lượng THC cực cao độc tính gấp bội."
     ],
-    warning: "Bị cấm hoàn toàn vì khả năng gây tai nạn chấn thương do mất tự chủ hành vi!",
-    position: { x: 3.0, y: 0.9, z: 6.5 },
-    cabinetId: "cabinet_back",
-    audioText: "Salvia divinorum sở hữu hoạt chất salvinorin A gây ảo giác phân ly tột độ nhanh chóng. Người hút Salvia mất kết nối hoàn toàn với thực tại chỉ sau vài hơi thở, trải qua cảm giác cơ thể bị kéo căng hoặc biến thành vật thể vô tri, dễ dẫn tới chấn thương nghiêm trọng do ngã hoặc nhảy lầu.",
-    waveform: [25, 35, 45, 40, 60, 50, 35, 55, 70, 60, 45, 40, 50, 45, 55, 30, 25, 35, 20, 10],
-    inspectInfo: "Gói lá khô nghiền vụn màu đen sẫm giống thảo mộc xông hơi thơm hướng thần."
+    warning: "Nghiêm cấm mua bán, vận chuyển, gieo ươm hạt cần sa qua biên giới dưới mọi hình thức!",
+    position: { x: 4.55, y: 0.92, z: -3.75 },
+    cabinetId: "cabinet_right",
+    row: "lower",
+    audioText: "Hạt cần sa thường được ngụy trang trong các gói hạt giống hoa hoặc thức ăn chim cảnh gửi qua đường bưu phẩm quốc tế. Công an phường Tân Hưng khuyến cáo người dân cảnh giác với các hội nhóm trên mạng dụ dỗ trồng cần sa tại nhà kiếm thêm thu nhập, đây là hành vi tiếp tay gieo rắc ma túy bị pháp luật trừng trị nghiêm khắc.",
+    waveform: [15, 25, 35, 30, 45, 40, 30, 35, 50, 40, 25, 30, 45, 40, 30, 25, 35, 20, 15, 20],
+    inspectInfo: "Đĩa petri chứa khoảng 50 hạt cần sa hình giọt nước nhỏ li ti, vỏ màu nâu nhạt điểm vân đốm đậm."
   },
-{
-    id: "mescaline",
-    name: "Mescaline (Nấm Peyote)",
-    subtitle: "Ảo giác tự nhiên cổ xưa từ xương rồng",
-    category: "Chất tự nhiên gây ảo giác",
-    description: "Mescaline là alkaloid hướng thần có trong cây xương rồng Peyote ở Mexico. Gây ảo giác màu sắc rực rỡ và biến đổi sâu sắc ý thức tâm lý.",
+  {
+    id: "magic_mushroom",
+    name: "Nấm thức thần",
+    subtitle: "Nấm Psilocybe chứa Psilocybin & Psilocin gây ảo giác kinh hoàng",
+    category: "Chất ảo giác tự nhiên nấm học",
+    description: "Các loài nấm thuộc chi Psilocybe (nấm ma thuật, nấm thần kỳ). Thân nấm nhỏ dài màu trắng ngà, mũ nấm hình dù màu nâu vàng chuyển sang màu xanh lam khi bị bầm dập. Chứa hoạt chất gây ảo giác cực mạnh Psilocybin.",
     effects: [
-      "Hệ tiêu hóa: Gây nôn mửa dữ dội kéo dài kèm nhức đầu kinh niên.",
-      "Rối loạn giác quan: Bóp méo thị giác, ảo ảnh hình học chuyển động liên tục.",
-      "Hệ tim mạch: Tăng nhịp tim cấp, co thắt dạ dày dữ dội."
+      "Cơn ảo giác kinh hoàng (Bad trip): Tạo ra cảm giác hoảng loạn tột độ, thấy quái vật xé xác, nhảy lầu tự sát.",
+      "Ngộ độc nấm cấp: Nôn mửa dữ dội, co giật, suy gan thận cấp nếu ăn nhầm nấm độc hoang dã.",
+      "Rối loạn tâm thần kéo dài (HPPD): Tái hiện ảo giác kéo dài nhiều tháng sau khi ngừng sử dụng."
     ],
-    warning: "Cây xương rồng ảo ảnh độc hại gây suy kiệt tạng nội nhanh chóng!",
-    position: { x: 4.2, y: 0.9, z: 6.5 },
-    cabinetId: "cabinet_back",
-    audioText: "Mescaline là alkaloid hướng thần từ cây xương rồng Peyote.Mescaline kích hoạt ảo ảnh hình học chuyển động và biến dạng không gian sâu sắc, kèm theo những cơn nôn mửa dữ dội do ngộ độc alkaloids cơ thể.",
-    waveform: [28, 38, 48, 42, 62, 52, 38, 58, 72, 62, 48, 42, 52, 48, 58, 32, 28, 38, 22, 12],
-    inspectInfo: "Các lát cắt xương rồng Peyote sấy khô co rúm màu nâu xám bám bụi phấn xương rồng."
+    warning: "Chất ma túy Bảng I có độc tính ảo giác cực mạnh, dễ gây hoang tưởng nhảy lầu tử vong!",
+    position: { x: 4.55, y: 0.92, z: -2.75 },
+    cabinetId: "cabinet_right",
+    row: "lower",
+    audioText: "Nấm thức thần đang len lỏi vào giới trẻ dưới cái mác trải nghiệm tâm linh hay mở rộng tâm trí. Thực tế, chất Psilocybin trong nấm phá vỡ hoàn toàn khả năng định hướng thực tại của não bộ. Người ăn nấm thức thần thường rơi vào những cơn ác mộng sống động, hoảng loạn tột độ nghĩ mình có thể bay lượn và bước ra ngoài cửa sổ nhà cao tầng tử vong.",
+    waveform: [35, 55, 75, 50, 80, 85, 70, 60, 90, 80, 55, 65, 80, 75, 60, 50, 65, 40, 25, 45],
+    inspectInfo: "Cụm nấm sấy khô gồm 3 cây nấm cuống dài mảnh khảnh màu kem, mũ nấm màu nâu vàng có ánh xanh lam đặc trưng."
   },
-{
-    id: "ghb",
-    name: "Nước biển (GHB)",
-    subtitle: "Chất gây mê hướng thần nguy hiểm",
-    category: "Chất tổng hợp ức chế hướng thần",
-    description: "GHB là chất lỏng không màu, không mùi, vị hơi mặn. Thường bị tội phạm lạm dụng làm 'thuốc bỏ bùa' để xâm hại tình dục do gây mất ý thức nhanh chóng.",
+  {
+    id: "cannabis_candy_bag",
+    name: "Vỏ túi kẹo cần sa",
+    subtitle: "Bao bì bắt mắt in hình lá cần sa / THC ngụy trang bánh kẹo",
+    category: "Tang vật ngụy trang thực phẩm",
+    description: "Bao bì túi zip nhiều màu sắc in hình kẹo dẻo hoa quả, nhân vật hoạt hình ngộ nghĩnh kèm dòng chữ nhỏ 'Contains THC' hoặc biểu tượng lá cần sa nhằm lừa dối cơ quan chức năng và thu hút trẻ em.",
     effects: [
-      "Mất trí nhớ ngắn hạn: Mất hoàn toàn ký ức trong thời gian thuốc tác dụng.",
-      "Hôn mê hô hấp: Gây hôn mê sâu đột ngột, suy hô hấp ngừng thở dẫn đến tử vong.",
-      "Co giật rung giật: Gây co giật cơ bắp toàn thân nghiêm trọng."
+      "Lừa mị học sinh: Thiết kế đánh lừa thị giác khiến trẻ em lầm tưởng là kẹo nhập khẩu cao cấp.",
+      "Tiếp cận học đường: Phương thức thủ đoạn tinh vi đưa ma túy xâm nhập cổng trường học.",
+      "Khó phát hiện: Rất khó phân biệt với bánh kẹo thông thường nếu không kiểm tra kỹ bao bì."
     ],
-    warning: "Thuốc bẫy xâm hại nguy hiểm! Tuyệt đối không uống đồ uống lạ từ người lạ.",
-    position: { x: 5.4, y: 0.9, z: 6.5 },
-    cabinetId: "cabinet_back",
-    audioText: "GHB, hay còn gọi là Nước biển, cực kỳ nguy hại do tính chất không màu không mùi dễ dàng hòa tan vào đồ uống. GHB gây ức chế thần kinh trung ương cực mạnh, đẩy nạn nhân vào trạng thái hôn mê sâu và mất hoàn toàn trí nhớ ngắn hạn, bị kẻ xấu lạm dụng xâm hại tàn nhẫn.",
-    waveform: [32, 42, 52, 48, 68, 58, 42, 62, 78, 68, 52, 48, 58, 52, 62, 38, 32, 42, 26, 16],
-    inspectInfo: "Lọ nhựa chứa chất lỏng không màu trong suốt, kèm theo cốc thủy tinh ngụy trang."
+    warning: "Thủ đoạn nhắm trực tiếp vào trẻ em và học sinh sinh viên, phụ huynh cần hết sức cảnh giác!",
+    position: { x: 4.55, y: 0.92, z: -1.75 },
+    cabinetId: "cabinet_right",
+    row: "lower",
+    audioText: "Đây là vỏ túi kẹo cần sa tang vật thu giữ tại các vụ án buôn bán ma túy trá hình. Các đối tượng in bao bì bóng bẩy, ghi nhãn hiệu nhái theo các thương hiệu kẹo nổi tiếng thế giới. Nhiều em học sinh tò mò mua ăn chung đã bị ngộ độc tập thể phải nhập viện cấp cứu trong tình trạng khó thở, tụt huyết áp và lơ mơ.",
+    waveform: [25, 40, 60, 45, 65, 55, 40, 55, 70, 65, 45, 50, 65, 60, 45, 40, 50, 30, 20, 35],
+    inspectInfo: "Túi nhôm dập đáy đứng màu sắc sặc sỡ, in logo chiếc kẹo gấu hoạt hình bên cạnh biểu tượng cảnh báo THC màu đỏ."
   },
-{
-    id: "rohypnol",
-    name: "Thuốc ngủ Rohypnol (Flunitrazepam)",
-    subtitle: "Thuốc ngủ liều mạnh bị lạm dụng độc hại",
-    category: "Chất tổng hợp ức chế thần kinh",
-    description: "Flunitrazepam là benzodiazepine gây ngủ siêu mạnh. Bị lạm dụng trái phép làm 'thuốc hiếp dâm ngày hẹn' (date rape drug) kết hợp rượu gây liệt cơ thể mất nhận thức hoàn toàn.",
+  {
+    id: "cannabis_candy",
+    name: "Kẹo cần sa",
+    subtitle: "Kẹo dẻo Gummy chứa Tetrahydrocannabinol (THC)",
+    category: "Chế phẩm thực phẩm tẩm ma túy",
+    description: "Kẹo dẻo hình con gấu, con sâu hoặc hình trái cây có mùi thơm hoa quả nhân tạo, nhưng được nấu trộn tinh chất dầu cần sa THC liều lượng cao.",
     effects: [
-      "Mất điều hòa vận động: Gây yếu cơ bắp toàn thân, không thể đứng hay di chuyển.",
-      "Ức chế ý chí: Mất hoàn toàn khả năng phản kháng hay tự vệ bảo vệ bản thân.",
-      "Hôn mê sâu: Nguy cơ suy hô hấp tử vong nếu dùng chung với đồ uống có cồn."
+      "Ngấm chậm gây quá liều: Tác dụng xuất hiện sau 1-2 giờ khiến nạn nhân tưởng kẹo nhẹ nên ăn nhiều viên liên tiếp.",
+      "Ngộ độc cấp tính ở trẻ nhỏ: Gây co giật, suy hô hấp, hôn mê đe dọa tính mạng ở trẻ em ăn nhầm.",
+      "Ảo giác hoảng loạn: Tim đập nhanh như trống ngực, khô miệng, sợ hãi tột cùng."
     ],
-    warning: "Tuyệt đối cảnh giác! Kẻ xấu thường thả vào đồ uống tại các quán bar vũ trường.",
-    position: { x: 6.6, y: 0.9, z: 6.5 },
+    warning: "Độc tố tích tụ chậm qua đường tiêu hóa, gây ngộ độc nặng nề khó kiểm soát!",
+    position: { x: 4.55, y: 0.92, z: -0.75 },
+    cabinetId: "cabinet_right",
+    row: "lower",
+    audioText: "Kẹo dẻo cần sa là một cạm bẫy cực kỳ nguy hiểm vì cơ chế hấp thụ qua đường tiêu hóa rất chậm. Người ăn thường không cảm thấy gì trong một giờ đầu nên tiếp tục ăn thêm nhiều viên. Khi toàn bộ lượng THC ngấm vào máu qua gan, nó chuyển hóa thành dạng độc tính mạnh gấp 4 lần so với hút, làm nạn nhân gục ngã vì ngộ độc cấp tính.",
+    waveform: [30, 50, 70, 55, 75, 80, 60, 50, 80, 75, 50, 60, 75, 70, 55, 45, 60, 35, 25, 40],
+    inspectInfo: "Các viên kẹo dẻo trong mờ hình chú gấu nhỏ màu đỏ, xanh lá và vàng xếp trên đĩa mẫu vật kiểm nghiệm."
+  },
+  {
+    id: "cannabis_cake",
+    name: "Bánh cần sa",
+    subtitle: "Bánh ngọt nướng tẩm cần sa ('Space Cake' / 'Brownie')",
+    category: "Chế phẩm thực phẩm tẩm ma túy",
+    description: "Bánh sô-cô-la, bánh quy hoặc brownie nướng được bơ cần sa (Cannabutter) làm chất béo. Mùi thơm của sô-cô-la và bơ hoàn toàn lấn át mùi hăng của cần sa, tạo vỏ bọc hoàn hảo.",
+    effects: [
+      "Nồng độ THC không đồng đều: Lượng ma túy trong mỗi góc bánh khác nhau, một mẩu bánh nhỏ có thể chứa liều độc hại.",
+      "Tê liệt thần kinh vận động: Cơ thể mềm nhũn, buồn nôn, chóng mặt mất thăng bằng.",
+      "Nguy hiểm khi lái xe: Gây tai nạn giao thông nghiêm trọng do ảo giác chậm phản xạ."
+    ],
+    warning: "Loại bánh ngọt tử thần ngụy trang bán công khai tại các bữa tiệc thác loạn của giới trẻ!",
+    position: { x: 4.55, y: 0.92, z: 0.25 },
+    cabinetId: "cabinet_right",
+    row: "lower",
+    audioText: "Bánh cần sa hay Space Cake thường được tự làm hoặc đặt mua qua các hội nhóm kín trên mạng xã hội. Đối tượng chiết xuất búp cần sa vào bơ thực vật rồi dùng bơ đó nướng bánh. Một mẩu bánh nhỏ có thể đưa người dùng vào trạng thái nửa tỉnh nửa mê kéo dài suốt 12 đến 24 giờ đồng hồ, phá hủy hệ thần kinh tự chủ.",
+    waveform: [25, 45, 65, 50, 70, 75, 55, 45, 75, 70, 50, 55, 70, 65, 50, 40, 55, 30, 20, 35],
+    inspectInfo: "Mẩu bánh vuông màu nâu sô-cô-la đậm bề mặt nứt rạn rải vụn hạt, đặt trên giấy thấm dầu xét nghiệm độc học."
+  },
+  {
+    id: "cannabis_oil",
+    name: "Tinh dầu cần sa",
+    subtitle: "Dầu lỏng cô đặc chứa THC/CBD nồng độ cực cao dùng cho Vape",
+    category: "Chế phẩm tinh chế ma túy",
+    description: "Dung dịch dầu sánh màu vàng hổ phách chiết xuất bằng dung môi hữu cơ. Nồng độ THC có thể lên tới 70-90%, dùng để bơm vào buồng đốt thuốc lá điện tử (Pod) hoặc nhỏ giọt trực tiếp.",
+    effects: [
+      "Tổn thương phổi cấp (EVALI): Dầu aerosol hóa bám chặt vào phế nang phổi gây xơ hóa và suy hô hấp cấp.",
+      "Sốc thuốc nhanh: Độc tính cực mạnh đưa trực tiếp vào máu qua đường hô hấp chỉ sau vài giây.",
+      "Hôn mê và co giật: Người dùng ngã quỵ, sùi bọt mép ngay sau khi rít hơi thuốc lá điện tử tẩm tinh dầu."
+    ],
+    warning: "Nồng độ hoạt chất gây nghiện cực đậm đặc, nguyên nhân gây nhiều ca đột tử ở học sinh!",
+    position: { x: 4.55, y: 0.92, z: 1.25 },
+    cabinetId: "cabinet_right",
+    row: "lower",
+    audioText: "Tinh dầu cần sa cô đặc là biến tướng nguy hiểm hàng đầu hiện nay. Bằng công nghệ chiết xuất dung môi, nồng độ THC được cô đặc cao gấp 50 lần so với hút búp cần sa truyền thống. Khi đối tượng pha loại tinh dầu này vào thuốc lá điện tử, khói bốc ra không hề có mùi cần sa khét đặc trưng nên rất khó phát hiện trong môi trường học đường và công sở.",
+    waveform: [35, 60, 80, 60, 85, 90, 70, 55, 85, 80, 60, 65, 85, 80, 65, 50, 65, 40, 30, 45],
+    inspectInfo: "Lọ thủy tinh màu hổ phách dung tích 10ml kèm ống nhỏ giọt cao su, chứa chất dầu lỏng sánh màu vàng óng."
+  },
+
+  // =========================================================================
+  // TỦ 3 (Phía Sau - cabinet_back): 12 MẪU VẬT
+  // Nhóm 3: Ma túy ngụy trang tinh vi, bao bì trá hình & dụng cụ sử dụng trái phép
+  // =========================================================================
+
+  // --- HÀNG TRÊN (Tủ 3 - 6 Mẫu: Bậc cao Y = 1.14m, lùi sát vách Z = 6.85m) ---
+  {
+    id: "lsd_blotter",
+    name: "Tem lưỡi LSD",
+    subtitle: "Bùa lưỡi - Giấy thấm tẩm Axit Lysergic Diethylamide",
+    category: "Chất gây ảo giác bán tổng hợp siêu độc lực",
+    description: "LSD là chất ảo giác mạnh nhất được biết đến. Chỉ một liều siêu nhỏ bằng microgram đã đủ tẩm vào miếng giấy thấm in hình hoạt hình ngộ nghĩnh, chia thành các ô nhỏ 5x5mm để ngậm dưới lưỡi.",
+    effects: [
+      "Ảo giác bão táp (Trips): Biến dạng âm thanh, màu sắc, nhìn thấy không gian nhảy múa, hoang tưởng kinh dị.",
+      "Hiện tượng Flashback: Tái hiện ảo giác bất ngờ nhiều năm sau khi đã cai nghiện hoàn toàn.",
+      "Rối loạn tâm thần vĩnh viễn: Mất hoàn toàn ranh giới giữa bản thân và thế giới thực tại."
+    ],
+    warning: "Độc lực ảo giác đo bằng microgam, chỉ một con tem nhỏ đã đủ phá hủy cả một cuộc đời!",
+    position: { x: -3.75, y: 1.14, z: 6.85 },
     cabinetId: "cabinet_back",
-    audioText: "Rohypnol là hoạt chất gây ngủ siêu mạnh benzodiazepine. Khi pha vào rượu, Rohypnol tạo ra hiệu ứng cộng hưởng độc hại, làm liệt hoàn toàn hệ cơ vận động khiến nạn nhân tỉnh táo về đầu óc nhưng cơ thể bất động hoàn toàn, không thể phản kháng hay kêu cứu.",
-    waveform: [30, 38, 48, 44, 60, 50, 38, 54, 70, 60, 48, 44, 50, 48, 58, 34, 30, 38, 22, 12],
-    inspectInfo: "Vỉ thuốc nén Rohypnol viên tròn màu xanh lục có khắc chữ số nhận diện y khoa."
+    row: "upper",
+    audioText: "Tem lưỡi hay Bùa lưỡi là hình thức ngụy trang kinh điển của chất LSD. Hoạt chất này tác động lên thụ thể serotonin 5-HT2A trong não bộ, tạo ra những ảo giác đa chiều phức tạp kéo dài suốt 12 tiếng. Đáng sợ nhất là hội chứng Flashback, khi người dùng đã dừng thuốc nhiều năm nhưng bất ngờ ảo giác kinh dị tái xuất hiện khi đang lái xe hoặc làm việc, gây ra những tai nạn thảm khốc.",
+    waveform: [30, 65, 90, 70, 95, 85, 60, 85, 100, 75, 50, 80, 90, 70, 85, 90, 60, 40, 25, 50],
+    inspectInfo: "Tờ giấy thấm đục lỗ kích thước 5x5 ô vuông in hình tranh nghệ thuật vạn hoa rực rỡ, mỗi ô là một liều tem lưỡi."
+  },
+  {
+    id: "happy_water_pouch",
+    name: "Túi nylon nước vui",
+    subtitle: "Gói ma túy hòa tan ngụy trang gói nước tăng lực / trà giải khát",
+    category: "Ma túy trá hình bao bì thương phẩm",
+    description: "Bao bì túi nilon tráng nhôm nhỏ in chữ nước ngoài như 'Crispy Fruit', 'Mango', 'Ferrari', 'Gucci' đóng gói từ 2-5 gram bột ma túy hòa tan. Dễ dàng cất giấu trong ví tiền và mang vào các tụ điểm ăn chơi.",
+    effects: [
+      "Hòa tan cực nhanh: Dễ lén đổ vào ly đồ uống của người khác trong quán bar mà không để lại cặn.",
+      "Gây sốc thuốc tập thể: Nhiều đối tượng cùng pha chung một bình nước dẫn tới nhiều người cùng sốc thuốc một lúc.",
+      "Tử vong do ngộ độc: Chứa hỗn hợp chất kích thích liều cao gây trụy tim mạch cấp."
+    ],
+    warning: "Chiêu bài ngụy trang nguy hiểm lừa dối thanh niên trong các cuộc vui chơi thâu đêm!",
+    position: { x: -2.25, y: 1.14, z: 6.85 },
+    cabinetId: "cabinet_back",
+    row: "upper",
+    audioText: "Gói nước vui ngụy trang là tang vật phổ biến trong các vụ triệt phá tụ điểm bay lắc của lực lượng Công an. Với vẻ ngoài không khác gì gói trà hòa tan hay gói sâm bổ dưỡng, các đối tượng mang theo người để bán với giá tiền triệu mỗi gói. Khi pha vào rượu hay nước ngọt, dung dịch đổi màu và tạo cảm giác kích thích cực độ khiến người dùng nhảy múa kiệt sức.",
+    waveform: [35, 70, 85, 60, 90, 80, 55, 75, 85, 70, 50, 75, 90, 65, 80, 85, 60, 35, 25, 45],
+    inspectInfo: "Túi thiếc hàn nhiệt miệng túi in nhãn hiệu Crispy Fruit màu vàng cam kèm hình quả xoài hoạt hình tươi mát."
+  },
+  {
+    id: "heroin_lion_box",
+    name: "Hộp giấy sư tử bánh heroin",
+    subtitle: "Bao bì nhãn hiệu 'Song Sư Hí Cầu' (Double U-Globe Brand)",
+    category: "Bao bì ma túy buôn lậu quốc tế",
+    description: "Nhãn hiệu buôn lậu ma túy khét tiếng thế giới xuất phát từ vùng Tam Giác Vàng. Mỗi bánh heroin tiêu chuẩn có trọng lượng khoảng 350-375 gram, được ép chân không bọc giấy chống ẩm in hình hai con sư tử ngậm quả cầu.",
+    effects: [
+      "Độ tinh khiết cực cao: Heroin số 4 tinh khiết lên tới 85-90%, gây chết người chỉ với một phần nghìn liều bánh.",
+      "Quy mô tội phạm có tổ chức: Tang vật của các đường dây tội phạm xuyên quốc gia buôn bán hàng ngàn bánh.",
+      "Phá hủy trật tự xã hội: Mỗi bánh heroin khi xé lẻ có thể đầu độc hàng ngàn lượt con nghiện."
+    ],
+    warning: "Tội phạm vận chuyển từ 1 bánh heroin trở lên đối diện mức án cao nhất là TỬ HÌNH!",
+    position: { x: -0.75, y: 1.14, z: 6.85 },
+    cabinetId: "cabinet_back",
+    row: "upper",
+    audioText: "Bao bì Song Sư Hí Cầu với hình tượng hai con sư tử vờn quả địa cầu là biểu tượng chết chóc của các trùm ma túy vùng Tam Giác Vàng. Khối bánh hình chữ nhật này chứa lượng heroin có thể chia thành hàng ngàn tép nhỏ. Luật Phòng chống ma túy và Bộ luật Hình sự Việt Nam quy định mức án tử hình đối với các đối tượng vận chuyển, mua bán bánh heroin ở quy mô thương mại.",
+    waveform: [20, 45, 65, 40, 80, 60, 70, 45, 90, 55, 30, 60, 75, 50, 70, 60, 80, 35, 20, 40],
+    inspectInfo: "Khối chữ nhật ép chặt kích thước 15x10x3 cm bọc giấy sáp trắng, chính giữa in dấu mộc đỏ hình hai con sư tử đạp địa cầu."
+  },
+  {
+    id: "disguised_tea_drug",
+    name: "Ma túy gói trà trá hình",
+    subtitle: "Ngụy trang trong túi trà hút chân không xuất xứ nước ngoài",
+    category: "Thủ đoạn ngụy trang cất giấu tinh vi",
+    description: "Hàng chục kilôgam ma túy đá và ketamine được các đường dây quốc tế đóng gói trong các túi trà Ô Long hút chân không màu xanh lá hoặc vàng đồng có chữ 'Guanyinwang' (Thiết Quan Âm) để qua mặt máy soi hải quan.",
+    effects: [
+      "Trữ lượng khủng khiếp: Mỗi gói trà ngụy trang chứa từ 1 đến 2 kilôgam ma túy tinh khiết.",
+      "Đánh lừa kiểm tra: Vỏ túi dày có tráng bạc và hút chân không ngăn chặn chó nghiệp vụ đánh hơi mùi hóa chất.",
+      "Phương thức vận chuyển đường bộ: Thường giấu trong thùng xe tải chở hàng nông sản xuyên biên giới."
+    ],
+    warning: "Thủ đoạn của các tập đoàn ma túy quốc tế bị lực lượng Cảnh sát điều tra triệt phá quyết liệt!",
+    position: { x: 0.75, y: 1.14, z: 6.85 },
+    cabinetId: "cabinet_back",
+    row: "upper",
+    audioText: "Ma túy ngụy trang trong gói trà hút chân không là thủ đoạn kinh điển của các đường dây buôn bán ma túy quy mô tấn. Bên ngoài là bao bì trà thượng hạng nhưng bên trong là tinh thể ma túy đá hoặc ketamine tinh khiết. Lực lượng Cảnh sát Điều tra tội phạm về ma túy Công an TP. Hồ Chí Minh đã nhiều lần lập chiến công xuất sắc, bóc gỡ hàng loạt chuyên án thu giữ hàng trăm gói trà tử thần này.",
+    waveform: [30, 50, 75, 60, 85, 75, 55, 70, 80, 65, 45, 70, 85, 60, 75, 80, 55, 35, 25, 40],
+    inspectInfo: "Gói trà hút chân không màu xanh lục ánh kim dập nổi chữ vàng, rạch một đường nhỏ để lộ tinh thể trắng sáng bên trong."
+  },
+  {
+    id: "disguised_toothpaste",
+    name: "Ma túy kem đánh răng trá hình",
+    subtitle: "Tuýp kem đánh răng khoét đáy giấu ma túy vận chuyển hàng không",
+    category: "Thủ đoạn cất giấu hàng không tinh vi",
+    description: "Các đối tượng rạch đáy tuýp kem đánh răng thương hiệu phổ biến, rút bớt kem và nhồi vào các gói nilon chứa ma túy tổng hợp, sau đó hàn nhiệt lại đáy tuýp tinh vi hòng qua mặt lực lượng hải quan sân bay.",
+    effects: [
+      "Lợi dụng tiếp viên và người xách tay: Thuê mướn hoặc lừa đảo người vận chuyển hàng xách tay mang ma túy.",
+      "Ngụy trang hóa học: Kem đánh răng có tính kiềm át đi một phần mùi đặc trưng của chất ma túy.",
+      "Hành vi phạm tội nghiêm trọng: Vận chuyển ma túy qua đường hàng không quốc tế bị xử lý kịch khung hình phạt."
+    ],
+    warning: "Cảnh báo người dân tuyệt đối không nhận xách tay hàng hóa, mỹ phẩm lạ tại sân bay!",
+    position: { x: 2.25, y: 1.14, z: 6.85 },
+    cabinetId: "cabinet_back",
+    row: "upper",
+    audioText: "Vụ việc ngụy trang ma túy trong hàng trăm tuýp kem đánh răng xách tay qua đường hàng không từng gây chấn động dư luận. Tội phạm sử dụng công nghệ hàn siêu âm để niêm phong lại vỏ tuýp như hàng mới xuất xưởng. Bài học đắt giá cho mọi công dân là tuyệt đối không mang hộ đồ đạc của người lạ qua cửa khẩu sân bay để tránh vướng vào vòng lao lý.",
+    waveform: [25, 40, 60, 45, 70, 60, 45, 60, 75, 65, 40, 55, 70, 60, 50, 45, 55, 30, 20, 30],
+    inspectInfo: "Tuýp kem đánh răng cắt dọc thân cho thấy khoang chứa các viên thuốc lắc màu tím được bọc kỹ trong màng bọc thực phẩm."
+  },
+  {
+    id: "drug_small_packet",
+    name: "Tép nhỏ ma túy lẻ",
+    subtitle: "Gói giấy bạc / vé số phân liều nhỏ lẻ cho con nghiện",
+    category: "Tang vật bán lẻ ma túy đường phố",
+    description: "Phương thức phân liều cổ điển tại các điểm nóng ma túy. Đối tượng dùng giấy bạc bao thuốc lá hoặc giấy vé số cắt nhỏ gấp thành từng tép hình tam giác hoặc hình chữ nhật chứa từ 0.05 đến 0.1 gram heroin hoặc ma túy đá.",
+    effects: [
+      "Dễ nuốt tiêu hủy tang vật: Khi bị công an kiểm tra, đối tượng nhanh chóng nuốt tép ma túy vào bụng để tẩu tán.",
+      "Tạp chất độc hại: Bị trộn thêm bột thạch cao, xi măng trắng, thuốc ngủ khiến con nghiện lở loét hoại tử mạch máu.",
+      "Mầm mống tội phạm đường phố: Con nghiện đi cướp giật, trộm cắp tài sản để có vài chục ngàn mua tép hút."
+    ],
+    warning: "Mỗi tép nhỏ ma túy là khởi đầu cho hàng loạt vụ trộm cắp, cướp giật gây mất an ninh trật tự!",
+    position: { x: 3.75, y: 1.14, z: 6.85 },
+    cabinetId: "cabinet_back",
+    row: "upper",
+    audioText: "Tép ma túy lẻ là hình ảnh quen thuộc gắn liền với tệ nạn ma túy đường phố. Để kiếm tiền mua một vài tép ma túy mỗi ngày, người nghiện sẵn sàng gây ra các vụ cướp giật tài sản, trộm cắp của người dân và gia đình. Công an phường Tân Hưng kiên quyết đấu tranh triệt xóa toàn bộ các điểm và tụ điểm bán lẻ ma túy, giữ vững bình yên cho từng con hẻm khu phố.",
+    waveform: [20, 35, 50, 35, 55, 45, 30, 45, 60, 50, 35, 40, 55, 50, 40, 35, 45, 25, 15, 20],
+    inspectInfo: "Khay inox chứa 10 tép ma túy nhỏ xíu gấp bằng giấy bạc thuốc lá và giấy vé số nhiều màu, kèm lưỡi lam chia thuốc."
+  },
+
+  // --- HÀNG DƯỚI (Tủ 3 - 6 Mẫu: Bậc thấp Y = 0.92m, hướng ra lối đi Z = 6.05m) ---
+  {
+    id: "injection_kit",
+    name: "Bộ dụng cụ tiêm chích",
+    subtitle: "Bơm kim tiêm, muỗng đun ma túy & dây ga-rô cao su",
+    category: "Dụng cụ sử dụng ma túy trái phép",
+    description: "Bộ đồ nghề tiêm chích heroin truyền thống gồm bơm tiêm nhựa dung tích 1ml, kim tiêm sắt, muỗng sắt đen nhẻm tàn thuốc dùng để hòa tan đun sôi bột ma túy với nước cất, và dây cao su thắt mạch.",
+    effects: [
+      "Lây nhiễm chéo đại dịch: Dùng chung kim tiêm là nguyên nhân lây lan HIV/AIDS và viêm gan C hủy hoại giống nòi.",
+      "Áp-xe hoại tử mạch máu: Kim tiêm bẩn làm tắc nghẽn, xơ cứng tĩnh mạch, lở loét thối rữa tứ chi.",
+      "Nguy hiểm kim tiêm bừa bãi: Con nghiện vứt kim tiêm đã qua sử dụng nơi công cộng đe dọa người dân vô tội."
+    ],
+    warning: "Cái chết rình rập từ những mũi kim tiêm truyền nhiễm mầm bệnh thế kỷ HIV/AIDS!",
+    position: { x: -3.75, y: 0.92, z: 6.05 },
+    cabinetId: "cabinet_back",
+    row: "lower",
+    audioText: "Bộ dụng cụ tiêm chích ma túy là bằng chứng đau xót về sự tha hóa của con nghiện. Chiếc muỗng sắt bị ngọn lửa quẹt gas hun đen dùng để đun bột heroin, chiếc bơm tiêm cùn rỉ được dùng đi dùng lại nhiều lần. Không ít người đã phải trả giá bằng cả tính mạng khi vô tình dẫm phải kim tiêm bị vứt bỏ bừa bãi tại các bãi đất trống, công viên.",
+    waveform: [25, 40, 55, 40, 65, 50, 35, 55, 70, 50, 30, 45, 60, 55, 40, 35, 50, 25, 20, 30],
+    inspectInfo: "Bơm kim tiêm y tế loại 1cc nắp cam, muỗng kim loại ám muội đen và đoạn dây ga-rô cao su y tế màu vàng."
+  },
+  {
+    id: "meth_pipe_handmade",
+    name: "Nỏ tự chế chơi ma túy đá",
+    subtitle: "Bình hút ma túy đá tự chế từ chai nước ngọt & cóng thủy tinh",
+    category: "Dụng cụ sử dụng ma túy trái phép",
+    description: "Dụng cụ dùng để đốt hút methamphetamine ('chơi đá'). Gồm một bình nước bằng chai nhựa có cắm 2 ống hút nhựa và một 'cóng' hay 'nỏ' thủy tinh có bầu tròn chứa tinh thể đá để đốt bằng quẹt khò gas.",
+    effects: [
+      "Bỏng đường hô hấp: Khói methamphetamine nóng làm bỏng niêm mạc họng, thanh quản và phế nang phổi.",
+      "Hội chứng ngáo đá tức thì: Đốt hút trực tiếp đưa chất kích thích lên não trong 5 giây, kích hoạt cơn cuồng loạn.",
+      "Dễ chế tạo: Con nghiện tận dụng mọi chai lọ phế thải để tự chế đồ chơi ma túy tại các nhà trọ, khách sạn."
+    ],
+    warning: "Dụng cụ trực tiếp tiếp tay tạo ra những đối tượng 'ngáo đá' nguy hiểm cho xã hội!",
+    position: { x: -2.25, y: 0.92, z: 6.05 },
+    cabinetId: "cabinet_back",
+    row: "lower",
+    audioText: "Đây là bình nỏ tự chế chơi ma túy đá thường bị phát hiện tại các tụ điểm bay lắc. Khói tinh thể ma túy đá được dẫn qua bình nước lọc để làm mát trước khi rít sâu vào phổi. Người sử dụng loại bình này thường tụ tập thâu đêm suốt sáng, sau đó rơi vào trạng thái ngáo đá mất kiểm soát, cầm dao truy sát người thân trong ảo giác cuồng loạn.",
+    waveform: [35, 65, 80, 55, 85, 75, 50, 75, 90, 70, 45, 70, 85, 65, 75, 80, 55, 35, 25, 45],
+    inspectInfo: "Bình nhựa có chứa nước màu đục gắn ống hút nhựa màu đỏ và ống thủy tinh uốn cong có bầu tròn ám khói đen."
+  },
+  {
+    id: "cannabis_glass_pipe",
+    name: "Cóng thủy tinh chơi cần sa",
+    subtitle: "Tẩu thủy tinh chuyên dụng đốt hút cần sa ('Boong / Tẩu')",
+    category: "Dụng cụ sử dụng ma túy trái phép",
+    description: "Tẩu hút làm bằng thủy tinh chịu nhiệt nhiều màu sắc hoa văn nghệ thuật (Glass bong / Spoon pipe). Có phễu nạp búp cần sa và lỗ thông khí để người hút điều chỉnh luồng khói.",
+    effects: [
+      "Lôi cuốn thẩm mỹ độc hại: Tẩu được thiết kế bắt mắt như đồ lưu niệm nghệ thuật để dụ dỗ thanh thiếu niên sưu tầm.",
+      "Độc tố khói đặc: Tẩu thủy tinh gom khói đậm đặc làm tổn thương khí quản và phổi nghiêm trọng hơn hút thông thường.",
+      "Tàng trữ trái phép: Bị coi là công cụ phạm tội liên quan đến hành vi tổ chức sử dụng ma túy."
+    ],
+    warning: "Vỏ bọc đồ chơi nghệ thuật nguy hiểm lôi kéo giới trẻ bước vào con đường nghiện ngập!",
+    position: { x: -0.75, y: 0.92, z: 6.05 },
+    cabinetId: "cabinet_back",
+    row: "lower",
+    audioText: "Cóng và tẩu thủy tinh chơi cần sa được các đối tượng quảng cáo rầm rộ trên mạng dưới danh nghĩa phụ kiện thời trang sành điệu. Với màu sắc bắt mắt và kiểu dáng cách điệu, chúng tạo cho giới trẻ ảo tưởng rằng việc hút cần sa là một lối sống sành điệu, trong khi thực chất đang trực tiếp đầu độc hệ hô hấp và thần kinh của chính mình.",
+    waveform: [25, 45, 60, 45, 65, 55, 40, 55, 70, 60, 40, 50, 65, 60, 45, 40, 50, 30, 20, 30],
+    inspectInfo: "Tẩu thủy tinh xoắn màu xanh ngọc bích dài 12cm có miệng hút vát chéo và bầu đốt ám vết nhựa cháy sẫm."
+  },
+  {
+    id: "powder_drug_kit",
+    name: "Bộ dụng cụ chơi ma túy dạng bột",
+    subtitle: "Gương soi, thẻ nhựa quẹt ke & ống hút hít Ketamine / Cocaine",
+    category: "Dụng cụ sử dụng ma túy trái phép",
+    description: "Bộ công cụ 'xào ke' đặc trưng trong các phòng karaoke, quán bar. Bao gồm một tấm gương hoặc đĩa sứ phẳng, thẻ ngân hàng/thẻ căn cước dùng để nghiền và chia thành các đường kẻ ma túy ('line'), và ống hút cuộn từ tờ tiền.",
+    effects: [
+      "Thủng vách ngăn mũi: Hít bột ma túy làm co mạch và hoại tử mô sụn, thủng vách ngăn mũi vĩnh viễn.",
+      "Viêm xoang hoại tử: Hạt bột ma túy ăn mòn hốc xoang, gây viêm xoang xuất huyết mủ mạn tính.",
+      "Tổ chức sử dụng trái phép: Tang vật quan trọng cấu thành tội Tổ chức sử dụng trái phép chất ma túy."
+    ],
+    warning: "Biểu tượng thác loạn của các 'dân chơi', để lại biến chứng thủng vách ngăn mũi tàn phế!",
+    position: { x: 0.75, y: 0.92, z: 6.05 },
+    cabinetId: "cabinet_back",
+    row: "lower",
+    audioText: "Đây là bộ dụng cụ 'xào ke' thu giữ tại các phòng bay lắc cách âm. Đối tượng dùng lửa hơ nóng đĩa sứ để làm khô ketamine, sau đó dùng thẻ nhựa miết nát thành bột mịn rồi chia thành các đường kẻ thẳng để hít qua mũi. Bột hóa chất ăn mòn mạch máu niêm mạc mũi, sau một thời gian vách ngăn giữa hai lỗ mũi sẽ bị thủng toang hoác không thể phục hồi.",
+    waveform: [30, 50, 70, 50, 80, 70, 50, 65, 80, 65, 45, 60, 75, 65, 50, 45, 55, 30, 20, 35],
+    inspectInfo: "Tấm gương soi nhỏ hình chữ nhật kèm chiếc thẻ nhựa cứng màu đen và tờ tiền cuộn tròn thành ống hút."
+  },
+  {
+    id: "vape_pod",
+    name: "Thuốc lá điện tử (Pod/Vape)",
+    subtitle: "Thiết bị nung dung dịch điện tử bị biến tướng tẩm ma túy học đường",
+    category: "Thiết bị biến tướng thế hệ mới",
+    description: "Thiết bị điện tử cầm tay sử dụng pin sạc để nung nóng cuộn coil biến tinh dầu hóa lỏng thành hơi khí dung (aerosol). Bị các đối tượng xấu tẩm ướp ma túy tổng hợp mới, cần sa tổng hợp (cỏ Mỹ) để bán cho học sinh sinh viên.",
+    effects: [
+      "Ngộ độc ma túy học đường: Học sinh sau khi rít thuốc lá điện tử ngất xỉu, co giật, khó thở hàng loạt.",
+      "Tổn thương phổi cấp tính (EVALI): Hơi kim loại nặng từ dây đốt làm xơ hóa phổi không thể cứu chữa.",
+      "Gây nghiện nicotine cực nặng: Nồng độ nicotine muối cao gấp nhiều lần thuốc lá truyền thống tàn phá não bộ trẻ."
+    ],
+    warning: "Hiểm họa hàng đầu đe dọa học đường hiện nay, cấm học sinh sử dụng dưới mọi hình thức!",
+    position: { x: 2.25, y: 0.92, z: 6.05 },
+    cabinetId: "cabinet_back",
+    row: "lower",
+    audioText: "Thuốc lá điện tử đang là mối hiểm họa nhức nhối nhất trong các trường học hiện nay. Núp bóng các mùi hương hoa quả ngọt ngào, thuốc lá điện tử thường xuyên bị tội phạm tẩm ướp các chất ma túy tổng hợp thế hệ mới cực độc. Nhiều em học sinh sau khi thử một hơi đã bị ngất xỉu, co giật sùi bọt mép và phải thở máy điều trị tích cực tại bệnh viện.",
+    waveform: [40, 75, 90, 65, 90, 85, 60, 80, 95, 75, 55, 80, 90, 70, 80, 85, 65, 40, 25, 50],
+    inspectInfo: "Thanh thiết bị Pod nhỏ gọn màu xám không gian, cổng sạc Type-C ở đuôi và đầu ngậm dẹt trong suốt nhìn rõ tinh dầu."
+  },
+  {
+    id: "etomidate_pod",
+    name: "Etomidate (Pod Chill)",
+    subtitle: "Thuốc gây mê tẩm trong thuốc lá điện tử gây ảo giác & co giật",
+    category: "Hóa chất ma túy thế hệ mới tẩm Pod",
+    description: "Etomidate là thuốc gây mê tiêm tĩnh mạch tác dụng ngắn. Các đối tượng pha lậu chất này vào tinh dầu thuốc lá điện tử với tên gọi 'Pod Chill', 'Pod ma túy' để tạo cảm giác 'phê đơ', mất tri giác tạm thời và cười ngặt nghẽo.",
+    effects: [
+      "Ức chế vỏ thượng thận: Phá hủy khả năng sản xuất hormone cortisol của cơ thể, gây suy tuyến thượng thận cấp tử vong.",
+      "Co giật cơ kiểu động kinh: Người dùng bị giật cơ toàn thân, mắt trợn ngược, run rẩy bần bật mất kiểm soát.",
+      "Hôn mê sâu đột ngột: Tim đập chậm, ngừng thở chỉ sau vài giây rít hơi khói thuốc lá điện tử."
+    ],
+    warning: "Thuốc mê cực độc giết người thầm lặng dưới vỏ bọc 'Pod Chill' thư giãn của giới trẻ!",
+    position: { x: 3.75, y: 0.92, z: 6.05 },
+    cabinetId: "cabinet_back",
+    row: "lower",
+    audioText: "Pod Chill thực chất là cạm bẫy chứa hoạt chất thuốc mê Etomidate hoặc cần sa tổng hợp. Người bán quảng cáo dối trá rằng đây là tinh dầu thảo dược giúp giảm căng thẳng, nhưng khi học sinh sử dụng, chất thuốc mê đánh gục não bộ gây ra những cơn co giật kinh giật, ức chế tuyến thượng thận đe dọa trực tiếp đến tính mạng. Đừng bao giờ chạm tay vào những điếu thuốc lá điện tử tử thần này.",
+    waveform: [45, 80, 95, 70, 95, 90, 65, 85, 100, 80, 60, 85, 95, 75, 85, 90, 65, 45, 30, 55],
+    inspectInfo: "Đầu cartridge Pod trong suốt dán tem dạ quang chữ Chill Pod, chứa dung dịch màu vàng chanh đậm đặc bốc mùi nồng."
   }
 ];
 
+// 4 Áp phích tuyên truyền phòng chống ma túy chính thức của Công an
 export const postersData = [
   {
     id: "poster1",
@@ -680,24 +759,30 @@ export const postersData = [
   }
 ];
 
+// Bộ câu hỏi trắc nghiệm kiểm tra kiến thức phòng chống ma túy
 export const questionsData = [
   {
-    question: "Chất nào được gọi là 'Tử thần hóa học thế hệ mới' với độc lực cực mạnh gấp 50 lần heroin và chỉ cần 2 miligam đã đủ gây tử vong chớp nhoáng?",
-    options: ["Heroin", "Morphine", "Fentanyl", "Ma túy đá (Meth)"],
-    answer: 2,
-    explain: "Fentanyl là chất ma túy tổng hợp cực độc mạnh gấp 50 lần heroin. Chỉ 2 miligam (bằng hạt muối) đã đủ gây ngừng thở và tử vong đột ngột chỉ sau vài giây hấp thụ."
+    question: "Mỗi tủ trưng bày mẫu vật nghiệp vụ phòng chống ma túy được sắp xếp theo quy cách nào?",
+    options: [
+      "12 mẫu vật xếp thành 1 hàng ngang duy nhất",
+      "12 mẫu vật sắp xếp theo 2 tầng: 6 mẫu hàng trên và 6 mẫu hàng dưới để không bị che khuất tầm nhìn",
+      "Tùy ý không theo quy chuẩn",
+      "Chỉ gồm 6 mẫu vật mỗi tủ"
+    ],
+    answer: 1,
+    explain: "Quy chuẩn tủ trưng bày nghiệp vụ được thiết kế 2 bậc bục thang: 6 mẫu hàng trên nâng cao lùi sâu, 6 mẫu hàng dưới thấp hơn hướng ra lối đi, giúp người tham quan quan sát trọn vẹn toàn bộ 12 hiện vật."
   },
   {
-    question: "Lạm dụng Ketamine (Ke/Khay) gây ra tác hại cực kỳ tàn khốc và không thể đảo ngược đối với cơ quan nào trong cơ thể?",
-    options: ["Hệ tiêu hóa", "Hệ tiết niệu (Bàng quang co teo hoại tử)", "Hệ cơ xương khớp", "Hệ hô hấp cấp"],
+    question: "Chất nào bị kẻ xấu ngụy trang dưới tên gọi 'Nước biển' chuyên dùng để cưỡng bức và gây mê xóa ký ức nạn nhân?",
+    options: ["Heroin", "GHB (Gamma-Hydroxybutyrate)", "Ketamine", "Cocaine"],
     answer: 1,
-    explain: "Ketamine phá hủy nghiêm trọng tế bào niêm mạc bàng quang, gây viêm bàng quang xuất huyết, xơ hóa và teo bàng quang cực độ khiến bệnh nhân đau đớn dữ dội và phải đeo túi nước tiểu nhân tạo suốt đời."
+    explain: "GHB là chất ức chế thần kinh trung ương mạnh, không màu không mùi vị hơi mặn, thường bị kẻ xấu lén nhỏ vào đồ uống để xóa sạch ký ức và làm nạn nhân liệt vận động."
   },
   {
     question: "Ma túy đá (Methamphetamine) tàn phá hệ thần kinh và gây ảo giác 'ngáo đá' nguy hại bằng cơ chế sinh học nào?",
     options: [
       "Gây buồn ngủ sâu ức chế hô hấp",
-      "Kích hoạt giải phóng ồ ạt Dopamine vượt ngưỡng tự nhiên, hoại tử tế bào não thùy trán",
+      "Kích hoạt giải phóng ồ ạt Dopamine vượt ngưỡng tự nhiên hàng chục lần, hoại tử tế bào não thùy trán",
       "Tăng lượng tuần hoàn hồng cầu",
       "Ức chế tuyến thượng thận bài tiết hormon adrenaline"
     ],
@@ -705,25 +790,15 @@ export const questionsData = [
     explain: "Methamphetamine kích hoạt giải phóng dopamine vượt ngưỡng tự nhiên hàng chục lần, tạo ảo giác quyền lực giả tạo và chứng hoang tưởng ngáo đá điên cuồng, trực tiếp làm teo hoại tế bào não thùy trán."
   },
   {
-    question: "Khi lạm dụng thuốc lắc (MDMA) kích động nhảy múa, người dùng có nguy cơ đột tử rất cao do nguyên nhân chính nào?",
-    options: [
-      "Hạ đường huyết đột ngột",
-      "Tăng thân nhiệt cực đoan (đến 42°C) gây suy đa tạng và mất nước kịch phát",
-      "Ngộ độc carbonic đường hô hấp",
-      "Suy thận mãn tính đột ngột"
-    ],
-    answer: 1,
-    explain: "MDMA phá hủy hoàn toàn hệ thống kiểm soát nhiệt độ cơ thể, khiến thân nhiệt tăng cao ác tính lên trên 42°C, kết hợp vận động mạnh gây hoại tử cơ vân, suy đa tạng kịch phát dẫn đến đột tử."
+    question: "Loại thuốc gây mê nào đang bị tội phạm ma túy pha lậu vào thuốc lá điện tử dưới tên gọi 'Pod Chill' gây co giật và suy tuyến thượng thận?",
+    options: ["Etomidate", "Paracetamol", "Aspirin", "Vitamin C"],
+    answer: 0,
+    explain: "Etomidate là thuốc gây mê tác dụng ngắn, bị tẩm lậu vào thuốc lá điện tử với cái tên Pod Chill để gây phê đơ, ảo giác và co giật nguy hiểm đến tính mạng học sinh."
   },
   {
-    question: "LSD (Bùa lưỡi) có thể để lại hiện tượng thần kinh đáng sợ nào bùng phát bất ngờ nhiều năm sau khi đã ngưng sử dụng hoàn toàn?",
-    options: [
-      "Rụng toàn bộ răng miệng",
-      "Mất phản xạ nuốt",
-      "Hiện tượng Flashback (Tái hiện ảo giác kinh dị bất chợt)",
-      "Chứng mất trí nhớ ngắn hạn"
-    ],
-    answer: 2,
-    explain: "Hiện tượng Flashback (Tái hiện ảo ảnh) xảy ra bất chợt khi chất chuyển hóa LSD tồn đọng kích hoạt ảo giác bão táp (Bad Trip) kinh dị đột ngột nhiều tuần, nhiều tháng hoặc nhiều năm sau khi đã cai nghiện."
+    question: "Lạm dụng Ketamine (Ke/Khay) gây ra tổn thương thực thể tàn khốc vĩnh viễn không thể đảo ngược đối với cơ quan nào?",
+    options: ["Hệ tiêu hóa", "Hệ tiết niệu (Bàng quang co teo hoại tử, tiểu ra máu)", "Hệ cơ xương khớp", "Hệ hô hấp cấp"],
+    answer: 1,
+    explain: "Ketamine phá hủy nghiêm trọng tế bào niêm mạc bàng quang, gây viêm bàng quang xuất huyết, xơ hóa và teo bàng quang cực độ khiến bệnh nhân đau đớn dữ dội và phải mang túi nước tiểu nhân tạo suốt đời."
   }
 ];

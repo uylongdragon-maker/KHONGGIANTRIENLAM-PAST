@@ -13,7 +13,6 @@ import {
 export default function DigitalLibraryModal({
   exhibits,
   posters,
-  tiktokVideos,
   onClose,
   onTeleport,
   onSelectExhibit,
@@ -21,7 +20,7 @@ export default function DigitalLibraryModal({
   onSaveExhibit
 }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState("all"); // "all" | "opioids" | "stimulants" | "hallucinogens" | "posters" | "tiktok"
+  const [activeFilter, setActiveFilter] = useState("all"); // "all" | "opioids" | "stimulants" | "hallucinogens" | "posters"
 
   const handleTeleportClick = (item, isPoster) => {
     let targetX = item.position.x;
@@ -56,23 +55,9 @@ export default function DigitalLibraryModal({
     onClose();
   };
 
-  // Helper to extract TikTok Video Embed URL
-  const getTiktokEmbedUrl = (url) => {
-    if (!url) return null;
-    const match = url.match(/\/video\/(\d+)/);
-    if (match && match[1]) {
-      return `https://www.tiktok.com/player/v1/${match[1]}?music_info=1&description=1`;
-    }
-    const numMatch = url.match(/\/(\d+)\/?$/);
-    if (numMatch && numMatch[1]) {
-      return `https://www.tiktok.com/player/v1/${numMatch[1]}?music_info=1&description=1`;
-    }
-    return null;
-  };
-
   // Filter items
   const filteredExhibits = exhibits.filter(ex => {
-    if (activeFilter === "posters" || activeFilter === "tiktok") return false;
+    if (activeFilter === "posters") return false;
     const matchesSearch = ex.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           ex.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           ex.category.toLowerCase().includes(searchQuery.toLowerCase());
@@ -94,16 +79,7 @@ export default function DigitalLibraryModal({
     return matchesSearch;
   });
 
-  const filteredTiktokVideos = (tiktokVideos || []).filter(video => {
-    if (activeFilter !== "tiktok") return false;
-    const matchesSearch = video.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          video.url.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesSearch;
-  });
-
-  const hasNoResults = 
-    (activeFilter === "tiktok" && filteredTiktokVideos.length === 0) ||
-    (activeFilter !== "tiktok" && filteredExhibits.length === 0 && filteredPosters.length === 0);
+  const hasNoResults = filteredExhibits.length === 0 && filteredPosters.length === 0;
 
   return (
     <div className="lib-modal-backdrop" onClick={onClose}>
@@ -491,7 +467,7 @@ export default function DigitalLibraryModal({
             <Search size={16} className="lib-search-icon" />
             <input 
               type="text" 
-              placeholder="Nhập từ khóa tìm kiếm chất cấm, áp phích hoặc video..." 
+              placeholder="Nhập từ khóa tìm kiếm chất cấm hoặc áp phích..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -502,9 +478,6 @@ export default function DigitalLibraryModal({
             <button className={`lib-tab-btn ${activeFilter === "stimulants" ? "active" : ""}`} onClick={() => setActiveFilter("stimulants")}>Tủ 2: Phải ({exhibits.filter(e => e.cabinetId === "cabinet_right").length})</button>
             <button className={`lib-tab-btn ${activeFilter === "hallucinogens" ? "active" : ""}`} onClick={() => setActiveFilter("hallucinogens")}>Tủ 3: Sau ({exhibits.filter(e => e.cabinetId === "cabinet_back").length})</button>
             <button className={`lib-tab-btn ${activeFilter === "posters" ? "active" : ""}`} onClick={() => setActiveFilter("posters")}>Áp phích ({posters.length})</button>
-            <button className={`lib-tab-btn ${activeFilter === "tiktok" ? "active" : ""}`} onClick={() => setActiveFilter("tiktok")} style={{ borderColor: "rgba(242,153,74,0.3)", color: activeFilter === "tiktok" ? "#f2994a" : "#8a96a8" }}>
-              Video TikTok ({tiktokVideos?.length || 0})
-            </button>
           </div>
         </div>
 
@@ -571,43 +544,6 @@ export default function DigitalLibraryModal({
                   </div>
                 </div>
               ))}
-
-              {/* Render TikTok Videos */}
-              {activeFilter === "tiktok" && filteredTiktokVideos.map(video => {
-                const embedUrl = getTiktokEmbedUrl(video.url);
-                return (
-                  <div key={video.id} className="lib-card tiktok-card" style={{ borderColor: "rgba(242, 153, 74, 0.2)", background: "rgba(10, 18, 30, 0.45)", minHeight: "420px" }}>
-                    <div className="lib-card-meta">
-                      <h3 style={{ color: "#f2994a", fontSize: "0.9rem", fontWeight: "700" }}>{video.title}</h3>
-                      <span className="badge" style={{ color: "#f2994a", borderColor: "rgba(242, 153, 74, 0.25)", background: "rgba(242, 153, 74, 0.05)" }}>Video Tuyên Truyền</span>
-                    </div>
-                    <div className="lib-card-category" style={{ color: "#f2994a", fontSize: "0.68rem", fontWeight: "bold" }}>Video Tuyên Truyền</div>
-                    
-                    {embedUrl ? (
-                      <div className="tiktok-iframe-container" style={{ position: "relative", width: "100%", paddingTop: "177.77%", height: 0, overflow: "hidden", borderRadius: "12px", background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                        <iframe 
-                          src={embedUrl}
-                          style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
-                          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                          allowFullScreen
-                        ></iframe>
-                      </div>
-                    ) : (
-                      <div className="tiktok-fallback" style={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "12px", background: "rgba(0,0,0,0.3)", border: "1px dashed rgba(255,255,255,0.08)", borderRadius: "12px", padding: "20px", minHeight: "220px", textAlign: "center" }}>
-                        <div style={{ color: "#f2994a", fontSize: "1.8rem", animation: "holographic-pulse 2s infinite" }}>▶</div>
-                        <span style={{ fontSize: "0.75rem", color: "#8a96a8", lineHeight: "1.4" }}>Video TikTok liên kết ngoài hoặc đang tải. Ấn nút xem nhanh phía dưới để xem trực tiếp trên nền tảng.</span>
-                      </div>
-                    )}
-
-                    <div className="lib-card-actions" style={{ marginTop: "12px" }}>
-                      <a href={video.url} target="_blank" rel="noopener noreferrer" className="lib-card-btn lib-card-btn-teleport" style={{ background: "rgba(242, 153, 74, 0.15)", border: "1px solid rgba(242, 153, 74, 0.3)", color: "#f2994a", display: "flex", width: "100%", textDecoration: "none", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-                        <Compass size={12} />
-                        <span>Xem Trên TikTok</span>
-                      </a>
-                    </div>
-                  </div>
-                );
-              })}
             </div>
           )}
         </div>

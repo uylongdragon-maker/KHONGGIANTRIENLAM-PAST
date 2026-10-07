@@ -25,18 +25,17 @@ import Footer from "../components/Footer";
 import QuizModal from "../components/QuizModal";
 
 export default function Home() {
-  // Exhibits & Posters dynamic state loaded from localStorage
+  // Exhibits & Posters dynamic state loaded from database/cache
   const [exhibits, setExhibits] = useState([]);
   const [posters, setPosters] = useState([]);
-  const [tiktokVideos, setTiktokVideos] = useState([]);
   
-  // Load dynamic data on mount from Supabase Database
+  // Load dynamic data on mount from Database
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await fetch("/api/exhibits");
         const json = await res.json();
-        if (json.exhibits && json.exhibits.length >= 35) {
+        if (json.exhibits && json.exhibits.length >= 36) {
           setExhibits(json.exhibits);
           localStorage.setItem("mtspace_exhibits", JSON.stringify(json.exhibits));
         } else {
@@ -46,22 +45,17 @@ export default function Home() {
           setPosters(json.posters);
           localStorage.setItem("mtspace_posters", JSON.stringify(json.posters));
         }
-        if (json.tiktokVideos && json.tiktokVideos.length > 0) {
-          setTiktokVideos(json.tiktokVideos);
-          localStorage.setItem("mtspace_tiktokVideos", JSON.stringify(json.tiktokVideos));
-        }
       } catch (error) {
-        console.error("Failed to load from Supabase database, using local cache fallback:", error);
+        console.error("Failed to load from database, using local exhibits fallback:", error);
         loadFallback();
       }
     };
 
     const loadFallback = () => {
-      const savedExhibits = localStorage.getItem("mtspace_exhibits") || localStorage.getItem("3dpast_exhibits");
-      const savedPosters = localStorage.getItem("mtspace_posters") || localStorage.getItem("3dpast_posters");
-      const savedTiktok = localStorage.getItem("mtspace_tiktokVideos") || localStorage.getItem("3dpast_tiktokVideos");
+      const savedExhibits = localStorage.getItem("mtspace_exhibits");
+      const savedPosters = localStorage.getItem("mtspace_posters");
       
-      if (savedExhibits && JSON.parse(savedExhibits).length >= 35) {
+      if (savedExhibits && JSON.parse(savedExhibits).length === 36) {
         setExhibits(JSON.parse(savedExhibits));
       } else {
         localStorage.setItem("mtspace_exhibits", JSON.stringify(exhibitsData));
@@ -73,30 +67,6 @@ export default function Home() {
       } else {
         localStorage.setItem("mtspace_posters", JSON.stringify(postersData));
         setPosters(postersData);
-      }
-
-      if (savedTiktok) {
-        setTiktokVideos(JSON.parse(savedTiktok));
-      } else {
-        const initialTiktokVideos = [
-          {
-            id: "tiktok1",
-            title: "Hiệu ứng Ma Túy Đá tàn hoại thần kinh kinh hoàng - VTV24",
-            url: "https://www.tiktok.com/@vtv24news/video/7183029104829287682"
-          },
-          {
-            id: "tiktok2",
-            title: "Sự thật về thuốc lá điện tử ngụy trang ma túy học đường - VTV24",
-            url: "https://www.tiktok.com/@vtv24news/video/7219358291083928192"
-          },
-          {
-            id: "tiktok3",
-            title: "Hiểm họa ma túy ảo giác tẩm trong bùa lưỡi, nấm thức thần - CA P. Tân Hưng & CSĐT Ma Túy",
-            url: "https://www.tiktok.com/@vtv24news/video/7258392019482910832"
-          }
-        ];
-        localStorage.setItem("mtspace_tiktokVideos", JSON.stringify(initialTiktokVideos));
-        setTiktokVideos(initialTiktokVideos);
       }
     };
 
@@ -352,7 +322,6 @@ export default function Home() {
         <DigitalLibraryModal
           exhibits={exhibits}
           posters={posters}
-          tiktokVideos={tiktokVideos}
           onClose={() => setActiveNav("sanh-chinh")}
           onTeleport={handleTeleport}
           onSelectExhibit={handleSelectExhibit}
