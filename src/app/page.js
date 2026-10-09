@@ -29,8 +29,10 @@ export default function Home() {
   const [exhibits, setExhibits] = useState([]);
   const [posters, setPosters] = useState([]);
   
-  // Load dynamic data on mount from Database
+  // Load dynamic data on mount from Database or versioned defaults
   useEffect(() => {
+    const DATA_VERSION = "v3_flat_12posters";
+
     const fetchData = async () => {
       try {
         const res = await fetch("/api/exhibits");
@@ -41,31 +43,32 @@ export default function Home() {
         } else {
           loadFallback();
         }
-        if (json.posters && json.posters.length > 0) {
+        if (json.posters && json.posters.length >= 10) {
           setPosters(json.posters);
           localStorage.setItem("mtspace_posters", JSON.stringify(json.posters));
+        } else {
+          loadFallback();
         }
       } catch (error) {
-        console.error("Failed to load from database, using local exhibits fallback:", error);
+        console.warn("Using local exhibits & posters defaults:", error);
         loadFallback();
       }
     };
 
     const loadFallback = () => {
+      const currentVersion = localStorage.getItem("mtspace_version");
       const savedExhibits = localStorage.getItem("mtspace_exhibits");
       const savedPosters = localStorage.getItem("mtspace_posters");
       
-      if (savedExhibits && JSON.parse(savedExhibits).length === 36) {
+      if (currentVersion === DATA_VERSION && savedExhibits && JSON.parse(savedExhibits).length === 36 && savedPosters && JSON.parse(savedPosters).length >= 10) {
         setExhibits(JSON.parse(savedExhibits));
-      } else {
-        localStorage.setItem("mtspace_exhibits", JSON.stringify(exhibitsData));
-        setExhibits(exhibitsData);
-      }
-      
-      if (savedPosters) {
         setPosters(JSON.parse(savedPosters));
       } else {
+        // Refresh with latest 36 flat single-tier exhibits and 12 wall posters
+        localStorage.setItem("mtspace_version", DATA_VERSION);
+        localStorage.setItem("mtspace_exhibits", JSON.stringify(exhibitsData));
         localStorage.setItem("mtspace_posters", JSON.stringify(postersData));
+        setExhibits(exhibitsData);
         setPosters(postersData);
       }
     };
@@ -391,6 +394,7 @@ function InspectModal({ exhibit, onClose }) {
 
     // Dynamic procedural geometry for specimen inspection
     let specimenMesh = new THREE.Group();
+    const scaleMultiplier = (exhibit.scale !== undefined && !isNaN(exhibit.scale) && exhibit.scale > 0) ? Number(exhibit.scale) : 1.0;
 
     if (exhibit.modelUrl) {
       // Rotating holographic wireframe loading placeholder
@@ -424,7 +428,7 @@ function InspectModal({ exhibit, onClose }) {
           const maxDim = Math.max(size.x, size.y, size.z);
           const targetSize = 0.55; // Render the specimen larger in the inspect modal to fill the viewport
           if (maxDim > 0) {
-            const modelScale = targetSize / maxDim;
+            const modelScale = (targetSize / maxDim) * scaleMultiplier;
             model.scale.set(modelScale, modelScale, modelScale);
           }
           
@@ -488,6 +492,10 @@ function InspectModal({ exhibit, onClose }) {
           specimenMesh.add(leaf);
         }
       }
+    }
+
+    if (!exhibit.modelUrl) {
+      specimenMesh.scale.set(scaleMultiplier, scaleMultiplier, scaleMultiplier);
     }
 
     scene.add(specimenMesh);

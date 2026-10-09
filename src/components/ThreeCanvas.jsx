@@ -549,110 +549,97 @@ export default function ThreeCanvas({
       color: 0xf5d061
     });
 
-    // Helper to build a 2-tier stepped cabinet along X axis (for Cabinet 1 & Cabinet 2)
-    // Lower tier (front): Y height 0.80m (top surface Y = 0.80m)
-    // Upper tier (back): Y height 1.02m (top surface Y = 1.02m)
-    const createTieredCabinetX = (lowerX, upperX, zCenter, zLength, width) => {
-      // Lower tier (front, facing center aisle)
-      const lowMesh = new THREE.Mesh(new THREE.BoxGeometry(width, 0.80, zLength), cabMat);
-      lowMesh.position.set(lowerX, 0.40, zCenter);
-      casesGroup.add(lowMesh);
-      const lowTrim = new THREE.Mesh(new THREE.BoxGeometry(width + 0.02, 0.03, zLength + 0.02), goldTrimMat);
-      lowTrim.position.set(lowerX, 0.79, zCenter);
-      casesGroup.add(lowTrim);
+    // Helper to build a luxury single-tier flat cabinet along X axis (for Cabinet 1 & Cabinet 2)
+    // Tabletop height: 0.88m (Single level for all 12 specimens: 6 front + 6 back)
+    const createFlatCabinetX = (xCenter, zCenter, zLength, width) => {
+      // Main Obsidian Quartz Cabinet Body (height 0.88m, base at Y=0)
+      const cabMesh = new THREE.Mesh(new THREE.BoxGeometry(width, 0.88, zLength), cabMat);
+      cabMesh.position.set(xCenter, 0.44, zCenter);
+      casesGroup.add(cabMesh);
 
-      // Lower tier LED accent edge
-      const lowLed = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.01, zLength), ledNeonMat);
-      lowLed.position.set(lowerX > 0 ? lowerX - width / 2 : lowerX + width / 2, 0.795, zCenter);
-      casesGroup.add(lowLed);
+      // Top 24K Gold Mirror Beveled Trim around the tabletop perimeter
+      const trimMesh = new THREE.Mesh(new THREE.BoxGeometry(width + 0.03, 0.03, zLength + 0.03), goldTrimMat);
+      trimMesh.position.set(xCenter, 0.875, zCenter);
+      casesGroup.add(trimMesh);
 
-      // Upper tier (back, raised higher against outer wall)
-      const upMesh = new THREE.Mesh(new THREE.BoxGeometry(width, 1.02, zLength), cabMat);
-      upMesh.position.set(upperX, 0.51, zCenter);
-      casesGroup.add(upMesh);
-      const upTrim = new THREE.Mesh(new THREE.BoxGeometry(width + 0.02, 0.03, zLength + 0.02), goldTrimMat);
-      upTrim.position.set(upperX, 1.01, zCenter);
-      casesGroup.add(upTrim);
+      // Dual Ambient Neon LED Accent lines (Inner aisle facing & Outer wall facing)
+      const ledInner = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.012, zLength), ledNeonMat);
+      const sign = xCenter > 0 ? -1 : 1;
+      ledInner.position.set(xCenter + sign * (width / 2 - 0.01), 0.882, zCenter);
+      casesGroup.add(ledInner);
 
-      // Upper tier LED accent edge
-      const upLed = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.01, zLength), ledNeonWarmMat);
-      upLed.position.set(upperX > 0 ? upperX - width / 2 : upperX + width / 2, 1.015, zCenter);
-      casesGroup.add(upLed);
+      const ledOuter = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.012, zLength), ledNeonWarmMat);
+      ledOuter.position.set(xCenter - sign * (width / 2 - 0.01), 0.882, zCenter);
+      casesGroup.add(ledOuter);
     };
 
-    // Helper to build a 2-tier stepped cabinet along Z axis (for Cabinet 3 Back gallery)
-    const createTieredCabinetZ = (xCenter, xLength, lowerZ, upperZ, width) => {
-      // Lower tier (front, facing visitor aisle)
-      const lowMesh = new THREE.Mesh(new THREE.BoxGeometry(xLength, 0.80, width), cabMat);
-      lowMesh.position.set(xCenter, 0.40, lowerZ);
-      casesGroup.add(lowMesh);
-      const lowTrim = new THREE.Mesh(new THREE.BoxGeometry(xLength + 0.02, 0.03, width + 0.02), goldTrimMat);
-      lowTrim.position.set(xCenter, 0.79, lowerZ);
-      casesGroup.add(lowTrim);
+    // Helper to build a luxury single-tier flat cabinet along Z axis (for Cabinet 3 Back gallery)
+    const createFlatCabinetZ = (xCenter, xLength, zCenter, width) => {
+      // Main Obsidian Quartz Cabinet Body (height 0.88m)
+      const cabMesh = new THREE.Mesh(new THREE.BoxGeometry(xLength, 0.88, width), cabMat);
+      cabMesh.position.set(xCenter, 0.44, zCenter);
+      casesGroup.add(cabMesh);
 
-      // Lower tier LED accent edge
-      const lowLed = new THREE.Mesh(new THREE.BoxGeometry(xLength, 0.01, 0.015), ledNeonMat);
-      lowLed.position.set(xCenter, 0.795, lowerZ - width / 2);
-      casesGroup.add(lowLed);
+      // Top 24K Gold Mirror Beveled Trim around the tabletop perimeter
+      const trimMesh = new THREE.Mesh(new THREE.BoxGeometry(xLength + 0.03, 0.03, width + 0.03), goldTrimMat);
+      trimMesh.position.set(xCenter, 0.875, zCenter);
+      casesGroup.add(trimMesh);
 
-      // Upper tier (back, raised higher against back wall)
-      const upMesh = new THREE.Mesh(new THREE.BoxGeometry(xLength, 1.02, width), cabMat);
-      upMesh.position.set(xCenter, 0.51, upperZ);
-      casesGroup.add(upMesh);
-      const upTrim = new THREE.Mesh(new THREE.BoxGeometry(xLength + 0.02, 0.03, width + 0.02), goldTrimMat);
-      upTrim.position.set(xCenter, 1.01, upperZ);
-      casesGroup.add(upTrim);
+      // Front facing LED Accent line
+      const ledFront = new THREE.Mesh(new THREE.BoxGeometry(xLength, 0.012, 0.015), ledNeonMat);
+      ledFront.position.set(xCenter, 0.882, zCenter - width / 2 + 0.01);
+      casesGroup.add(ledFront);
 
-      // Upper tier LED accent edge
-      const upLed = new THREE.Mesh(new THREE.BoxGeometry(xLength, 0.01, 0.015), ledNeonWarmMat);
-      upLed.position.set(xCenter, 1.015, upperZ - width / 2);
-      casesGroup.add(upLed);
+      // Back facing LED Accent line
+      const ledBack = new THREE.Mesh(new THREE.BoxGeometry(xLength, 0.012, 0.015), ledNeonWarmMat);
+      ledBack.position.set(xCenter, 0.882, zCenter + width / 2 - 0.01);
+      casesGroup.add(ledBack);
     };
 
-    // Cabinet 1 (Left: Tủ 1 - Opioids/Kích thích - 12 mẫu: 6 hàng trên tại X=-5.35, 6 hàng dưới tại X=-4.55)
-    createTieredCabinetX(-4.55, -5.35, -1.25, 6.8, 0.65);
+    // Cabinet 1 (Left: Tủ 1 - Opioids/Kích thích - 12 mẫu trên cùng 1 mặt bàn phẳng: 6 hàng sau tại X=-5.40, 6 hàng trước tại X=-4.45)
+    createFlatCabinetX(-4.95, -0.75, 7.0, 1.45);
 
-    // Cabinet 2 (Right: Tủ 2 - Thực vật & Nấm - 12 mẫu: 6 hàng trên tại X=5.35, 6 hàng dưới tại X=4.55)
-    createTieredCabinetX(4.55, 5.35, -1.25, 6.8, 0.65);
+    // Cabinet 2 (Right: Tủ 2 - Thực vật & Nấm - 12 mẫu trên cùng 1 mặt bàn phẳng: 6 hàng sau tại X=5.40, 6 hàng trước tại X=4.45)
+    createFlatCabinetX(4.95, -0.75, 7.0, 1.45);
 
-    // Cabinet 3 (Back: Tủ 3 - Ngụy trang & Dụng cụ - 12 mẫu: 6 hàng trên tại Z=6.85, 6 hàng dưới tại Z=6.05)
-    createTieredCabinetZ(0.0, 9.2, 6.05, 6.85, 0.65);
+    // Cabinet 3 (Back: Tủ 3 - Ngụy trang & Dụng cụ - 12 mẫu trên cùng 1 mặt bàn phẳng: 6 hàng sau tại Z=6.90, 6 hàng trước tại Z=6.00)
+    createFlatCabinetZ(0.0, 9.6, 6.45, 1.45);
 
-    // 3 Premium High-CRI Spotlights centered directly above each tiered cabinet with specular sparkle
-    const spotCab1 = new THREE.SpotLight(0xfff0d4, 5.5, 12.0, Math.PI / 3.2, 0.35, 1);
-    spotCab1.position.set(-4.95, 3.9, -1.25);
+    // 3 Premium High-CRI Spotlights centered directly above each flat cabinet with specular sparkle
+    const spotCab1 = new THREE.SpotLight(0xfff0d4, 5.5, 12.0, Math.PI / 3.0, 0.35, 1);
+    spotCab1.position.set(-4.95, 3.9, -0.75);
     const targetCab1 = new THREE.Object3D();
-    targetCab1.position.set(-4.95, 0.9, -1.25);
+    targetCab1.position.set(-4.95, 0.88, -0.75);
     scene.add(targetCab1);
     spotCab1.target = targetCab1;
     scene.add(spotCab1);
 
-    const fillPoint1 = new THREE.PointLight(0xffedd5, 1.8, 5.0);
-    fillPoint1.position.set(-4.95, 2.0, -1.25);
+    const fillPoint1 = new THREE.PointLight(0xffedd5, 1.8, 5.5);
+    fillPoint1.position.set(-4.95, 2.2, -0.75);
     scene.add(fillPoint1);
 
-    const spotCab2 = new THREE.SpotLight(0xfff0d4, 5.5, 12.0, Math.PI / 3.2, 0.35, 1);
-    spotCab2.position.set(4.95, 3.9, -1.25);
+    const spotCab2 = new THREE.SpotLight(0xfff0d4, 5.5, 12.0, Math.PI / 3.0, 0.35, 1);
+    spotCab2.position.set(4.95, 3.9, -0.75);
     const targetCab2 = new THREE.Object3D();
-    targetCab2.position.set(4.95, 0.9, -1.25);
+    targetCab2.position.set(4.95, 0.88, -0.75);
     scene.add(targetCab2);
     spotCab2.target = targetCab2;
     scene.add(spotCab2);
 
-    const fillPoint2 = new THREE.PointLight(0xffedd5, 1.8, 5.0);
-    fillPoint2.position.set(4.95, 2.0, -1.25);
+    const fillPoint2 = new THREE.PointLight(0xffedd5, 1.8, 5.5);
+    fillPoint2.position.set(4.95, 2.2, -0.75);
     scene.add(fillPoint2);
 
-    const spotCab3 = new THREE.SpotLight(0xcce7ff, 6.0, 12.0, Math.PI / 3.2, 0.35, 1);
+    const spotCab3 = new THREE.SpotLight(0xcce7ff, 6.0, 12.0, Math.PI / 3.0, 0.35, 1);
     spotCab3.position.set(0.0, 3.9, 6.45);
     const targetCab3 = new THREE.Object3D();
-    targetCab3.position.set(0.0, 0.9, 6.45);
+    targetCab3.position.set(0.0, 0.88, 6.45);
     scene.add(targetCab3);
     spotCab3.target = targetCab3;
     scene.add(spotCab3);
 
-    const fillPoint3 = new THREE.PointLight(0xbae6fd, 2.0, 5.0);
-    fillPoint3.position.set(0.0, 2.0, 6.45);
+    const fillPoint3 = new THREE.PointLight(0xbae6fd, 2.0, 5.5);
+    fillPoint3.position.set(0.0, 2.2, 6.45);
     scene.add(fillPoint3);
 
     // Shared Optical Crystal Glass Material for Bell Jars (Chất liệu kính pha lê chiết quang cao cấp)
@@ -685,8 +672,8 @@ export default function ThreeCanvas({
     exhibits.forEach((ex) => {
       const posX = ex.position ? ex.position.x : 0;
       const posZ = ex.position ? ex.position.z : 0;
-      const isUpper = ex.row === "upper";
-      const counterY = isUpper ? 1.02 : 0.80;
+      // All 12 specimens in each cabinet reside on the same single-tier flat tabletop height (Y = 0.88m)
+      const counterY = ex.position?.y !== undefined ? Number(ex.position.y) : 0.88;
 
       // 1. Ceiling light fixture directly above the specimen
       const fixtureGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.08, 12);
@@ -1274,8 +1261,12 @@ export default function ThreeCanvas({
     const posterTextureLoader = new THREE.TextureLoader();
 
     posters.forEach((post) => {
-      const sideSign = post.position.x < 0 ? -1 : 1;
-      const frameX = sideSign * 11.86;
+      const px = post.position ? post.position.x : 0;
+      const py = post.position ? post.position.y : 2.2;
+      const pz = post.position ? post.position.z : 0;
+      const rx = post.rotation ? post.rotation.x || 0 : 0;
+      const ry = post.rotation ? post.rotation.y || 0 : 0;
+      const rz = post.rotation ? post.rotation.z || 0 : 0;
 
       // 1. Outer dark titanium frame
       const frameGeo = new THREE.BoxGeometry(1.84, 2.54, 0.08);
@@ -1285,8 +1276,8 @@ export default function ThreeCanvas({
         roughness: 0.1 
       });
       const frame = new THREE.Mesh(frameGeo, frameMat);
-      frame.position.set(frameX, post.position.y, post.position.z);
-      frame.rotation.set(post.rotation.x, post.rotation.y, post.rotation.z);
+      frame.position.set(px, py, pz);
+      frame.rotation.set(rx, ry, rz);
       postersGroup.add(frame);
 
       // 2. Inner luxury gold trim frame
@@ -1328,16 +1319,21 @@ export default function ThreeCanvas({
         side: THREE.FrontSide
       });
       const surface = new THREE.Mesh(surfaceGeo, surfaceMat);
-      surface.position.copy(frame.position);
+      
+      // Calculate front face normal vector from euler rotation
+      const normal = new THREE.Vector3(0, 0, 1).applyEuler(new THREE.Euler(rx, ry, rz));
+      surface.position.copy(frame.position).addScaledVector(normal, 0.046);
       surface.rotation.copy(frame.rotation);
-      surface.position.x += -sideSign * 0.046;
       postersGroup.add(surface);
 
       // 4. Gallery spotlight angling on the poster
       const posterSpot = new THREE.SpotLight(0xfff5e6, 2.5, 6.0, Math.PI / 4, 0.5, 1.2);
-      posterSpot.position.set(frameX - sideSign * 1.5, 3.8, post.position.z);
+      const spotPos = new THREE.Vector3().copy(frame.position).addScaledVector(normal, 1.4);
+      spotPos.y = 3.8;
+      posterSpot.position.copy(spotPos);
+
       const posterTarget = new THREE.Object3D();
-      posterTarget.position.set(frameX, post.position.y, post.position.z);
+      posterTarget.position.copy(frame.position);
       scene.add(posterTarget);
       posterSpot.target = posterTarget;
       postersGroup.add(posterSpot);
@@ -1818,14 +1814,14 @@ export default function ThreeCanvas({
       if (targetX < -11.5 || targetX > 11.5) return true;
       if (targetZ < -8.5 || targetZ > 8.5) return true;
 
-      // Table 1 (Left Tiered Cabinet: 12 specimens): X from -5.8 to -4.1, Z from -4.9 to 2.4
-      if (targetX > -5.8 && targetX < -4.1 && targetZ > -4.9 && targetZ < 2.4) return true;
+      // Table 1 (Left Flat Cabinet: 12 specimens): X from -5.9 to -4.0, Z from -4.5 to 3.0
+      if (targetX > -5.9 && targetX < -4.0 && targetZ > -4.5 && targetZ < 3.0) return true;
 
-      // Table 2 (Right Tiered Cabinet: 12 specimens): X from 4.1 to 5.8, Z from -4.9 to 2.4
-      if (targetX > 4.1 && targetX < 5.8 && targetZ > -4.9 && targetZ < 2.4) return true;
+      // Table 2 (Right Flat Cabinet: 12 specimens): X from 4.0 to 5.9, Z from -4.5 to 3.0
+      if (targetX > 4.0 && targetX < 5.9 && targetZ > -4.5 && targetZ < 3.0) return true;
 
-      // Table 3 (Back Tiered Cabinet: 12 specimens): X from -4.8 to 4.8, Z from 5.6 to 7.3
-      if (targetX > -4.8 && targetX < 4.8 && targetZ > 5.6 && targetZ < 7.3) return true;
+      // Table 3 (Back Flat Cabinet: 12 specimens): X from -5.1 to 5.1, Z from 5.5 to 7.4
+      if (targetX > -5.1 && targetX < 5.1 && targetZ > 5.5 && targetZ < 7.4) return true;
 
       // Collision with Central Partition Wall: Z = 4.5, X from -8.0 to 8.0
       // Thickness is 0.2, Z bounds: 4.2 to 4.8, X bounds: -8.2 to 8.2
@@ -1972,20 +1968,15 @@ export default function ThreeCanvas({
         }
       });
 
-      // Check posters with overridden coordinates
+      // Check posters proximity
       posters.forEach((post) => {
-        let posX = post.position.x;
-        let posZ = post.position.z;
-        if (posX < 0) {
-          posX = -11.86;
-        } else {
-          posX = 11.86;
-        }
+        const posX = post.position ? post.position.x : 0;
+        const posZ = post.position ? post.position.z : 0;
 
         const dx = stateRef.current.posX - posX;
         const dz = stateRef.current.posZ - posZ;
         const dist = Math.sqrt(dx * dx + dz * dz);
-        if (dist < 1.8) {
+        if (dist < 2.0) {
           minDistance = dist;
           closestElement = {
             type: "exhibit", // Trigger detailed view on the side

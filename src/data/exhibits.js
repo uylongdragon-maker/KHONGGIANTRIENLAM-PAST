@@ -1,14 +1,16 @@
 // Detailed exhibits, posters, and questions database for the 3D Anti-Drug Exhibition
 // Công An Phường Tân Hưng - Công An Thành Phố Hồ Chí Minh
-// 36 Tiêu bản mẫu vật nghiệp vụ phân bổ chính xác theo 3 tủ (Mỗi tủ 12 mẫu: 6 hàng trên & 6 hàng dưới)
+// 36 Tiêu bản mẫu vật nghiệp vụ phân bổ chính xác theo 3 tủ:
+// Mỗi tủ 12 mẫu vật xếp trên CÙNG 1 TẦNG mặt bàn phẳng, chia làm Hàng Trước (6 mẫu) và Hàng Sau (6 mẫu) so le khoa học
 
 export const exhibitsData = [
   // =========================================================================
   // TỦ 1 (Phía Trái - cabinet_left): 12 MẪU VẬT
   // Nhóm 1: Ma túy kích thích tổng hợp, bán tổng hợp & dược chất gây nghiện
+  // Mặt bàn phẳng Y = 0.88m: 6 Mẫu Hàng Sau (X = -5.40) & 6 Mẫu Hàng Trước (X = -4.45)
   // =========================================================================
 
-  // --- HÀNG TRÊN (Tủ 1 - 6 Mẫu: Bậc cao Y = 1.14m, lùi sát vách X = -5.35m) ---
+  // --- HÀNG SAU (Tủ 1 - 6 Mẫu: Mặt bàn phẳng Y = 0.88m, sát phía vách tường X = -5.40m) ---
   {
     id: "meth_crystal",
     name: "Methamphetamine tinh thể",
@@ -21,9 +23,9 @@ export const exhibitsData = [
       "Hệ tim mạch: Gây co thắt mạch vành, nhồi máu cơ tim, vỡ phình mạch não dẫn đến đột tử."
     ],
     warning: "Độc tính phá hủy tế bào não cực nhanh, gây nghiện tâm thần nặng nề không thể đảo ngược!",
-    position: { x: -5.35, y: 1.14, z: -3.75 },
+    position: { x: -5.40, y: 0.88, z: -3.75 },
     cabinetId: "cabinet_left",
-    row: "upper",
+    row: "back",
     audioText: "Bạn đang quan sát tiêu bản Methamphetamine dạng tinh thể nguyên chất. Dưới kính hiển vi quang học, các tinh thể hình kim hoặc lăng trụ trong suốt này bám chặt vào tế bào thần kinh, ép não bộ phóng thích lượng dopamine gấp nhiều chục lần mức tự nhiên. Sau cảm giác hưng phấn giả tạo ban đầu, người dùng sẽ rơi vào trạng thái suy kiệt thần kinh, mất ngủ kéo dài, phát sinh chứng hoang tưởng ngáo đá hoại tử nhân cách.",
     waveform: [25, 60, 85, 45, 90, 70, 40, 85, 95, 60, 30, 75, 90, 50, 80, 65, 90, 40, 20, 50],
     inspectInfo: "Tinh thể lăng trụ trong suốt, sáng lấp lánh như mảnh băng vụn, đựng trong túi zip tang vật niêm phong chuyên dụng của Công an."
@@ -40,9 +42,9 @@ export const exhibitsData = [
       "Thể trạng: Sụt cân cực độ, teo cơ, suy kiệt đa tạng và mất ngủ triền miên nhiều tuần."
     ],
     warning: "Nguyên nhân hàng đầu của các vụ án giết người, chém người thân trong cơn ngáo đá điên loạn!",
-    position: { x: -5.35, y: 1.14, z: -2.75 },
+    position: { x: -5.40, y: 0.88, z: -2.65 },
     cabinetId: "cabinet_left",
-    row: "upper",
+    row: "back",
     audioText: "Tiêu bản ma túy đá thương phẩm thu giữ từ các tụ điểm mua bán trái phép. Kẻ thủ ác thường sử dụng nỏ thủy tinh để đốt bốc khói hít trực tiếp. Ma túy đá đẩy nhịp tim người dùng lên tới 160 nhịp một phút, tăng thân nhiệt cực đoan và dẫn truyền xung đột dữ dội trong não bộ, gây ra hiện tượng ảo giác sâu bọ bò dưới da khiến người nghiện tự cào xé nát cơ thể.",
     waveform: [35, 75, 90, 60, 85, 40, 70, 95, 80, 50, 40, 85, 70, 60, 90, 75, 85, 30, 25, 60],
     inspectInfo: "Khối tinh thể vỡ vụn màu trắng đục lẫn vẩn mờ tạp chất phốt-pho đỏ, đựng trong túi ni-lông niêm phong hình chữ nhật."
@@ -59,9 +61,9 @@ export const exhibitsData = [
       "Đột quỵ: Gây xuất huyết não dưới nhện do tăng huyết áp kịch phát."
     ],
     warning: "Độc lực tim mạch cực cao, dễ gây đột tử tức khắc chỉ sau vài phút!",
-    position: { x: -5.35, y: 1.14, z: -1.75 },
+    position: { x: -5.40, y: 0.88, z: -1.55 },
     cabinetId: "cabinet_left",
-    row: "upper",
+    row: "back",
     audioText: "Đây là mẫu cocaine dập viên nén do các đường dây ma túy quốc tế ngụy trang. Khác với dạng bột hít truyền thống, viên nén cocaine dễ dàng bị nuốt trôi để vận chuyển lậu. Khi một viên nén bị vỡ trong ruột, cơ thể sẽ hấp thụ một lượng cực độc khiến huyết áp tăng vọt, tim đập loạn nhịp và tử vong gần như ngay tức khắc.",
     waveform: [40, 65, 80, 50, 70, 85, 90, 60, 45, 80, 75, 60, 85, 90, 70, 55, 40, 60, 30, 20],
     inspectInfo: "Viên nén hình tròn dập chìm ký hiệu số, bề mặt nhẵn mịn màu trắng ngà, bảo quản trong lọ nghiệm thu y tế."
@@ -78,9 +80,9 @@ export const exhibitsData = [
       "Tiêu hóa: Liệt nhu động ruột, táo bón ác tính, co thắt cơ vòng túi mật."
     ],
     warning: "Thuộc danh mục Dược phẩm Gây nghiện đặc biệt nguy hiểm, cấm lưu hành tự do!",
-    position: { x: -5.35, y: 1.14, z: -0.75 },
+    position: { x: -5.40, y: 0.88, z: -0.45 },
     cabinetId: "cabinet_left",
-    row: "upper",
+    row: "back",
     audioText: "Morphine là chuẩn mực đo lường độc lực của các opioid. Được phát hiện từ đầu thế kỷ 19, morphine cứu rỗi những cơn đau ung thư giai đoạn cuối nhưng lại là xiềng xích gông cùm người nghiện. Khi lạm dụng, cơ thể nhanh chóng dung nạp thuốc, buộc con nghiện phải tăng liều liên tục cho đến khi chạm ngưỡng tử vong vì ngừng thở.",
     waveform: [20, 35, 50, 40, 60, 45, 30, 55, 70, 50, 30, 45, 60, 55, 40, 35, 50, 25, 20, 15],
     inspectInfo: "Ống tiêm thủy tinh y tế dung tích 10mg/ml trong suốt dán nhãn đỏ kiểm soát đặc biệt, kèm kim tiêm vô trùng."
@@ -97,9 +99,9 @@ export const exhibitsData = [
       "Nhiễm độc nước: Hội chứng bài tiết ADH không thích hợp gây phù não cấp tử vong do uống quá nhiều nước."
     ],
     warning: "Cạm bẫy cực kỳ phổ biến trong các cuộc tụ tập 'bay lắc', phá hủy toàn diện não bộ thanh thiếu niên!",
-    position: { x: -5.35, y: 1.14, z: 0.25 },
+    position: { x: -5.40, y: 0.88, z: 0.65 },
     cabinetId: "cabinet_left",
-    row: "upper",
+    row: "back",
     audioText: "Thuốc lắc hay MDMA là loại ma túy tổng hợp đánh lừa người dùng bằng cảm giác hòa đồng, hưng phấn và thăng hoa âm thanh. Tuy nhiên, thuốc làm tê liệt trung tâm điều nhiệt của vùng dưới đồi não. Kết hợp với việc nhảy múa cường độ cao trong không gian kín, thân nhiệt người dùng tăng vọt dẫn tới suy gan thận cấp, xuất huyết não và đột tử ngay tại sàn nhảy.",
     waveform: [50, 80, 95, 70, 90, 85, 60, 90, 100, 75, 55, 85, 95, 70, 85, 90, 65, 45, 30, 50],
     inspectInfo: "Các viên nén màu hồng neon, xanh dương và cam dập nổi logo hình khiên và khiên vương miện sắc sảo."
@@ -116,15 +118,15 @@ export const exhibitsData = [
       "Sốc thuốc tử vong: Ngừng tim ngừng thở đột ngột khi nồng độ thuốc vượt ngưỡng dung nạp."
     ],
     warning: "Kẻ hủy diệt tàn khốc nhất đối với giống nòi, đạo đức và cuộc sống gia đình người nghiện!",
-    position: { x: -5.35, y: 1.14, z: 1.25 },
+    position: { x: -5.40, y: 0.88, z: 1.75 },
     cabinetId: "cabinet_left",
-    row: "upper",
+    row: "back",
     audioText: "Heroin là bóng ma kinh hoàng nhất trong lịch sử các chất ma túy. Khi vào cơ thể, nó biến đổi thành morphine bám chặt vào các thụ thể mu-opioid ở cuống não. Người dùng đánh mất toàn bộ lương tri, công ăn việc làm, danh dự nhân phẩm chỉ để kiếm tiền phục vụ cho các cữ thuốc ngày càng dày đặc. Tỷ lệ tái nghiện của heroin lên tới trên 90 phần trăm nếu không có sự can thiệp y tế và pháp luật nghiêm ngặt.",
     waveform: [30, 50, 70, 40, 85, 60, 75, 40, 95, 50, 30, 60, 80, 45, 70, 55, 85, 35, 20, 45],
     inspectInfo: "Bột mịn màu trắng ngà ép thành khối vuông vức bọc nhiều lớp nylon chống ẩm, kèm mẫu thử phản ứng Marquis."
   },
 
-  // --- HÀNG DƯỚI (Tủ 1 - 6 Mẫu: Bậc thấp Y = 0.92m, hướng ra lối đi X = -4.55m) ---
+  // --- HÀNG TRƯỚC (Tủ 1 - 6 Mẫu: Mặt bàn phẳng Y = 0.88m, hướng ra lối đi X = -4.45m, so le Z) ---
   {
     id: "ketamine",
     name: "Ketamine",
@@ -137,9 +139,9 @@ export const exhibitsData = [
       "Hô hấp: Co thắt thanh quản cấp tính, trào ngược dịch dạ dày gây sặc tử vong."
     ],
     warning: "Tàn phá bàng quang vĩnh viễn, biến người trẻ tuổi thành phế nhân tiểu tiện không tự chủ!",
-    position: { x: -4.55, y: 0.92, z: -3.75 },
+    position: { x: -4.45, y: 0.88, z: -3.20 },
     cabinetId: "cabinet_left",
-    row: "lower",
+    row: "front",
     audioText: "Bạn đang nhìn vào mẫu vật Ketamine, thường được dân chơi gọi là Khay hoặc Ke. Tác hại đặc trưng kinh hoàng nhất của Ketamine là hội chứng viêm bàng quang xuất huyết mạn tính. Độc chất ăn mòn niêm mạc bàng quang khiến dung tích chứa từ 500ml co rút chỉ còn chưa đầy 50ml, người bệnh phải đi tiểu từng giọt máu buốt rát sau mỗi 10 phút và không thể chữa lành.",
     waveform: [35, 40, 65, 30, 75, 50, 60, 40, 80, 65, 35, 50, 70, 60, 75, 45, 80, 30, 20, 40],
     inspectInfo: "Lọ thủy tinh chứa dung dịch tiêm trong suốt 500mg/10ml, bên cạnh là đĩa thủy tinh phủ một lớp bột trắng mịn."
@@ -156,9 +158,9 @@ export const exhibitsData = [
       "Nghiện thầm lặng: Nạn nhân bị nghiện mà không hề hay biết mình đang uống ma túy."
     ],
     warning: "Ngụy trang tinh vi thành thức uống yêu thích của giới trẻ, cực kỳ nguy hiểm trong trường học!",
-    position: { x: -4.55, y: 0.92, z: -2.75 },
+    position: { x: -4.45, y: 0.88, z: -2.10 },
     cabinetId: "cabinet_left",
-    row: "lower",
+    row: "front",
     audioText: "Ma túy trà sữa là thủ đoạn ngụy trang ma quái của tội phạm ma túy nhắm vào giới trẻ. Bột ma túy được tẩm hương liệu sữa bột, ca cao và hương trà, đóng gói trong các gói thiếc nhỏ in hình hoạt hình bắt mắt. Khi hòa vào nước ngọt hay trà sữa, ma túy tan biến không màu không vị khác lạ, biến nạn nhân thành con nghiện chỉ sau vài lần tụ tập bè bạn.",
     waveform: [20, 55, 70, 40, 65, 80, 60, 45, 75, 85, 50, 40, 65, 80, 55, 45, 60, 30, 25, 40],
     inspectInfo: "Gói thiếc bạc in họa tiết hoạt hình ngộ nghĩnh, bên trong chứa bột màu be có mùi thơm ngậy nồng nặc."
@@ -175,9 +177,9 @@ export const exhibitsData = [
       "Ức chế hô hấp: Hôn mê sâu và tử vong nhanh chóng nếu uống kèm với rượu bia."
     ],
     warning: "Vũ khí cưỡng bức tình dục nguy hiểm hàng đầu trong các vũ trường, quán bar!",
-    position: { x: -4.55, y: 0.92, z: -1.75 },
+    position: { x: -4.45, y: 0.88, z: -1.00 },
     cabinetId: "cabinet_left",
-    row: "lower",
+    row: "front",
     audioText: "GHB hay còn gọi là Nước Biển là chất độc nguy hiểm chuyên được tội phạm dùng để vô hiệu hóa nạn nhân. Khi nhỏ vài giọt vào ly rượu, mùi vị mặn của GHB bị cồn át hoàn toàn. Chỉ sau 15 phút, nạn nhân rơi vào trạng thái mềm nhũn cơ bắp, mất hoàn toàn khả năng phản kháng và quên sạch toàn bộ sự việc sau khi tỉnh lại, gây khó khăn lớn cho công tác điều tra.",
     waveform: [25, 40, 60, 35, 50, 70, 45, 30, 65, 55, 40, 35, 60, 50, 40, 45, 30, 25, 15, 30],
     inspectInfo: "Lọ thủy tinh màu xanh biển đậm dung tích 15ml, chứa chất lỏng sánh trong suốt không màu."
@@ -194,9 +196,9 @@ export const exhibitsData = [
       "Phá hủy não: Gây thiếu máu não cục bộ, co giật toàn thân dạng động kinh liên tục."
     ],
     warning: "Tỷ lệ sốc thuốc và tử vong tức thì cực kỳ cao do độc tính đa thành phần!",
-    position: { x: -4.55, y: 0.92, z: -0.75 },
+    position: { x: -4.45, y: 0.88, z: 0.10 },
     cabinetId: "cabinet_left",
-    row: "lower",
+    row: "front",
     audioText: "Dung dịch nước vui là sản phẩm cocktail ma túy cực kỳ độc hại. Các băng nhóm tội phạm trộn lẫn nhiều loại tiền chất và chất ma túy khác nhau vào dung dịch cồn ngọt để bán với giá cắt cổ. Vì không thể biết chính xác nồng độ các chất trong một chai nước vui, người dùng rất dễ bị quá liều, co giật sùi bọt mép và ngừng tim trước khi kịp đưa tới bệnh viện cấp cứu.",
     waveform: [45, 70, 85, 60, 95, 75, 65, 80, 90, 70, 50, 80, 85, 65, 75, 85, 60, 40, 30, 55],
     inspectInfo: "Ống nghiệm thủy tinh chứa dung dịch màu hồng phát quang dưới ánh đèn UV, dán nhãn niêm phong tang vật."
@@ -213,9 +215,9 @@ export const exhibitsData = [
       "Tiêu cơ vân cấp: Cơ bắp bị phân hủy, myoglobin làm tắc nghẽn ống thận dẫn đến suy thận cấp tử vong."
     ],
     warning: "Loại ma túy tạo nên các 'xác sống ăn thịt người' gây rúng động xã hội toàn cầu!",
-    position: { x: -4.55, y: 0.92, z: 0.25 },
+    position: { x: -4.45, y: 0.88, z: 1.20 },
     cabinetId: "cabinet_left",
-    row: "lower",
+    row: "front",
     audioText: "Muối tắm là tên gọi ngụy trang của nhóm Cathinone tổng hợp cực độc. Khi sử dụng loại ma túy này, người nghiện rơi vào cơn mê sảng kích động tột độ, cảm thấy da thịt nóng như bị thiêu đốt nên thường xé bỏ quần áo, tấn công điên cuồng cắn xé bất cứ ai xung quanh. Cảnh sát nhiều nước đã phải nổ súng trấn áp vì đối tượng hoàn toàn mất cảm giác đau đớn.",
     waveform: [40, 85, 100, 75, 90, 95, 80, 70, 95, 90, 60, 85, 100, 75, 90, 85, 70, 45, 30, 65],
     inspectInfo: "Hũ nhựa trong suốt chứa các hạt tinh thể màu trắng đục thô ráp, nắp vặn dán nhãn cảnh báo độc chất sinh học."
@@ -232,9 +234,9 @@ export const exhibitsData = [
       "Quản lý ngặt nghèo: Phải uống trực tiếp dưới sự giám sát của nhân viên y tế tại cơ sở cai nghiện."
     ],
     warning: "Dược phẩm điều trị nghiện có kiểm soát đặc biệt, nghiêm cấm mua bán tàng trữ trái phép!",
-    position: { x: -4.55, y: 0.92, z: 1.25 },
+    position: { x: -4.45, y: 0.88, z: 2.30 },
     cabinetId: "cabinet_left",
-    row: "lower",
+    row: "front",
     audioText: "Methadone là giải pháp y tế cộng đồng giúp người nghiện heroin từng bước từ bỏ hành vi tiêm chích ma túy bất hợp pháp, giảm thiểu lây nhiễm HIV và tái hòa nhập gia đình. Tuy nhiên, methadone vẫn là một chất gây nghiện mạnh. Nếu mang ra ngoài mua bán trái phép hoặc sử dụng sai phác đồ, nó sẽ trở thành nguyên nhân gây ngộ độc và tử vong do ngừng thở.",
     waveform: [20, 30, 45, 35, 50, 40, 30, 45, 55, 40, 25, 35, 50, 45, 35, 30, 40, 25, 15, 20],
     inspectInfo: "Chai nhựa màu nâu sẫm chứa siro Methadone 10mg/ml, kèm cốc đong chia vạch mi-li-lít tiêu chuẩn y tế."
@@ -243,9 +245,10 @@ export const exhibitsData = [
   // =========================================================================
   // TỦ 2 (Phía Phải - cabinet_right): 12 MẪU VẬT
   // Nhóm 2: Thực vật tự nhiên, nấm thức thần & các chế phẩm cần sa biến tướng
+  // Mặt bàn phẳng Y = 0.88m: 6 Mẫu Hàng Sau (X = 5.40) & 6 Mẫu Hàng Trước (X = 4.45)
   // =========================================================================
 
-  // --- HÀNG TRÊN (Tủ 2 - 6 Mẫu: Bậc cao Y = 1.14m, lùi sát vách X = 5.35m) ---
+  // --- HÀNG SAU (Tủ 2 - 6 Mẫu: Mặt bàn phẳng Y = 0.88m, sát phía vách tường X = 5.40m) ---
   {
     id: "poppy_flower",
     name: "Hoa anh túc",
@@ -258,9 +261,9 @@ export const exhibitsData = [
       "Tác hại xã hội: Nguồn gốc của các cuộc chiến tranh thuốc phiện và thảm họa ma túy toàn cầu."
     ],
     warning: "Nghiêm cấm gieo trồng dưới mọi hình thức, bị truy cứu trách nhiệm hình sự phạt tù nghiêm khắc!",
-    position: { x: 5.35, y: 1.14, z: -3.75 },
+    position: { x: 5.40, y: 0.88, z: -3.75 },
     cabinetId: "cabinet_right",
-    row: "upper",
+    row: "back",
     audioText: "Trước mắt bạn là hoa cây thuốc phiện hay hoa anh túc. Cây thuốc phiện có tên khoa học là Papaver somniferum. Vẻ đẹp kiều diễm của cánh hoa đỏ rực này đã từng gieo rắc bao nỗi kinh hoàng cho nhân loại. Pháp luật Việt Nam nghiêm cấm triệt để việc gieo trồng cây thuốc phiện ở bất kỳ đâu, kể cả làm cảnh hay ngâm rượu.",
     waveform: [20, 35, 50, 60, 40, 55, 70, 50, 35, 60, 50, 40, 65, 55, 45, 35, 50, 30, 20, 25],
     inspectInfo: "Tiêu bản hoa anh túc ép khô ngâm formol trong lọ thủy tinh quang học trong suốt, nhìn rõ 4 cánh đỏ nhụy thẫm."
@@ -277,9 +280,9 @@ export const exhibitsData = [
       "Chiết xuất ma túy: Nguyên liệu ban đầu để tinh chế morphine và bán tổng hợp heroin."
     ],
     warning: "Ngâm rượu uống là hành vi tàng trữ sử dụng chất ma túy trái phép, có thể bị xử lý hình sự!",
-    position: { x: 5.35, y: 1.14, z: -2.75 },
+    position: { x: 5.40, y: 0.88, z: -2.65 },
     cabinetId: "cabinet_right",
-    row: "upper",
+    row: "back",
     audioText: "Quả anh túc là bộ phận tập trung nồng độ chất gây nghiện cao nhất của cây. Nhiều người dân lầm tưởng ngâm quả thuốc phiện vào rượu sẽ bổ dương tăng lực, nhưng thực chất là đang tự đầu độc cơ thể bằng morphine và các alkaloid thô, dẫn tới suy gan, xơ gan và nghiện ngập không lối thoát.",
     waveform: [25, 45, 60, 50, 65, 75, 55, 40, 70, 60, 45, 55, 65, 50, 40, 45, 50, 30, 20, 30],
     inspectInfo: "Tiêu bản quả thuốc phiện sấy khô màu xanh xám, trên vỏ quả còn in hằn các vết khía rạch lấy mủ song song."
@@ -296,9 +299,9 @@ export const exhibitsData = [
       "Lão hóa sớm: Rụng răng, suy giảm sinh dục, teo cơ và tuổi thọ suy giảm nghiêm trọng."
     ],
     warning: "Gông cùm đầu độc lịch sử dân tộc suốt hàng thế kỷ, bị cấm tuyệt đối theo luật pháp!",
-    position: { x: 5.35, y: 1.14, z: -1.75 },
+    position: { x: 5.40, y: 0.88, z: -1.55 },
     cabinetId: "cabinet_right",
-    row: "upper",
+    row: "back",
     audioText: "Nhựa thuốc phiện là chất ma túy có lịch sử tàn phá cổ xưa nhất. Người hút thuốc phiện phải dùng bàn đèn, tiêm đèn đốt nóng viên nhựa để hút khói qua tẩu dài. Thuốc phiện bào mòn sinh lực nhanh chóng, biến người khỏe mạnh thành những bóng ma tiều tụy nằm chờ cữ hút, mở đường cho nạn buôn bán ma túy toàn cầu.",
     waveform: [30, 40, 55, 45, 60, 50, 35, 65, 75, 50, 35, 45, 60, 55, 40, 35, 45, 25, 20, 25],
     inspectInfo: "Khối nhựa dẻo quánh màu nâu đen đóng bánh tròn, bọc ngoài bằng giấy bóng kính phong ấn dấu tang vật."
@@ -315,9 +318,9 @@ export const exhibitsData = [
       "Gây lệ thuộc: Gây kích thích tâm thần vận động và suy sụp khi hết tác dụng."
     ],
     warning: "Cây trồng ngoại lai cấm nhập khẩu, gieo trồng và lưu hành tại Việt Nam!",
-    position: { x: 5.35, y: 1.14, z: -0.75 },
+    position: { x: 5.40, y: 0.88, z: -0.45 },
     cabinetId: "cabinet_right",
-    row: "upper",
+    row: "back",
     audioText: "Lá coca là nguồn gốc duy nhất sản sinh ra chất ma túy Cocaine. Để chiết xuất được một kilôgam cocaine nguyên chất, các nghiệp đoàn tội phạm phải tiêu tốn hàng trăm kilôgam lá coca tươi kết hợp với xăng, axit sunfuric và hóa chất tẩy rửa công nghiệp cực độc. Việc du nhập lá coca vào Việt Nam bị nghiêm cấm hoàn toàn.",
     waveform: [20, 35, 45, 55, 65, 50, 40, 60, 70, 55, 40, 50, 65, 60, 45, 40, 50, 30, 20, 20],
     inspectInfo: "Tiêu bản lá sấy khô màu xanh ô-liu hình bầu dục thon dài, nổi rõ hai đường gân phụ cong dọc thân lá."
@@ -334,9 +337,9 @@ export const exhibitsData = [
       "Hội chứng vô cảm: Mất hứng thú học tập, mất trí nhớ ngắn hạn và sa sút trí tuệ ở thanh thiếu niên."
     ],
     warning: "Mầm mống lôi kéo giới trẻ sa đà vào con đường nghiện ngập, vi phạm pháp luật!",
-    position: { x: 5.35, y: 1.14, z: 0.25 },
+    position: { x: 5.40, y: 0.88, z: 0.65 },
     cabinetId: "cabinet_right",
-    row: "upper",
+    row: "back",
     audioText: "Hình ảnh chiếc lá cần sa 7 ngón thường bị các đối tượng xấu lãng mạn hóa trên mạng xã hội như một loại thảo dược vô hại. Tuy nhiên, y học đã chứng minh chất THC trong cần sa phá hủy các liên kết thần kinh ở não bộ đang phát triển của người trẻ, làm giảm chỉ số IQ vĩnh viễn và là cánh cửa mở đường dẫn tới các chất ma túy nguy hiểm hơn.",
     waveform: [30, 45, 60, 50, 70, 80, 65, 50, 75, 70, 55, 60, 75, 65, 50, 45, 55, 35, 25, 35],
     inspectInfo: "Tiêu bản lá tươi ép phẳng giữa hai lớp kính mica trong suốt, giữ nguyên màu xanh diệp lục và mép răng cưa sắc nét."
@@ -353,15 +356,15 @@ export const exhibitsData = [
       "Suy giảm khả năng lái xe: Phản xạ chậm chạp gây tai nạn giao thông thảm khốc."
     ],
     warning: "Nhiều đối tượng trẻ tuổi bị lôi kéo sử dụng 'cỏ', 'bồ đà' dẫn tới hoang tưởng tâm thần!",
-    position: { x: 5.35, y: 1.14, z: 1.25 },
+    position: { x: 5.40, y: 0.88, z: 1.75 },
     cabinetId: "cabinet_right",
-    row: "upper",
+    row: "back",
     audioText: "Cần sa khô hay còn gọi là Tài Mà, Bồ Đà thường được quấn thành điếu thuốc hoặc nhồi vào boong tẩu để hút. Khói cần sa bay xa có mùi khét nồng rất dễ nhận biết. Hút cần sa thường xuyên gây nghiện tâm lý dai dẳng, làm teo thùy hồi hải mã trong não gây mất trí nhớ nghiêm trọng.",
     waveform: [25, 40, 55, 45, 65, 75, 60, 45, 70, 65, 50, 55, 70, 60, 45, 40, 50, 30, 20, 30],
     inspectInfo: "Búp cần sa khô màu nâu xanh kết dính nhiều sợi tơ nhựa óng ánh, đóng gói trong túi zip chống ẩm."
   },
 
-  // --- HÀNG DƯỚI (Tủ 2 - 6 Mẫu: Bậc thấp Y = 0.92m, hướng ra lối đi X = 4.55m) ---
+  // --- HÀNG TRƯỚC (Tủ 2 - 6 Mẫu: Mặt bàn phẳng Y = 0.88m, hướng ra lối đi X = 4.45m, so le Z) ---
   {
     id: "cannabis_seed",
     name: "Hạt cần sa",
@@ -374,9 +377,9 @@ export const exhibitsData = [
       "Công nghệ lai tạo: Nhiều hạt giống bị biến đổi gen tạo hàm lượng THC cực cao độc tính gấp bội."
     ],
     warning: "Nghiêm cấm mua bán, vận chuyển, gieo ươm hạt cần sa qua biên giới dưới mọi hình thức!",
-    position: { x: 4.55, y: 0.92, z: -3.75 },
+    position: { x: 4.45, y: 0.88, z: -3.20 },
     cabinetId: "cabinet_right",
-    row: "lower",
+    row: "front",
     audioText: "Hạt cần sa thường được ngụy trang trong các gói hạt giống hoa hoặc thức ăn chim cảnh gửi qua đường bưu phẩm quốc tế. Công an phường Tân Hưng khuyến cáo người dân cảnh giác với các hội nhóm trên mạng dụ dỗ trồng cần sa tại nhà kiếm thêm thu nhập, đây là hành vi tiếp tay gieo rắc ma túy bị pháp luật trừng trị nghiêm khắc.",
     waveform: [15, 25, 35, 30, 45, 40, 30, 35, 50, 40, 25, 30, 45, 40, 30, 25, 35, 20, 15, 20],
     inspectInfo: "Đĩa petri chứa khoảng 50 hạt cần sa hình giọt nước nhỏ li ti, vỏ màu nâu nhạt điểm vân đốm đậm."
@@ -393,9 +396,9 @@ export const exhibitsData = [
       "Rối loạn tâm thần kéo dài (HPPD): Tái hiện ảo giác kéo dài nhiều tháng sau khi ngừng sử dụng."
     ],
     warning: "Chất ma túy Bảng I có độc tính ảo giác cực mạnh, dễ gây hoang tưởng nhảy lầu tử vong!",
-    position: { x: 4.55, y: 0.92, z: -2.75 },
+    position: { x: 4.45, y: 0.88, z: -2.10 },
     cabinetId: "cabinet_right",
-    row: "lower",
+    row: "front",
     audioText: "Nấm thức thần đang len lỏi vào giới trẻ dưới cái mác trải nghiệm tâm linh hay mở rộng tâm trí. Thực tế, chất Psilocybin trong nấm phá vỡ hoàn toàn khả năng định hướng thực tại của não bộ. Người ăn nấm thức thần thường rơi vào những cơn ác mộng sống động, hoảng loạn tột độ nghĩ mình có thể bay lượn và bước ra ngoài cửa sổ nhà cao tầng tử vong.",
     waveform: [35, 55, 75, 50, 80, 85, 70, 60, 90, 80, 55, 65, 80, 75, 60, 50, 65, 40, 25, 45],
     inspectInfo: "Cụm nấm sấy khô gồm 3 cây nấm cuống dài mảnh khảnh màu kem, mũ nấm màu nâu vàng có ánh xanh lam đặc trưng."
@@ -412,9 +415,9 @@ export const exhibitsData = [
       "Khó phát hiện: Rất khó phân biệt với bánh kẹo thông thường nếu không kiểm tra kỹ bao bì."
     ],
     warning: "Thủ đoạn nhắm trực tiếp vào trẻ em và học sinh sinh viên, phụ huynh cần hết sức cảnh giác!",
-    position: { x: 4.55, y: 0.92, z: -1.75 },
+    position: { x: 4.45, y: 0.88, z: -1.00 },
     cabinetId: "cabinet_right",
-    row: "lower",
+    row: "front",
     audioText: "Đây là vỏ túi kẹo cần sa tang vật thu giữ tại các vụ án buôn bán ma túy trá hình. Các đối tượng in bao bì bóng bẩy, ghi nhãn hiệu nhái theo các thương hiệu kẹo nổi tiếng thế giới. Nhiều em học sinh tò mò mua ăn chung đã bị ngộ độc tập thể phải nhập viện cấp cứu trong tình trạng khó thở, tụt huyết áp và lơ mơ.",
     waveform: [25, 40, 60, 45, 65, 55, 40, 55, 70, 65, 45, 50, 65, 60, 45, 40, 50, 30, 20, 35],
     inspectInfo: "Túi nhôm dập đáy đứng màu sắc sặc sỡ, in logo chiếc kẹo gấu hoạt hình bên cạnh biểu tượng cảnh báo THC màu đỏ."
@@ -431,9 +434,9 @@ export const exhibitsData = [
       "Ảo giác hoảng loạn: Tim đập nhanh như trống ngực, khô miệng, sợ hãi tột cùng."
     ],
     warning: "Độc tố tích tụ chậm qua đường tiêu hóa, gây ngộ độc nặng nề khó kiểm soát!",
-    position: { x: 4.55, y: 0.92, z: -0.75 },
+    position: { x: 4.45, y: 0.88, z: 0.10 },
     cabinetId: "cabinet_right",
-    row: "lower",
+    row: "front",
     audioText: "Kẹo dẻo cần sa là một cạm bẫy cực kỳ nguy hiểm vì cơ chế hấp thụ qua đường tiêu hóa rất chậm. Người ăn thường không cảm thấy gì trong một giờ đầu nên tiếp tục ăn thêm nhiều viên. Khi toàn bộ lượng THC ngấm vào máu qua gan, nó chuyển hóa thành dạng độc tính mạnh gấp 4 lần so với hút, làm nạn nhân gục ngã vì ngộ độc cấp tính.",
     waveform: [30, 50, 70, 55, 75, 80, 60, 50, 80, 75, 50, 60, 75, 70, 55, 45, 60, 35, 25, 40],
     inspectInfo: "Các viên kẹo dẻo trong mờ hình chú gấu nhỏ màu đỏ, xanh lá và vàng xếp trên đĩa mẫu vật kiểm nghiệm."
@@ -450,9 +453,9 @@ export const exhibitsData = [
       "Nguy hiểm khi lái xe: Gây tai nạn giao thông nghiêm trọng do ảo giác chậm phản xạ."
     ],
     warning: "Loại bánh ngọt tử thần ngụy trang bán công khai tại các bữa tiệc thác loạn của giới trẻ!",
-    position: { x: 4.55, y: 0.92, z: 0.25 },
+    position: { x: 4.45, y: 0.88, z: 1.20 },
     cabinetId: "cabinet_right",
-    row: "lower",
+    row: "front",
     audioText: "Bánh cần sa hay Space Cake thường được tự làm hoặc đặt mua qua các hội nhóm kín trên mạng xã hội. Đối tượng chiết xuất búp cần sa vào bơ thực vật rồi dùng bơ đó nướng bánh. Một mẩu bánh nhỏ có thể đưa người dùng vào trạng thái nửa tỉnh nửa mê kéo dài suốt 12 đến 24 giờ đồng hồ, phá hủy hệ thần kinh tự chủ.",
     waveform: [25, 45, 65, 50, 70, 75, 55, 45, 75, 70, 50, 55, 70, 65, 50, 40, 55, 30, 20, 35],
     inspectInfo: "Mẩu bánh vuông màu nâu sô-cô-la đậm bề mặt nứt rạn rải vụn hạt, đặt trên giấy thấm dầu xét nghiệm độc học."
@@ -469,9 +472,9 @@ export const exhibitsData = [
       "Hôn mê và co giật: Người dùng ngã quỵ, sùi bọt mép ngay sau khi rít hơi thuốc lá điện tử tẩm tinh dầu."
     ],
     warning: "Nồng độ hoạt chất gây nghiện cực đậm đặc, nguyên nhân gây nhiều ca đột tử ở học sinh!",
-    position: { x: 4.55, y: 0.92, z: 1.25 },
+    position: { x: 4.45, y: 0.88, z: 2.30 },
     cabinetId: "cabinet_right",
-    row: "lower",
+    row: "front",
     audioText: "Tinh dầu cần sa cô đặc là biến tướng nguy hiểm hàng đầu hiện nay. Bằng công nghệ chiết xuất dung môi, nồng độ THC được cô đặc cao gấp 50 lần so với hút búp cần sa truyền thống. Khi đối tượng pha loại tinh dầu này vào thuốc lá điện tử, khói bốc ra không hề có mùi cần sa khét đặc trưng nên rất khó phát hiện trong môi trường học đường và công sở.",
     waveform: [35, 60, 80, 60, 85, 90, 70, 55, 85, 80, 60, 65, 85, 80, 65, 50, 65, 40, 30, 45],
     inspectInfo: "Lọ thủy tinh màu hổ phách dung tích 10ml kèm ống nhỏ giọt cao su, chứa chất dầu lỏng sánh màu vàng óng."
@@ -480,9 +483,10 @@ export const exhibitsData = [
   // =========================================================================
   // TỦ 3 (Phía Sau - cabinet_back): 12 MẪU VẬT
   // Nhóm 3: Ma túy ngụy trang tinh vi, bao bì trá hình & dụng cụ sử dụng trái phép
+  // Mặt bàn phẳng Y = 0.88m: 6 Mẫu Hàng Sau (Z = 6.90) & 6 Mẫu Hàng Trước (Z = 6.00)
   // =========================================================================
 
-  // --- HÀNG TRÊN (Tủ 3 - 6 Mẫu: Bậc cao Y = 1.14m, lùi sát vách Z = 6.85m) ---
+  // --- HÀNG SAU (Tủ 3 - 6 Mẫu: Mặt bàn phẳng Y = 0.88m, sát phía vách tường sau Z = 6.90m) ---
   {
     id: "lsd_blotter",
     name: "Tem lưỡi LSD",
@@ -495,9 +499,9 @@ export const exhibitsData = [
       "Rối loạn tâm thần vĩnh viễn: Mất hoàn toàn ranh giới giữa bản thân và thế giới thực tại."
     ],
     warning: "Độc lực ảo giác đo bằng microgam, chỉ một con tem nhỏ đã đủ phá hủy cả một cuộc đời!",
-    position: { x: -3.75, y: 1.14, z: 6.85 },
+    position: { x: -3.75, y: 0.88, z: 6.90 },
     cabinetId: "cabinet_back",
-    row: "upper",
+    row: "back",
     audioText: "Tem lưỡi hay Bùa lưỡi là hình thức ngụy trang kinh điển của chất LSD. Hoạt chất này tác động lên thụ thể serotonin 5-HT2A trong não bộ, tạo ra những ảo giác đa chiều phức tạp kéo dài suốt 12 tiếng. Đáng sợ nhất là hội chứng Flashback, khi người dùng đã dừng thuốc nhiều năm nhưng bất ngờ ảo giác kinh dị tái xuất hiện khi đang lái xe hoặc làm việc, gây ra những tai nạn thảm khốc.",
     waveform: [30, 65, 90, 70, 95, 85, 60, 85, 100, 75, 50, 80, 90, 70, 85, 90, 60, 40, 25, 50],
     inspectInfo: "Tờ giấy thấm đục lỗ kích thước 5x5 ô vuông in hình tranh nghệ thuật vạn hoa rực rỡ, mỗi ô là một liều tem lưỡi."
@@ -514,9 +518,9 @@ export const exhibitsData = [
       "Tử vong do ngộ độc: Chứa hỗn hợp chất kích thích liều cao gây trụy tim mạch cấp."
     ],
     warning: "Chiêu bài ngụy trang nguy hiểm lừa dối thanh niên trong các cuộc vui chơi thâu đêm!",
-    position: { x: -2.25, y: 1.14, z: 6.85 },
+    position: { x: -2.25, y: 0.88, z: 6.90 },
     cabinetId: "cabinet_back",
-    row: "upper",
+    row: "back",
     audioText: "Gói nước vui ngụy trang là tang vật phổ biến trong các vụ triệt phá tụ điểm bay lắc của lực lượng Công an. Với vẻ ngoài không khác gì gói trà hòa tan hay gói sâm bổ dưỡng, các đối tượng mang theo người để bán với giá tiền triệu mỗi gói. Khi pha vào rượu hay nước ngọt, dung dịch đổi màu và tạo cảm giác kích thích cực độ khiến người dùng nhảy múa kiệt sức.",
     waveform: [35, 70, 85, 60, 90, 80, 55, 75, 85, 70, 50, 75, 90, 65, 80, 85, 60, 35, 25, 45],
     inspectInfo: "Túi thiếc hàn nhiệt miệng túi in nhãn hiệu Crispy Fruit màu vàng cam kèm hình quả xoài hoạt hình tươi mát."
@@ -533,9 +537,9 @@ export const exhibitsData = [
       "Phá hủy trật tự xã hội: Mỗi bánh heroin khi xé lẻ có thể đầu độc hàng ngàn lượt con nghiện."
     ],
     warning: "Tội phạm vận chuyển từ 1 bánh heroin trở lên đối diện mức án cao nhất là TỬ HÌNH!",
-    position: { x: -0.75, y: 1.14, z: 6.85 },
+    position: { x: -0.75, y: 0.88, z: 6.90 },
     cabinetId: "cabinet_back",
-    row: "upper",
+    row: "back",
     audioText: "Bao bì Song Sư Hí Cầu với hình tượng hai con sư tử vờn quả địa cầu là biểu tượng chết chóc của các trùm ma túy vùng Tam Giác Vàng. Khối bánh hình chữ nhật này chứa lượng heroin có thể chia thành hàng ngàn tép nhỏ. Luật Phòng chống ma túy và Bộ luật Hình sự Việt Nam quy định mức án tử hình đối với các đối tượng vận chuyển, mua bán bánh heroin ở quy mô thương mại.",
     waveform: [20, 45, 65, 40, 80, 60, 70, 45, 90, 55, 30, 60, 75, 50, 70, 60, 80, 35, 20, 40],
     inspectInfo: "Khối chữ nhật ép chặt kích thước 15x10x3 cm bọc giấy sáp trắng, chính giữa in dấu mộc đỏ hình hai con sư tử đạp địa cầu."
@@ -552,9 +556,9 @@ export const exhibitsData = [
       "Phương thức vận chuyển đường bộ: Thường giấu trong thùng xe tải chở hàng nông sản xuyên biên giới."
     ],
     warning: "Thủ đoạn của các tập đoàn ma túy quốc tế bị lực lượng Cảnh sát điều tra triệt phá quyết liệt!",
-    position: { x: 0.75, y: 1.14, z: 6.85 },
+    position: { x: 0.75, y: 0.88, z: 6.90 },
     cabinetId: "cabinet_back",
-    row: "upper",
+    row: "back",
     audioText: "Ma túy ngụy trang trong gói trà hút chân không là thủ đoạn kinh điển của các đường dây buôn bán ma túy quy mô tấn. Bên ngoài là bao bì trà thượng hạng nhưng bên trong là tinh thể ma túy đá hoặc ketamine tinh khiết. Lực lượng Cảnh sát Điều tra tội phạm về ma túy Công an TP. Hồ Chí Minh đã nhiều lần lập chiến công xuất sắc, bóc gỡ hàng loạt chuyên án thu giữ hàng trăm gói trà tử thần này.",
     waveform: [30, 50, 75, 60, 85, 75, 55, 70, 80, 65, 45, 70, 85, 60, 75, 80, 55, 35, 25, 40],
     inspectInfo: "Gói trà hút chân không màu xanh lục ánh kim dập nổi chữ vàng, rạch một đường nhỏ để lộ tinh thể trắng sáng bên trong."
@@ -571,9 +575,9 @@ export const exhibitsData = [
       "Hành vi phạm tội nghiêm trọng: Vận chuyển ma túy qua đường hàng không quốc tế bị xử lý kịch khung hình phạt."
     ],
     warning: "Cảnh báo người dân tuyệt đối không nhận xách tay hàng hóa, mỹ phẩm lạ tại sân bay!",
-    position: { x: 2.25, y: 1.14, z: 6.85 },
+    position: { x: 2.25, y: 0.88, z: 6.90 },
     cabinetId: "cabinet_back",
-    row: "upper",
+    row: "back",
     audioText: "Vụ việc ngụy trang ma túy trong hàng trăm tuýp kem đánh răng xách tay qua đường hàng không từng gây chấn động dư luận. Tội phạm sử dụng công nghệ hàn siêu âm để niêm phong lại vỏ tuýp như hàng mới xuất xưởng. Bài học đắt giá cho mọi công dân là tuyệt đối không mang hộ đồ đạc của người lạ qua cửa khẩu sân bay để tránh vướng vào vòng lao lý.",
     waveform: [25, 40, 60, 45, 70, 60, 45, 60, 75, 65, 40, 55, 70, 60, 50, 45, 55, 30, 20, 30],
     inspectInfo: "Tuýp kem đánh răng cắt dọc thân cho thấy khoang chứa các viên thuốc lắc màu tím được bọc kỹ trong màng bọc thực phẩm."
@@ -590,15 +594,15 @@ export const exhibitsData = [
       "Mầm mống tội phạm đường phố: Con nghiện đi cướp giật, trộm cắp tài sản để có vài chục ngàn mua tép hút."
     ],
     warning: "Mỗi tép nhỏ ma túy là khởi đầu cho hàng loạt vụ trộm cắp, cướp giật gây mất an ninh trật tự!",
-    position: { x: 3.75, y: 1.14, z: 6.85 },
+    position: { x: 3.75, y: 0.88, z: 6.90 },
     cabinetId: "cabinet_back",
-    row: "upper",
+    row: "back",
     audioText: "Tép ma túy lẻ là hình ảnh quen thuộc gắn liền với tệ nạn ma túy đường phố. Để kiếm tiền mua một vài tép ma túy mỗi ngày, người nghiện sẵn sàng gây ra các vụ cướp giật tài sản, trộm cắp của người dân và gia đình. Công an phường Tân Hưng kiên quyết đấu tranh triệt xóa toàn bộ các điểm và tụ điểm bán lẻ ma túy, giữ vững bình yên cho từng con hẻm khu phố.",
     waveform: [20, 35, 50, 35, 55, 45, 30, 45, 60, 50, 35, 40, 55, 50, 40, 35, 45, 25, 15, 20],
     inspectInfo: "Khay inox chứa 10 tép ma túy nhỏ xíu gấp bằng giấy bạc thuốc lá và giấy vé số nhiều màu, kèm lưỡi lam chia thuốc."
   },
 
-  // --- HÀNG DƯỚI (Tủ 3 - 6 Mẫu: Bậc thấp Y = 0.92m, hướng ra lối đi Z = 6.05m) ---
+  // --- HÀNG TRƯỚC (Tủ 3 - 6 Mẫu: Mặt bàn phẳng Y = 0.88m, hướng ra lối đi Z = 6.00m, so le X) ---
   {
     id: "injection_kit",
     name: "Bộ dụng cụ tiêm chích",
@@ -611,9 +615,9 @@ export const exhibitsData = [
       "Nguy hiểm kim tiêm bừa bãi: Con nghiện vứt kim tiêm đã qua sử dụng nơi công cộng đe dọa người dân vô tội."
     ],
     warning: "Cái chết rình rập từ những mũi kim tiêm truyền nhiễm mầm bệnh thế kỷ HIV/AIDS!",
-    position: { x: -3.75, y: 0.92, z: 6.05 },
+    position: { x: -3.00, y: 0.88, z: 6.00 },
     cabinetId: "cabinet_back",
-    row: "lower",
+    row: "front",
     audioText: "Bộ dụng cụ tiêm chích ma túy là bằng chứng đau xót về sự tha hóa của con nghiện. Chiếc muỗng sắt bị ngọn lửa quẹt gas hun đen dùng để đun bột heroin, chiếc bơm tiêm cùn rỉ được dùng đi dùng lại nhiều lần. Không ít người đã phải trả giá bằng cả tính mạng khi vô tình dẫm phải kim tiêm bị vứt bỏ bừa bãi tại các bãi đất trống, công viên.",
     waveform: [25, 40, 55, 40, 65, 50, 35, 55, 70, 50, 30, 45, 60, 55, 40, 35, 50, 25, 20, 30],
     inspectInfo: "Bơm kim tiêm y tế loại 1cc nắp cam, muỗng kim loại ám muội đen và đoạn dây ga-rô cao su y tế màu vàng."
@@ -630,9 +634,9 @@ export const exhibitsData = [
       "Dễ chế tạo: Con nghiện tận dụng mọi chai lọ phế thải để tự chế đồ chơi ma túy tại các nhà trọ, khách sạn."
     ],
     warning: "Dụng cụ trực tiếp tiếp tay tạo ra những đối tượng 'ngáo đá' nguy hiểm cho xã hội!",
-    position: { x: -2.25, y: 0.92, z: 6.05 },
+    position: { x: -1.50, y: 0.88, z: 6.00 },
     cabinetId: "cabinet_back",
-    row: "lower",
+    row: "front",
     audioText: "Đây là bình nỏ tự chế chơi ma túy đá thường bị phát hiện tại các tụ điểm bay lắc. Khói tinh thể ma túy đá được dẫn qua bình nước lọc để làm mát trước khi rít sâu vào phổi. Người sử dụng loại bình này thường tụ tập thâu đêm suốt sáng, sau đó rơi vào trạng thái ngáo đá mất kiểm soát, cầm dao truy sát người thân trong ảo giác cuồng loạn.",
     waveform: [35, 65, 80, 55, 85, 75, 50, 75, 90, 70, 45, 70, 85, 65, 75, 80, 55, 35, 25, 45],
     inspectInfo: "Bình nhựa có chứa nước màu đục gắn ống hút nhựa màu đỏ và ống thủy tinh uốn cong có bầu tròn ám khói đen."
@@ -649,9 +653,9 @@ export const exhibitsData = [
       "Tàng trữ trái phép: Bị coi là công cụ phạm tội liên quan đến hành vi tổ chức sử dụng ma túy."
     ],
     warning: "Vỏ bọc đồ chơi nghệ thuật nguy hiểm lôi kéo giới trẻ bước vào con đường nghiện ngập!",
-    position: { x: -0.75, y: 0.92, z: 6.05 },
+    position: { x: 0.00, y: 0.88, z: 6.00 },
     cabinetId: "cabinet_back",
-    row: "lower",
+    row: "front",
     audioText: "Cóng và tẩu thủy tinh chơi cần sa được các đối tượng quảng cáo rầm rộ trên mạng dưới danh nghĩa phụ kiện thời trang sành điệu. Với màu sắc bắt mắt và kiểu dáng cách điệu, chúng tạo cho giới trẻ ảo tưởng rằng việc hút cần sa là một lối sống sành điệu, trong khi thực chất đang trực tiếp đầu độc hệ hô hấp và thần kinh của chính mình.",
     waveform: [25, 45, 60, 45, 65, 55, 40, 55, 70, 60, 40, 50, 65, 60, 45, 40, 50, 30, 20, 30],
     inspectInfo: "Tẩu thủy tinh xoắn màu xanh ngọc bích dài 12cm có miệng hút vát chéo và bầu đốt ám vết nhựa cháy sẫm."
@@ -668,9 +672,9 @@ export const exhibitsData = [
       "Tổ chức sử dụng trái phép: Tang vật quan trọng cấu thành tội Tổ chức sử dụng trái phép chất ma túy."
     ],
     warning: "Biểu tượng thác loạn của các 'dân chơi', để lại biến chứng thủng vách ngăn mũi tàn phế!",
-    position: { x: 0.75, y: 0.92, z: 6.05 },
+    position: { x: 1.50, y: 0.88, z: 6.00 },
     cabinetId: "cabinet_back",
-    row: "lower",
+    row: "front",
     audioText: "Đây là bộ dụng cụ 'xào ke' thu giữ tại các phòng bay lắc cách âm. Đối tượng dùng lửa hơ nóng đĩa sứ để làm khô ketamine, sau đó dùng thẻ nhựa miết nát thành bột mịn rồi chia thành các đường kẻ thẳng để hít qua mũi. Bột hóa chất ăn mòn mạch máu niêm mạc mũi, sau một thời gian vách ngăn giữa hai lỗ mũi sẽ bị thủng toang hoác không thể phục hồi.",
     waveform: [30, 50, 70, 50, 80, 70, 50, 65, 80, 65, 45, 60, 75, 65, 50, 45, 55, 30, 20, 35],
     inspectInfo: "Tấm gương soi nhỏ hình chữ nhật kèm chiếc thẻ nhựa cứng màu đen và tờ tiền cuộn tròn thành ống hút."
@@ -687,9 +691,9 @@ export const exhibitsData = [
       "Gây nghiện nicotine cực nặng: Nồng độ nicotine muối cao gấp nhiều lần thuốc lá truyền thống tàn phá não bộ trẻ."
     ],
     warning: "Hiểm họa hàng đầu đe dọa học đường hiện nay, cấm học sinh sử dụng dưới mọi hình thức!",
-    position: { x: 2.25, y: 0.92, z: 6.05 },
+    position: { x: 3.00, y: 0.88, z: 6.00 },
     cabinetId: "cabinet_back",
-    row: "lower",
+    row: "front",
     audioText: "Thuốc lá điện tử đang là mối hiểm họa nhức nhối nhất trong các trường học hiện nay. Núp bóng các mùi hương hoa quả ngọt ngào, thuốc lá điện tử thường xuyên bị tội phạm tẩm ướp các chất ma túy tổng hợp thế hệ mới cực độc. Nhiều em học sinh sau khi thử một hơi đã bị ngất xỉu, co giật sùi bọt mép và phải thở máy điều trị tích cực tại bệnh viện.",
     waveform: [40, 75, 90, 65, 90, 85, 60, 80, 95, 75, 55, 80, 90, 70, 80, 85, 65, 40, 25, 50],
     inspectInfo: "Thanh thiết bị Pod nhỏ gọn màu xám không gian, cổng sạc Type-C ở đuôi và đầu ngậm dẹt trong suốt nhìn rõ tinh dầu."
@@ -706,26 +710,38 @@ export const exhibitsData = [
       "Hôn mê sâu đột ngột: Tim đập chậm, ngừng thở chỉ sau vài giây rít hơi khói thuốc lá điện tử."
     ],
     warning: "Thuốc mê cực độc giết người thầm lặng dưới vỏ bọc 'Pod Chill' thư giãn của giới trẻ!",
-    position: { x: 3.75, y: 0.92, z: 6.05 },
+    position: { x: 4.50, y: 0.88, z: 6.00 },
     cabinetId: "cabinet_back",
-    row: "lower",
+    row: "front",
     audioText: "Pod Chill thực chất là cạm bẫy chứa hoạt chất thuốc mê Etomidate hoặc cần sa tổng hợp. Người bán quảng cáo dối trá rằng đây là tinh dầu thảo dược giúp giảm căng thẳng, nhưng khi học sinh sử dụng, chất thuốc mê đánh gục não bộ gây ra những cơn co giật kinh giật, ức chế tuyến thượng thận đe dọa trực tiếp đến tính mạng. Đừng bao giờ chạm tay vào những điếu thuốc lá điện tử tử thần này.",
     waveform: [45, 80, 95, 70, 95, 90, 65, 85, 100, 80, 60, 85, 95, 75, 85, 90, 65, 45, 30, 55],
     inspectInfo: "Đầu cartridge Pod trong suốt dán tem dạ quang chữ Chill Pod, chứa dung dịch màu vàng chanh đậm đặc bốc mùi nồng."
   }
 ];
 
-// 4 Áp phích tuyên truyền phòng chống ma túy chính thức của Công an
+// 12 Áp phích tuyên truyền phòng chống ma túy chính thức của Công an
+// Bố trí phong phú trên các diện tường: Tường Tây (4), Tường Đông (4), Tường Bắc (2), Vách ngăn trung tâm (2)
 export const postersData = [
+  // --- TƯỜNG TÂY (West Wall: X = -11.86m, xoay mặt y = Math.PI / 2) ---
   {
     id: "poster1",
     title: "Hiểm họa ma túy",
     subtitle: "MA TÚY - HIỂM HỌA HỦY DIỆT CUỘC ĐỜI",
     description: "Áp phích tuyên truyền của lực lượng Công An nhân dân cảnh báo hiểm họa hủy diệt cuộc đời, tương lai của ma túy.",
     imageUrl: "/posters/poster1.jpg",
-    position: { x: -11.86, y: 2.2, z: -3 },
+    position: { x: -11.86, y: 2.2, z: -6.0 },
     rotation: { x: 0, y: Math.PI / 2, z: 0 },
     impactText: "Ma túy là cái bẫy tử thần phá hủy sức khỏe, nhân cách và tương lai, chỉ một lần thử cũng có thể phải trả giá cả cuộc đời."
+  },
+  {
+    id: "poster_apphich_1",
+    title: "Cảnh báo ma túy học đường",
+    subtitle: "BẢO VỆ THANH THIẾU NIÊN KHỎI CẠM BẪY MA TÚY",
+    description: "Tuyên truyền phòng ngừa các loại ma túy tổng hợp thế hệ mới núp bóng đồ ăn, thức uống học đường.",
+    imageUrl: "/posters/poster_ap_phich_1.jpg",
+    position: { x: -11.86, y: 2.2, z: -2.5 },
+    rotation: { x: 0, y: Math.PI / 2, z: 0 },
+    impactText: "Cảnh giác cao độ với ma túy ngụy trang nước giải khát, bánh kẹo và thuốc lá điện tử tẩm chất gây nghiện."
   },
   {
     id: "poster2",
@@ -733,19 +749,41 @@ export const postersData = [
     subtitle: "VÌ MỘT TƯƠNG LAI TƯƠI SÁNG",
     description: "Áp phích cổ động thế hệ trẻ kiên quyết nói không với ma túy, lựa chọn con đường sống lành mạnh vì tương lai.",
     imageUrl: "/posters/poster2.jpg",
-    position: { x: -11.86, y: 2.2, z: 2.5 },
+    position: { x: -11.86, y: 2.2, z: 1.5 },
     rotation: { x: 0, y: Math.PI / 2, z: 0 },
     impactText: "Hãy chọn cuộc sống lành mạnh, gia đình hạnh phúc, học tập tốt, hướng tới tương lai rực rỡ và tuân thủ pháp luật."
   },
+  {
+    id: "poster_noi_khong",
+    title: "Nói không với ma túy dù chỉ một lần",
+    subtitle: "KIÊN QUYẾT BẢO VỆ BẢN THÂN VÀ GIA ĐÌNH",
+    description: "Thông điệp đanh thép: Không thử, không tàng trữ, không sử dụng chất ma túy dưới bất kỳ hình thức nào.",
+    imageUrl: "/posters/poster_noi_khong.jpg",
+    position: { x: -11.86, y: 2.2, z: 5.5 },
+    rotation: { x: 0, y: Math.PI / 2, z: 0 },
+    impactText: "Một giây lầm lỡ, ngàn năm ôm hận. Kiên quyết từ chối mọi lời rủ rê, lôi kéo thử sử dụng ma túy."
+  },
+
+  // --- TƯỜNG ĐÔNG (East Wall: X = 11.86m, xoay mặt y = -Math.PI / 2) ---
   {
     id: "poster3",
     title: "Pháp luật phòng chống ma túy",
     subtitle: "PHÒNG, CHỐNG MA TÚY VÀ TỆ NẠN XÃ HỘI",
     description: "Tuyên truyền thực thi Luật Phòng, chống ma túy, quyết tâm xây dựng địa bàn dân cư, học đường trong sạch.",
     imageUrl: "/posters/poster3.jpg",
-    position: { x: 11.86, y: 2.2, z: -3 },
+    position: { x: 11.86, y: 2.2, z: -6.0 },
     rotation: { x: 0, y: -Math.PI / 2, z: 0 },
     impactText: "Căn cứ Luật Phòng, chống ma túy. Kiên quyết đấu tranh, bài trừ tội phạm ma túy và giữ vững bình yên khu phố."
+  },
+  {
+    id: "poster_apphich_2",
+    title: "Tác hại tàn phá thể xác & tâm thần",
+    subtitle: "MA TÚY PHÁ HỦY NÃO BỘ VÀ TẾ BÀO THẦN KINH",
+    description: "Cảnh báo y khoa về tổn thương teo não, loạn thần hoang tưởng ngáo đá và suy kiệt đa tạng do ma túy.",
+    imageUrl: "/posters/poster_ap_phich_2.jpg",
+    position: { x: 11.86, y: 2.2, z: -2.5 },
+    rotation: { x: 0, y: -Math.PI / 2, z: 0 },
+    impactText: "Ma túy làm biến đổi nhân cách, gây hoang tưởng truy sát người thân và dẫn tới tử vong sớm."
   },
   {
     id: "poster4",
@@ -753,9 +791,63 @@ export const postersData = [
     subtitle: "CUỘC SỐNG HẠNH PHÚC HOẶC HIỂM HỌA HIV/AIDS",
     description: "Thông điệp tương phản sâu sắc giữa cuộc sống tươi đẹp hạnh phúc và thảm kịch tăm tối do ma túy gây ra.",
     imageUrl: "/posters/poster4.jpg",
-    position: { x: 11.86, y: 2.2, z: 2.5 },
+    position: { x: 11.86, y: 2.2, z: 1.5 },
     rotation: { x: 0, y: -Math.PI / 2, z: 0 },
     impactText: "Chọn cuộc sống hạnh phúc, lao động và học tập giúp ích cho xã hội - Kiên quyết tránh xa ma túy và hiểm họa bệnh tật."
+  },
+  {
+    id: "poster_tuyen_truyen",
+    title: "Toàn dân đoàn kết bài trừ ma túy",
+    subtitle: "GIỮ VỮNG ĐỊA BÀN AN TOÀN - VĂN MINH - NGHĨA TÌNH",
+    description: "Công an Phường Tân Hưng kêu gọi quần chúng nhân dân chung tay tố giác tội phạm, bài trừ tệ nạn ma túy.",
+    imageUrl: "/posters/poster_tuyen_truyen.jpg",
+    position: { x: 11.86, y: 2.2, z: 5.5 },
+    rotation: { x: 0, y: -Math.PI / 2, z: 0 },
+    impactText: "Phát huy sức mạnh toàn dân trong phong trào toàn dân bảo vệ an ninh Tổ quốc, xây dựng phường không ma túy."
+  },
+
+  // --- TƯỜNG BẮC (North Wall: Z = -8.86m, đối xứng 2 bên sảnh đón, xoay mặt y = 0) ---
+  {
+    id: "poster_ca",
+    title: "Công an nhân dân vì nước vì dân",
+    subtitle: "VÌ NƯỚC QUÊN THÂN, VÌ DÂN PHỤC VỤ",
+    description: "Lực lượng Công An Phường Tân Hưng kiên quyết đấu tranh phòng chống tội phạm ma túy vì bình yên cuộc sống.",
+    imageUrl: "/posters/poster_ca.jpg",
+    position: { x: -5.5, y: 2.2, z: -8.86 },
+    rotation: { x: 0, y: 0, z: 0 },
+    impactText: "Chiến sĩ Công an nhân dân luôn xung kích, dũng cảm trên tuyến đầu đấu tranh phòng chống tội phạm ma túy."
+  },
+  {
+    id: "poster_mau",
+    title: "Quy chuẩn nghiệp vụ phòng chống ma túy",
+    subtitle: "NHẬN DIỆN VÀ ĐẤU TRANH PHÒNG NGỪA HIỆU QUẢ",
+    description: "Bảng nhận diện nghiệp vụ các chất ma túy và hướng dẫn kỹ năng phòng tránh cạm bẫy tội phạm.",
+    imageUrl: "/posters/poster_mau.jpg",
+    position: { x: 5.5, y: 2.2, z: -8.86 },
+    rotation: { x: 0, y: 0, z: 0 },
+    impactText: "Trang bị kiến thức nghiệp vụ nhận diện ma túy để bảo vệ chính mình, người thân và cộng đồng xã hội."
+  },
+
+  // --- VÁCH NGĂN TRUNG TÂM (Central Partition: Z = 4.36m, xoay mặt y = 0) ---
+  {
+    id: "poster_apphich_3",
+    title: "Tuyên truyền thanh thiếu niên",
+    subtitle: "CHUNG TAY BẢO VỆ CON EM CHÚNG TA",
+    description: "Phát hiện sớm dấu hiệu thanh thiếu niên bị rủ rê sử dụng thuốc lá điện tử, pod chill và chất gây nghiện.",
+    imageUrl: "/posters/poster_ap_phich_3.jpg",
+    position: { x: -3.5, y: 1.8, z: 4.36 },
+    rotation: { x: 0, y: 0, z: 0 },
+    impactText: "Gia đình và nhà trường cần thường xuyên quan tâm, giáo dục con em cảnh giác với các chiêu trò tẩm ma túy học đường."
+  },
+  {
+    id: "poster_apphich_4",
+    title: "Gia đình không ma túy",
+    subtitle: "MỖI GIA ĐÌNH LÀ MỘT PHÁO ĐÀI PHÒNG CHỐNG MA TÚY",
+    description: "Nâng cao ý thức cảnh giác của gia đình và cộng đồng, kiên quyết loại trừ ma túy khỏi đời sống xã hội.",
+    imageUrl: "/posters/poster_ap_phich_4.jpg",
+    position: { x: 3.5, y: 1.8, z: 4.36 },
+    rotation: { x: 0, y: 0, z: 0 },
+    impactText: "Xây dựng môi trường gia đình ấm no, bình yên, không để tệ nạn ma túy có cơ hội len lỏi hủy hoại hạnh phúc."
   }
 ];
 
@@ -764,13 +856,13 @@ export const questionsData = [
   {
     question: "Mỗi tủ trưng bày mẫu vật nghiệp vụ phòng chống ma túy được sắp xếp theo quy cách nào?",
     options: [
-      "12 mẫu vật xếp thành 1 hàng ngang duy nhất",
-      "12 mẫu vật sắp xếp theo 2 tầng: 6 mẫu hàng trên và 6 mẫu hàng dưới để không bị che khuất tầm nhìn",
-      "Tùy ý không theo quy chuẩn",
-      "Chỉ gồm 6 mẫu vật mỗi tủ"
+      "12 mẫu vật xếp lộn xộn không có quy luật",
+      "12 mẫu vật trên cùng 1 mặt bàn phẳng, xếp thành 2 hàng: hàng trước và hàng sau so le khoa học",
+      "Tất cả xếp thành 1 hàng dọc dài",
+      "Chỉ gồm 4 mẫu vật mỗi tủ"
     ],
     answer: 1,
-    explain: "Quy chuẩn tủ trưng bày nghiệp vụ được thiết kế 2 bậc bục thang: 6 mẫu hàng trên nâng cao lùi sâu, 6 mẫu hàng dưới thấp hơn hướng ra lối đi, giúp người tham quan quan sát trọn vẹn toàn bộ 12 hiện vật."
+    explain: "Quy chuẩn tủ trưng bày nghiệp vụ được thiết kế trên cùng một mặt bàn phẳng trang trọng, bố trí 12 tiêu bản thành 2 hàng: 6 mẫu hàng trước và 6 mẫu hàng sau so le chiều sâu, giúp người tham quan quan sát trọn vẹn toàn bộ 12 hiện vật mà không bị che khuất tầm nhìn."
   },
   {
     question: "Chất nào bị kẻ xấu ngụy trang dưới tên gọi 'Nước biển' chuyên dùng để cưỡng bức và gây mê xóa ký ức nạn nhân?",

@@ -60,27 +60,42 @@ export async function GET() {
       exhibits = await prisma.exhibit.findMany({ orderBy: { id: "asc" } });
     }
 
-    if (posters.length === 0) {
-      console.log("Seeding posters to database...");
-      await prisma.poster.createMany({
-        data: postersData.map(p => ({
-          id: p.id,
-          title: p.title,
-          subtitle: p.subtitle,
-          description: p.description,
-          positionX: p.position.x,
-          positionY: p.position.y,
-          positionZ: p.position.z,
-          rotationX: p.rotation.x,
-          rotationY: p.rotation.y,
-          rotationZ: p.rotation.z,
-          impactText: p.impactText
-        }))
-      });
+    if (posters.length < 12) {
+      console.log("Seeding / updating 12 posters to database...");
+      for (const p of postersData) {
+        await prisma.poster.upsert({
+          where: { id: p.id },
+          update: {
+            title: p.title,
+            subtitle: p.subtitle,
+            description: p.description,
+            positionX: p.position.x,
+            positionY: p.position.y,
+            positionZ: p.position.z,
+            rotationX: p.rotation.x,
+            rotationY: p.rotation.y,
+            rotationZ: p.rotation.z,
+            impactText: p.impactText
+          },
+          create: {
+            id: p.id,
+            title: p.title,
+            subtitle: p.subtitle,
+            description: p.description,
+            positionX: p.position.x,
+            positionY: p.position.y,
+            positionZ: p.position.z,
+            rotationX: p.rotation.x,
+            rotationY: p.rotation.y,
+            rotationZ: p.rotation.z,
+            impactText: p.impactText
+          }
+        });
+      }
       posters = await prisma.poster.findMany({ orderBy: { id: "asc" } });
     }
 
-    // Map database models to matches front-end 3D scene structure
+    // Map database models to match front-end 3D scene structure
     const formattedExhibits = exhibits.map(e => ({
       id: e.id,
       name: e.name,
@@ -98,15 +113,19 @@ export async function GET() {
       modelUrl: e.modelUrl
     }));
 
-    const formattedPosters = posters.map(p => ({
-      id: p.id,
-      title: p.title,
-      subtitle: p.subtitle,
-      description: p.description,
-      position: { x: p.positionX, y: p.positionY, z: p.positionZ },
-      rotation: { x: p.rotationX, y: p.rotationY, z: p.rotationZ },
-      impactText: p.impactText
-    }));
+    const formattedPosters = posters.map(p => {
+      const match = postersData.find(pd => pd.id === p.id);
+      return {
+        id: p.id,
+        title: p.title,
+        subtitle: p.subtitle,
+        description: p.description,
+        imageUrl: match?.imageUrl || `/posters/${p.id}.jpg`,
+        position: { x: p.positionX, y: p.positionY, z: p.positionZ },
+        rotation: { x: p.rotationX, y: p.rotationY, z: p.rotationZ },
+        impactText: p.impactText
+      };
+    });
 
     return NextResponse.json({ 
       exhibits: formattedExhibits, 

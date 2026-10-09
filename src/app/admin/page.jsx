@@ -19,6 +19,8 @@ import {
   Play
 } from "lucide-react";
 
+import { exhibitsData, postersData } from "../../data/exhibits";
+
 export default function AdminDashboard() {
   const [exhibits, setExhibits] = useState([]);
   const [posters, setPosters] = useState([]);
@@ -74,26 +76,45 @@ export default function AdminDashboard() {
   const [testLogs, setTestLogs] = useState([]);
   const [isTesting, setIsTesting] = useState(false);
 
-  // Load from Supabase Database & check session on mount
+  // Load from Database & check session on mount
   useEffect(() => {
+    const DATA_VERSION = "v3_flat_12posters";
+
     const fetchData = async () => {
       try {
         const res = await fetch("/api/exhibits");
         const json = await res.json();
-        if (json.exhibits && json.exhibits.length > 0) {
+        if (json.exhibits && json.exhibits.length >= 36) {
           setExhibits(json.exhibits);
           localStorage.setItem("mtspace_exhibits", JSON.stringify(json.exhibits));
+        } else {
+          loadFallback();
         }
-        if (json.posters && json.posters.length > 0) {
+        if (json.posters && json.posters.length >= 10) {
           setPosters(json.posters);
           localStorage.setItem("mtspace_posters", JSON.stringify(json.posters));
+        } else {
+          loadFallback();
         }
       } catch (error) {
-        console.error("Failed to fetch from Database, loading from cache:", error);
-        const savedExhibits = localStorage.getItem("mtspace_exhibits");
-        const savedPosters = localStorage.getItem("mtspace_posters");
-        if (savedExhibits) setExhibits(JSON.parse(savedExhibits));
-        if (savedPosters) setPosters(JSON.parse(savedPosters));
+        loadFallback();
+      }
+    };
+
+    const loadFallback = () => {
+      const currentVersion = localStorage.getItem("mtspace_version");
+      const savedExhibits = localStorage.getItem("mtspace_exhibits");
+      const savedPosters = localStorage.getItem("mtspace_posters");
+      
+      if (currentVersion === DATA_VERSION && savedExhibits && JSON.parse(savedExhibits).length === 36 && savedPosters && JSON.parse(savedPosters).length >= 10) {
+        setExhibits(JSON.parse(savedExhibits));
+        setPosters(JSON.parse(savedPosters));
+      } else {
+        localStorage.setItem("mtspace_version", DATA_VERSION);
+        localStorage.setItem("mtspace_exhibits", JSON.stringify(exhibitsData));
+        localStorage.setItem("mtspace_posters", JSON.stringify(postersData));
+        setExhibits(exhibitsData);
+        setPosters(postersData);
       }
     };
 
@@ -1456,74 +1477,151 @@ export default function AdminDashboard() {
 
                 <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "12px", marginBottom: "8px" }}>
                   <div className="input-group">
-                    <label>Tủ Trưng Bày 3D (Cabinet)</label>
+                    <label>Tủ Trưng Bày 3D (Bàn phẳng 1 tầng - 12 mẫu vật)</label>
                     <select 
                       value={specimenForm.cabinetId || "cabinet_left"}
                       onChange={(e) => {
                         const cabId = e.target.value;
                         handleSpecimenFormChange("cabinetId", cabId);
-                        // Suggest sensible default coordinates for selected cabinet
                         if (cabId === "cabinet_left") {
-                          handleSpecimenFormChange("position", { x: -3.0, y: 0.9, z: -1.0 });
+                          handleSpecimenFormChange("position", { x: -4.45, y: 0.88, z: -1.0 });
                         } else if (cabId === "cabinet_right") {
-                          handleSpecimenFormChange("position", { x: 3.0, y: 0.9, z: -1.0 });
+                          handleSpecimenFormChange("position", { x: 4.45, y: 0.88, z: -1.0 });
                         } else {
-                          handleSpecimenFormChange("position", { x: 0.0, y: 0.9, z: 4.5 });
+                          handleSpecimenFormChange("position", { x: 0.0, y: 0.88, z: 6.0 });
                         }
                       }}
                       style={{ background: "rgba(0, 0, 0, 0.4)", color: "#ffffff", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "10px", padding: "10px" }}
                     >
-                      <option value="cabinet_left">Tủ 1: Tả Ngạn (Trái) - 0.8x0.9x6.8m</option>
-                      <option value="cabinet_right">Tủ 2: Hữu Ngạn (Phải) - 0.8x0.9x6.8m</option>
-                      <option value="cabinet_back">Tủ 3: Hậu Sảnh (Dài) - 10.0x0.9x0.8m</option>
+                      <option value="cabinet_left">Tủ 1: Tả Ngạn (Trái) - Bàn phẳng 1 tầng (X=-4.95, Y=0.88m)</option>
+                      <option value="cabinet_right">Tủ 2: Hữu Ngạn (Phải) - Bàn phẳng 1 tầng (X=4.95, Y=0.88m)</option>
+                      <option value="cabinet_back">Tủ 3: Hậu Sảnh (Sau) - Bàn phẳng 1 tầng (Z=6.45, Y=0.88m)</option>
                     </select>
                   </div>
                   <div className="input-group">
-                    <label>Tỉ Lệ Kích Thước (Scale)</label>
-                    <input 
-                      type="number" 
-                      step="0.1" 
-                      min="0.1" 
-                      max="3.0"
-                      value={specimenForm.scale !== undefined ? specimenForm.scale : 1.0}
-                      onChange={(e) => handleSpecimenFormChange("scale", parseFloat(e.target.value) || 1.0)}
-                    />
+                    <label>Phân Hàng Mẫu Vật</label>
+                    <select
+                      value={specimenForm.row || "front"}
+                      onChange={(e) => handleSpecimenFormChange("row", e.target.value)}
+                      style={{ background: "rgba(0, 0, 0, 0.4)", color: "#ffffff", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "10px", padding: "10px" }}
+                    >
+                      <option value="front">Hàng Trước (Gần lối đi, dễ tiếp cận)</option>
+                      <option value="back">Hàng Sau (Lùi sâu, bố trí so le)</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Scale Slider & Presets */}
+                <div className="input-group" style={{ marginBottom: "12px", background: "rgba(0,0,0,0.25)", padding: "12px", borderRadius: "12px", border: "1px solid rgba(56, 189, 248, 0.2)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                    <label style={{ margin: 0, fontWeight: "600" }}>
+                      🔍 Thu Phóng Kích Thước (Scale):
+                    </label>
+                    <span style={{ color: "#38bdf8", fontWeight: "bold", fontSize: "0.85rem", background: "rgba(56,189,248,0.15)", padding: "2px 8px", borderRadius: "6px" }}>
+                      {specimenForm.scale !== undefined ? Number(specimenForm.scale).toFixed(2) : "1.00"}x ({(Number(specimenForm.scale || 1.0) * 100).toFixed(0)}%)
+                    </span>
+                  </div>
+                  <input 
+                    type="range" 
+                    step="0.05" 
+                    min="0.2" 
+                    max="3.0"
+                    value={specimenForm.scale !== undefined ? specimenForm.scale : 1.0}
+                    onChange={(e) => handleSpecimenFormChange("scale", parseFloat(e.target.value) || 1.0)}
+                    style={{ width: "100%", accentColor: "#38bdf8", cursor: "pointer", height: "6px", borderRadius: "4px" }}
+                  />
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "6px", marginTop: "8px" }}>
+                    {[0.5, 0.8, 1.0, 1.3, 1.6, 2.0].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => handleSpecimenFormChange("scale", preset)}
+                        style={{
+                          padding: "4px 2px",
+                          fontSize: "0.68rem",
+                          fontWeight: specimenForm.scale === preset ? "bold" : "normal",
+                          borderRadius: "6px",
+                          border: specimenForm.scale === preset ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.12)",
+                          background: specimenForm.scale === preset ? "rgba(56,189,248,0.25)" : "rgba(255,255,255,0.05)",
+                          color: specimenForm.scale === preset ? "#38bdf8" : "#94a3b8",
+                          cursor: "pointer",
+                          transition: "all 0.15s ease"
+                        }}
+                      >
+                        {preset === 1.0 ? "1.0x Chuẩn" : `${preset}x`}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
                 <div className="coordinate-inputs">
                   <div className="input-group">
-                    <label>Tọa Độ X (-7 đến 7)</label>
+                    <label>Tọa Độ X</label>
                     <input 
                       type="number" 
-                      step="0.5" 
+                      step="0.05" 
                       value={specimenForm.position.x}
                       onChange={(e) => handleCoordChange("x", e.target.value)}
                     />
                   </div>
                   <div className="input-group">
-                    <label>Tọa Độ Y (Mặc định 0.9)</label>
+                    <label>Tọa Độ Y (Mặt bàn phẳng 0.88m)</label>
                     <input 
                       type="number" 
-                      step="0.1" 
-                      value={specimenForm.position.y}
+                      step="0.01" 
+                      value={specimenForm.position.y !== undefined ? specimenForm.position.y : 0.88}
                       onChange={(e) => handleCoordChange("y", e.target.value)}
                     />
                   </div>
                   <div className="input-group">
-                    <label>Tọa Độ Z (-5 đến 5)</label>
+                    <label>Tọa Độ Z</label>
                     <input 
                       type="number" 
-                      step="0.5" 
+                      step="0.05" 
                       value={specimenForm.position.z}
                       onChange={(e) => handleCoordChange("z", e.target.value)}
                     />
                   </div>
                 </div>
 
-                {/* Drag and Drop 3D Uploader */}
-                <div className="input-group" style={{ marginTop: "10px" }}>
-                  <label>Tải Lên File 3D (.glb, .gltf, .obj hỗ trợ tới 20MB)</label>
+                {/* 3D Model GLB / GLTF Management */}
+                <div className="input-group" style={{ marginTop: "10px", background: "rgba(0,0,0,0.2)", padding: "12px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.1)" }}>
+                  <label style={{ fontWeight: "600", color: "#f2994a" }}>📦 Tải Lên / Gắn File 3D (.glb, .gltf)</label>
+                  
+                  {/* Direct Model URL Input */}
+                  <div style={{ display: "flex", gap: "8px", marginBottom: "8px" }}>
+                    <input 
+                      type="text"
+                      placeholder="Đường dẫn file GLB (VD: /uploads/mau_vat.glb hoặc URL mạng)..."
+                      value={specimenForm.modelUrl || ""}
+                      onChange={(e) => {
+                        const url = e.target.value;
+                        handleSpecimenFormChange("modelUrl", url);
+                        if (url) {
+                          setUpload3DStatus("success");
+                          setUploaded3DFile({ name: url.split("/").pop(), size: "Tệp liên kết" });
+                        } else {
+                          setUpload3DStatus("idle");
+                          setUploaded3DFile(null);
+                        }
+                      }}
+                      style={{ flex: 1, fontSize: "0.75rem", padding: "8px 10px" }}
+                    />
+                    {specimenForm.modelUrl && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleSpecimenFormChange("modelUrl", "");
+                          setUpload3DStatus("idle");
+                          setUploaded3DFile(null);
+                        }}
+                        style={{ padding: "0 12px", background: "rgba(235, 87, 87, 0.2)", border: "1px solid rgba(235, 87, 87, 0.4)", color: "#eb5757", borderRadius: "8px", fontSize: "0.72rem", cursor: "pointer" }}
+                      >
+                        Gỡ bỏ
+                      </button>
+                    )}
+                  </div>
+
                   {upload3DStatus === "idle" && (
                     <div 
                       className={`drag-uploader ${is3DDragging ? "dragging" : ""}`}
@@ -1534,7 +1632,7 @@ export default function AdminDashboard() {
                     >
                       <Upload size={24} style={{ color: "#8a96a8" }} />
                       <div style={{ fontSize: "0.75rem", color: "#8a96a8" }}>
-                        Kéo thả file 3D hoặc <span style={{ color: "#f2994a", fontWeight: "bold" }}>Chọn File</span>
+                        Kéo thả file 3D (.glb, .gltf) vào đây hoặc <span style={{ color: "#f2994a", fontWeight: "bold" }}>Chọn File</span>
                       </div>
                       <input 
                         type="file" 
@@ -1549,7 +1647,7 @@ export default function AdminDashboard() {
                   {upload3DStatus === "uploading" && (
                     <div className="drag-uploader" style={{ pointerEvents: "none" }}>
                       <RefreshCw size={20} className="header-logo" style={{ animation: "holographic-pulse 1s infinite" }} />
-                      <div style={{ fontSize: "0.75rem", color: "#f2994a" }}>Đang phân tích cấu trúc đa giác File 3D... {upload3DProgress}%</div>
+                      <div style={{ fontSize: "0.75rem", color: "#f2994a" }}>Đang tải lên và phân tích file 3D... {upload3DProgress}%</div>
                       <div className="upload-prog-bar">
                         <div className="upload-prog-fill" style={{ width: `${upload3DProgress}%` }}></div>
                       </div>
@@ -1561,12 +1659,16 @@ export default function AdminDashboard() {
                       <CheckCircle size={16} style={{ color: "#27ae60" }} />
                       <div style={{ display: "flex", flexDirection: "column", gap: "2px", textAlign: "left" }}>
                         <strong>{uploaded3DFile.name}</strong>
-                        <span>Dung lượng: {uploaded3DFile.size}</span>
+                        <span style={{ fontSize: "0.68rem", color: "#8a96a8" }}>Đường dẫn: {specimenForm.modelUrl} • {uploaded3DFile.size}</span>
                       </div>
                       <button 
                         type="button" 
                         style={{ marginLeft: "auto", background: "transparent", border: "none", color: "#eb5757", cursor: "pointer" }}
-                        onClick={() => setUpload3DStatus("idle")}
+                        onClick={() => {
+                          setUpload3DStatus("idle");
+                          setUploaded3DFile(null);
+                          handleSpecimenFormChange("modelUrl", "");
+                        }}
                       >
                         <X size={14} />
                       </button>
@@ -1592,12 +1694,17 @@ export default function AdminDashboard() {
                         <h4>{ex.name}</h4>
                         <p style={{ color: "#f2994a", fontSize: "0.7rem", fontWeight: "bold" }}>{ex.category} • ID: {ex.id}</p>
                         <p style={{ fontSize: "0.68rem" }}>
-                          Vị trí 3D: (X: {ex.position?.x}, Z: {ex.position?.z}) • Kích thước: <span style={{ color: "#56ccf2", fontWeight: "bold" }}>{ex.scale !== undefined ? ex.scale : 1.0}x</span>
+                          Vị trí: (X: {ex.position?.x}, Y: {ex.position?.y || 0.88}, Z: {ex.position?.z}) • Thu phóng: <span style={{ color: "#56ccf2", fontWeight: "bold" }}>{ex.scale !== undefined ? ex.scale : 1.0}x</span>
                         </p>
                         <p style={{ fontSize: "0.68rem", color: "#a0aec0", marginTop: "2px" }}>
                           Thuộc: <span style={{ color: ex.cabinetId === "cabinet_left" ? "#eb5757" : ex.cabinetId === "cabinet_right" ? "#f2994a" : "#2f80ed", fontWeight: "bold" }}>
-                            {ex.cabinetId === "cabinet_left" ? "Tủ 1 Trái (0.8x0.9x6.8m)" : ex.cabinetId === "cabinet_right" ? "Tủ 2 Phải (0.8x0.9x6.8m)" : "Tủ 3 Dài Sau (10.0x0.9x0.8m)"}
-                          </span>
+                            {ex.cabinetId === "cabinet_left" ? "Tủ 1 Trái" : ex.cabinetId === "cabinet_right" ? "Tủ 2 Phải" : "Tủ 3 Hậu Sảnh"}
+                          </span> • {ex.row === "back" ? "Hàng Sau" : "Hàng Trước"}
+                          {ex.modelUrl ? (
+                            <span style={{ marginLeft: "6px", color: "#22c55e", background: "rgba(34,197,94,0.15)", padding: "1px 6px", borderRadius: "4px", fontWeight: "bold" }}>GLB 3D</span>
+                          ) : (
+                            <span style={{ marginLeft: "6px", color: "#94a3b8", background: "rgba(148,163,184,0.1)", padding: "1px 6px", borderRadius: "4px" }}>Mô hình thủ tục</span>
+                          )}
                         </p>
                       </div>
                       <div className="item-actions">
