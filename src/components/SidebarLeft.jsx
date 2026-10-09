@@ -6,12 +6,8 @@ import {
   HelpCircle, 
   FolderOpen, 
   Compass, 
-  Mic, 
-  Volume2, 
-  Users, 
-  ChevronRight,
-  Maximize2,
-  ZoomIn
+  Maximize2, 
+  ZoomIn 
 } from "lucide-react";
 
 export default function SidebarLeft({
@@ -209,22 +205,6 @@ export default function SidebarLeft({
         </div>
       </div>
 
-      {/* 4. VOICE CONTROLS */}
-      <div className="voice-control-box">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <span style={{ fontWeight: 600, color: 'var(--color-primary)' }}>Đàm thoại nhóm</span>
-          <span style={{ fontSize: '0.65rem' }}>Nhấn V để nói</span>
-        </div>
-        
-        <div className="voice-actions">
-          <button className="voice-btn" title="Toggle Mic">
-            <Mic size={14} />
-          </button>
-          <button className="voice-btn" title="Toggle Speaker">
-            <Volume2 size={14} />
-          </button>
-        </div>
-      </div>
     </aside>
   );
 }

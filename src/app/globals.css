@@ -106,14 +106,14 @@ html, body {
   z-index: 10;
   pointer-events: none;
   display: grid;
-  grid-template-rows: 90px 1fr 100px;
+  grid-template-rows: 76px 1fr 64px;
   grid-template-columns: 1fr;
   grid-template-areas:
     "header"
     "."
     "footer";
-  padding: 20px;
-  gap: 20px;
+  padding: 16px;
+  gap: 16px;
 }
 
 .ui-element {
@@ -239,47 +239,19 @@ html, body {
   gap: 16px;
 }
 
-.header-users-indicator {
+.header-badge-tag {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.8rem;
-  color: var(--color-secondary);
-  background: rgba(0, 0, 0, 0.3);
-  padding: 6px 12px;
-  border-radius: 20px;
-  border: 1px solid var(--border-light);
-}
-
-.invite-btn {
-  background: transparent;
-  color: var(--color-secondary);
-  border: 1px solid var(--border-light);
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--color-gold);
+  background: rgba(242, 153, 74, 0.1);
+  border: 1px solid var(--border-accent);
   padding: 6px 14px;
   border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.invite-btn:hover {
-  border-color: var(--color-gold);
-  color: var(--color-gold);
-}
-
-.profile-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-gold), var(--color-ruby));
-  border: 2px solid var(--border-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.8rem;
+  box-shadow: 0 0 10px rgba(242, 153, 74, 0.15);
 }
 
 /* Sidebar Left */
@@ -886,63 +858,132 @@ html, body {
   grid-area: footer;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  padding: 0 16px;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 60px;
+  background: rgba(10, 16, 26, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  box-shadow: var(--shadow-premium);
 }
 
-.footer-widget {
+.footer-brand-box {
   display: flex;
   align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 8px 16px;
-  border-radius: 12px;
+  gap: 10px;
 }
 
-.footer-widget:hover {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.footer-icon-box {
-  width: 36px;
-  height: 36px;
+.footer-police-badge {
+  width: 32px;
+  height: 32px;
   border-radius: 8px;
+  background: rgba(242, 153, 74, 0.12);
+  border: 1px solid var(--border-accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border-light);
-  color: var(--color-gold);
 }
 
-.footer-widget:hover .footer-icon-box {
-  color: #000;
+.footer-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.footer-brand-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--color-gold);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.footer-brand-sub {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--color-secondary);
+}
+
+.footer-action-pills {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-pill-btn {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 24px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid var(--border-light);
+}
+
+.footer-pill-quiz {
+  background: rgba(242, 153, 74, 0.15);
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+  box-shadow: 0 0 12px rgba(242, 153, 74, 0.2);
+}
+
+.footer-pill-quiz:hover {
   background: var(--color-gold);
+  color: #000;
+  transform: translateY(-2px);
   box-shadow: var(--shadow-glow-gold);
 }
 
-.footer-widget-text {
+.footer-pill-lib {
+  background: rgba(47, 128, 237, 0.12);
+  border-color: rgba(47, 128, 237, 0.4);
+  color: #38bdf8;
+}
+
+.footer-pill-lib:hover {
+  background: var(--color-blue);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-blue);
+}
+
+.footer-status-box {
   display: flex;
-  flex-direction: column;
-}
-
-.footer-widget-label {
-  font-size: 0.7rem;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
   color: var(--color-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border-light);
 }
 
-.footer-widget-val {
-  font-size: 0.85rem;
-  font-weight: 700;
+.footer-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-emerald);
+  box-shadow: 0 0 8px var(--color-emerald);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
 }
 
 /* Interactive Overlay / HUD Controls in 3D scene */
 .hud-control-tip {
   position: absolute;
-  bottom: 120px;
+  bottom: 86px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 5;
@@ -1150,20 +1191,25 @@ html, body {
 /* Help text overlay */
 .exhibit-look-prompt {
   position: absolute;
-  top: 50%;
+  top: 48%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 5;
-  background: rgba(0, 0, 0, 0.8);
-  border: 1px solid var(--border-accent);
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.8rem;
+  z-index: 50;
+  background: rgba(10, 18, 30, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-gold);
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-size: 0.85rem;
+  font-weight: 700;
   color: var(--color-gold);
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  box-shadow: 0 0 20px rgba(242, 153, 74, 0.35);
   animation: pulse-glow 1.5s infinite alternate;
 }
 
@@ -1372,38 +1418,37 @@ html, body {
 
   /* Footer mobile optimization */
   .app-footer {
-    padding: 0 8px;
-    gap: 6px;
-    justify-content: space-around;
-    height: 64px;
+    padding: 0 10px;
+    height: 54px;
+    gap: 8px;
+    justify-content: space-between;
   }
   
-  .footer-widget-label {
+  .footer-status-box {
     display: none;
   }
   
-  .footer-widget {
-    padding: 4px 8px;
-    gap: 4px;
-  }
-  
-  .footer-icon-box {
-    width: 32px;
-    height: 32px;
+  .footer-brand-sub {
+    display: none;
   }
 
-  .footer-widget-val {
-    font-size: 0.75rem;
-  }
-  
-  .footer-credits-widget {
-    display: none !important;
+  .footer-brand-title {
+    font-size: 0.7rem;
   }
 
-  /* Float Mobile Joystick above Footer in Portrait mode */
+  .footer-action-pills {
+    gap: 6px;
+  }
+
+  .footer-pill-btn {
+    padding: 6px 12px;
+    font-size: 0.72rem;
+  }
+
+  /* Mobile Joystick in comfortable bottom-left corner */
   .joystick-zone {
-    bottom: 84px !important;
-    left: 20px !important;
+    bottom: 74px !important;
+    left: 16px !important;
   }
 
   /* Viewport safe modals */
@@ -1423,7 +1468,7 @@ html, body {
 
 @media (max-width: 480px) {
   .header-title h1 {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
   }
   
   .header-tabs {
@@ -1432,25 +1477,42 @@ html, body {
   }
   
   .header-tab-btn {
-    padding: 6px;
+    padding: 6px 8px;
+    font-size: 0.7rem;
   }
   
-  .profile-avatar {
-    width: 26px;
-    height: 26px;
-    font-size: 0.7rem;
+  .header-badge-tag {
+    display: none;
+  }
+
+  .footer-brand-box {
+    display: none;
+  }
+
+  .footer-action-pills {
+    width: 100%;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .footer-pill-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 7px 6px;
+    font-size: 0.68rem;
+    gap: 4px;
   }
 
   .joystick-zone {
-    bottom: 80px !important;
-    left: 15px !important;
-    width: 100px;
-    height: 100px;
+    bottom: 70px !important;
+    left: 12px !important;
+    width: 95px;
+    height: 95px;
   }
 
   .joystick-base {
-    width: 80px;
-    height: 80px;
+    width: 78px;
+    height: 78px;
   }
 
   .joystick-handle {
@@ -1462,97 +1524,6 @@ html, body {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-/* Orientation Rotate Device Prompt Overlay Styles */
-.orientation-prompt-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(4, 7, 12, 0.94);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-.orientation-prompt-card {
-  width: 100%;
-  max-width: 320px;
-  padding: 28px 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  border: 1px solid var(--border-accent);
-  box-shadow: var(--shadow-glow-gold);
-  border-radius: 20px;
-  animation: modal-enter 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.phone-rotate-icon-container {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: rgba(242, 153, 74, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed var(--color-gold);
-  margin-bottom: 4px;
-}
-
-.phone-rotate-icon {
-  color: var(--color-gold);
-  animation: phoneRotateAnim 2.2s infinite ease-in-out;
-}
-
-@keyframes phoneRotateAnim {
-  0% { transform: rotate(0deg); }
-  45% { transform: rotate(-90deg); }
-  90% { transform: rotate(0deg); }
-  100% { transform: rotate(0deg); }
-}
-
-.orientation-prompt-card h2 {
-  font-size: 1.15rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: #fff;
-  letter-spacing: 0.5px;
-}
-
-.orientation-prompt-card p {
-  font-size: 0.78rem;
-  line-height: 1.45;
-  color: var(--color-secondary);
-}
-
-.bypass-orientation-btn {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-light);
-  color: var(--color-secondary);
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 8px 16px;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%;
-  margin-top: 8px;
-}
-
-.bypass-orientation-btn:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Specific Mobile Landscape Layout Optimizations (height < 480px) */

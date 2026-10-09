@@ -528,16 +528,25 @@ export default function ThreeCanvas({
     const casesGroup = new THREE.Group();
     const floatingSpecimens = [];
 
-    // Base Cabinet materials (sleek dark metallic style with gold trim)
-    const cabMat = new THREE.MeshStandardMaterial({ 
-      color: 0x1e293b, 
-      roughness: 0.2, 
-      metalness: 0.15 
+    // Base Cabinet materials (Lacquered black obsidian quartz with 24K gold mirror trim and neon LED guide lines)
+    const cabMat = new THREE.MeshPhysicalMaterial({ 
+      color: 0x070b14, 
+      roughness: 0.04, 
+      metalness: 0.45,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      reflectivity: 0.95
     });
     const goldTrimMat = new THREE.MeshStandardMaterial({ 
-      color: 0xd4af37, 
-      metalness: 0.9, 
-      roughness: 0.1 
+      color: 0xf5d061, 
+      metalness: 0.95, 
+      roughness: 0.08 
+    });
+    const ledNeonMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8
+    });
+    const ledNeonWarmMat = new THREE.MeshBasicMaterial({
+      color: 0xf5d061
     });
 
     // Helper to build a 2-tier stepped cabinet along X axis (for Cabinet 1 & Cabinet 2)
@@ -552,6 +561,11 @@ export default function ThreeCanvas({
       lowTrim.position.set(lowerX, 0.79, zCenter);
       casesGroup.add(lowTrim);
 
+      // Lower tier LED accent edge
+      const lowLed = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.01, zLength), ledNeonMat);
+      lowLed.position.set(lowerX > 0 ? lowerX - width / 2 : lowerX + width / 2, 0.795, zCenter);
+      casesGroup.add(lowLed);
+
       // Upper tier (back, raised higher against outer wall)
       const upMesh = new THREE.Mesh(new THREE.BoxGeometry(width, 1.02, zLength), cabMat);
       upMesh.position.set(upperX, 0.51, zCenter);
@@ -559,6 +573,11 @@ export default function ThreeCanvas({
       const upTrim = new THREE.Mesh(new THREE.BoxGeometry(width + 0.02, 0.03, zLength + 0.02), goldTrimMat);
       upTrim.position.set(upperX, 1.01, zCenter);
       casesGroup.add(upTrim);
+
+      // Upper tier LED accent edge
+      const upLed = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.01, zLength), ledNeonWarmMat);
+      upLed.position.set(upperX > 0 ? upperX - width / 2 : upperX + width / 2, 1.015, zCenter);
+      casesGroup.add(upLed);
     };
 
     // Helper to build a 2-tier stepped cabinet along Z axis (for Cabinet 3 Back gallery)
@@ -571,6 +590,11 @@ export default function ThreeCanvas({
       lowTrim.position.set(xCenter, 0.79, lowerZ);
       casesGroup.add(lowTrim);
 
+      // Lower tier LED accent edge
+      const lowLed = new THREE.Mesh(new THREE.BoxGeometry(xLength, 0.01, 0.015), ledNeonMat);
+      lowLed.position.set(xCenter, 0.795, lowerZ - width / 2);
+      casesGroup.add(lowLed);
+
       // Upper tier (back, raised higher against back wall)
       const upMesh = new THREE.Mesh(new THREE.BoxGeometry(xLength, 1.02, width), cabMat);
       upMesh.position.set(xCenter, 0.51, upperZ);
@@ -578,6 +602,11 @@ export default function ThreeCanvas({
       const upTrim = new THREE.Mesh(new THREE.BoxGeometry(xLength + 0.02, 0.03, width + 0.02), goldTrimMat);
       upTrim.position.set(xCenter, 1.01, upperZ);
       casesGroup.add(upTrim);
+
+      // Upper tier LED accent edge
+      const upLed = new THREE.Mesh(new THREE.BoxGeometry(xLength, 0.01, 0.015), ledNeonWarmMat);
+      upLed.position.set(xCenter, 1.015, upperZ - width / 2);
+      casesGroup.add(upLed);
     };
 
     // Cabinet 1 (Left: Tủ 1 - Opioids/Kích thích - 12 mẫu: 6 hàng trên tại X=-5.35, 6 hàng dưới tại X=-4.55)
@@ -589,8 +618,8 @@ export default function ThreeCanvas({
     // Cabinet 3 (Back: Tủ 3 - Ngụy trang & Dụng cụ - 12 mẫu: 6 hàng trên tại Z=6.85, 6 hàng dưới tại Z=6.05)
     createTieredCabinetZ(0.0, 9.2, 6.05, 6.85, 0.65);
 
-    // 3 Premium Spotlights centered directly above each tiered cabinet
-    const spotCab1 = new THREE.SpotLight(0xffe0b2, 4.5, 12.0, Math.PI / 3, 0.5, 1);
+    // 3 Premium High-CRI Spotlights centered directly above each tiered cabinet with specular sparkle
+    const spotCab1 = new THREE.SpotLight(0xfff0d4, 5.5, 12.0, Math.PI / 3.2, 0.35, 1);
     spotCab1.position.set(-4.95, 3.9, -1.25);
     const targetCab1 = new THREE.Object3D();
     targetCab1.position.set(-4.95, 0.9, -1.25);
@@ -598,7 +627,11 @@ export default function ThreeCanvas({
     spotCab1.target = targetCab1;
     scene.add(spotCab1);
 
-    const spotCab2 = new THREE.SpotLight(0xffe0b2, 4.5, 12.0, Math.PI / 3, 0.5, 1);
+    const fillPoint1 = new THREE.PointLight(0xffedd5, 1.8, 5.0);
+    fillPoint1.position.set(-4.95, 2.0, -1.25);
+    scene.add(fillPoint1);
+
+    const spotCab2 = new THREE.SpotLight(0xfff0d4, 5.5, 12.0, Math.PI / 3.2, 0.35, 1);
     spotCab2.position.set(4.95, 3.9, -1.25);
     const targetCab2 = new THREE.Object3D();
     targetCab2.position.set(4.95, 0.9, -1.25);
@@ -606,7 +639,11 @@ export default function ThreeCanvas({
     spotCab2.target = targetCab2;
     scene.add(spotCab2);
 
-    const spotCab3 = new THREE.SpotLight(0xb3e5fc, 5.0, 12.0, Math.PI / 3, 0.5, 1);
+    const fillPoint2 = new THREE.PointLight(0xffedd5, 1.8, 5.0);
+    fillPoint2.position.set(4.95, 2.0, -1.25);
+    scene.add(fillPoint2);
+
+    const spotCab3 = new THREE.SpotLight(0xcce7ff, 6.0, 12.0, Math.PI / 3.2, 0.35, 1);
     spotCab3.position.set(0.0, 3.9, 6.45);
     const targetCab3 = new THREE.Object3D();
     targetCab3.position.set(0.0, 0.9, 6.45);
@@ -614,11 +651,42 @@ export default function ThreeCanvas({
     spotCab3.target = targetCab3;
     scene.add(spotCab3);
 
+    const fillPoint3 = new THREE.PointLight(0xbae6fd, 2.0, 5.0);
+    fillPoint3.position.set(0.0, 2.0, 6.45);
+    scene.add(fillPoint3);
+
+    // Shared Optical Crystal Glass Material for Bell Jars (Chất liệu kính pha lê chiết quang cao cấp)
+    const bellJarMat = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.92,
+      transmission: 0.94,
+      ior: 1.54,
+      roughness: 0.02,
+      metalness: 0.03,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      reflectivity: 0.98,
+      thickness: 0.07,
+      specularColor: new THREE.Color(0xffffff),
+      specularIntensity: 1.0,
+      side: THREE.DoubleSide,
+      depthWrite: false
+    });
+
+    // Cushion material for specimen pedestals
+    const cushionMat = new THREE.MeshStandardMaterial({ 
+      color: 0x070b14, 
+      roughness: 0.35, 
+      metalness: 0.25 
+    });
+
     // Loop through each of the active specimens (36 total)
     exhibits.forEach((ex) => {
       const posX = ex.position ? ex.position.x : 0;
-      const posY = ex.position ? ex.position.y : 0.92;
       const posZ = ex.position ? ex.position.z : 0;
+      const isUpper = ex.row === "upper";
+      const counterY = isUpper ? 1.02 : 0.80;
 
       // 1. Ceiling light fixture directly above the specimen
       const fixtureGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.08, 12);
@@ -631,41 +699,76 @@ export default function ThreeCanvas({
       fixture.position.set(posX, 3.95, posZ);
       casesGroup.add(fixture);
 
-      // 2. Volumetric spotlight cone (from ceiling 3.95 down to specimen height)
-      const coneHeight = Math.max(1.5, 3.95 - posY);
+      // 2. Volumetric spotlight cone (from ceiling down to specimen)
+      const coneHeight = Math.max(1.5, 3.95 - counterY);
       const coneGeo = new THREE.CylinderGeometry(0.03, 0.22, coneHeight, 12, 1, true);
       const coneMat = new THREE.MeshBasicMaterial({
-        color: ex.cabinetId === "cabinet_left" ? 0xffe0b2 : ex.cabinetId === "cabinet_right" ? 0xffcc80 : 0xb3e5fc,
+        color: ex.cabinetId === "cabinet_left" ? 0xfff0d4 : ex.cabinetId === "cabinet_right" ? 0xffedd5 : 0xcce7ff,
         transparent: true,
-        opacity: 0.07,
+        opacity: 0.06,
         blending: THREE.AdditiveBlending,
         side: THREE.DoubleSide,
         depthWrite: false
       });
       const lightCone = new THREE.Mesh(coneGeo, coneMat);
-      lightCone.position.set(posX, posY + coneHeight / 2, posZ);
+      lightCone.position.set(posX, counterY + coneHeight / 2, posZ);
       casesGroup.add(lightCone);
 
-      // 3. Individual glass dome over specimen
-      const glassGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.35, 24);
-      const glassMat = new THREE.MeshPhysicalMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.22, 
-        roughness: 0.05,
-        metalness: 0.1,
-        clearcoat: 1.0, 
-        clearcoatRoughness: 0.05,
-        side: THREE.FrontSide,
-        depthWrite: false 
-      });
-      const glass = new THREE.Mesh(glassGeo, glassMat);
-      glass.position.set(posX, posY + 0.16, posZ);
-      casesGroup.add(glass);
+      // 3. Luxury 24K Gold Beveled Platter & Velvet Cushion Pedestal under bell jar
+      const platterGeo = new THREE.CylinderGeometry(0.205, 0.21, 0.02, 32);
+      const platter = new THREE.Mesh(platterGeo, goldTrimMat);
+      platter.position.set(posX, counterY + 0.01, posZ);
+      casesGroup.add(platter);
 
-      // 4. Specimen Mesh generation
+      const cushionGeo = new THREE.CylinderGeometry(0.185, 0.185, 0.024, 32);
+      const cushion = new THREE.Mesh(cushionGeo, cushionMat);
+      cushion.position.set(posX, counterY + 0.012, posZ);
+      casesGroup.add(cushion);
+
+      const baseRingGeo = new THREE.RingGeometry(0.186, 0.198, 32);
+      const baseRingMat = new THREE.MeshBasicMaterial({ 
+        color: ex.cabinetId === "cabinet_left" ? 0x38bdf8 : ex.cabinetId === "cabinet_right" ? 0xf59e0b : 0x00f0ff,
+        side: THREE.DoubleSide 
+      });
+      const baseRing = new THREE.Mesh(baseRingGeo, baseRingMat);
+      baseRing.rotation.x = -Math.PI / 2;
+      baseRing.position.set(posX, counterY + 0.025, posZ);
+      casesGroup.add(baseRing);
+
+      // 4. Authentic Museum Crystal Bell Jar (Vòm kính pha lê bo tròn + núm tay cầm)
+      const jarGroup = new THREE.Group();
+      jarGroup.position.set(posX, 0, posZ);
+
+      // Crystal cylinder body
+      const jarCylGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.28, 32, 1, true);
+      const jarCyl = new THREE.Mesh(jarCylGeo, bellJarMat);
+      jarCyl.position.y = counterY + 0.02 + 0.14;
+      jarGroup.add(jarCyl);
+
+      // Rounded crystal hemispherical dome top
+      const domeGeo = new THREE.SphereGeometry(0.18, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+      const dome = new THREE.Mesh(domeGeo, bellJarMat);
+      dome.position.y = counterY + 0.30;
+      jarGroup.add(dome);
+
+      // Crystal finial knob handle
+      const finialGeo = new THREE.SphereGeometry(0.022, 16, 16);
+      const finial = new THREE.Mesh(finialGeo, bellJarMat);
+      finial.position.y = counterY + 0.485;
+      jarGroup.add(finial);
+
+      // 24K Gold collar on finial
+      const collarGeo = new THREE.CylinderGeometry(0.012, 0.012, 0.008, 16);
+      const collar = new THREE.Mesh(collarGeo, goldTrimMat);
+      collar.position.y = counterY + 0.475;
+      jarGroup.add(collar);
+
+      casesGroup.add(jarGroup);
+
+      // 5. Specimen Mesh generation (Centered inside crystal bell jar)
       let specimenMesh = new THREE.Group();
-      specimenMesh.position.set(posX, posY + 0.14, posZ);
+      const specimenCenterY = counterY + 0.15;
+      specimenMesh.position.set(posX, specimenCenterY, posZ);
       
       const scaleVal = ex.scale !== undefined ? ex.scale : 1.0;
       specimenMesh.scale.set(scaleVal, scaleVal, scaleVal);
@@ -725,25 +828,38 @@ export default function ThreeCanvas({
         let internalMesh = new THREE.Group();
 
         if (idStr === "meth_crystal" || idStr === "ice_meth") {
-          // Cluster of translucent faceted ice-cyan crystals
+          // Faceted sparkling prismatic diamond crystal cluster with glowing inner core
           const cryMat = new THREE.MeshPhysicalMaterial({ 
             color: 0x67e8f9, 
-            roughness: 0.05, 
-            transmission: 0.75, 
-            thickness: 0.15,
-            clearcoat: 1.0
+            roughness: 0.02, 
+            transmission: 0.92, 
+            thickness: 0.25,
+            ior: 2.15, // Diamond-like refractive index
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.02,
+            specularIntensity: 1.0,
+            specularColor: new THREE.Color(0xffffff)
           });
+          const coreMat = new THREE.MeshBasicMaterial({
+            color: 0x00f0ff,
+            transparent: true,
+            opacity: 0.4
+          });
+          const core = new THREE.Mesh(new THREE.OctahedronGeometry(0.038), coreMat);
+          internalMesh.add(core);
+
           const coords = [
-            [0, 0, 0, 0.06, 0.1],
-            [-0.03, -0.02, 0.02, 0.04, 0.07],
-            [0.03, -0.01, -0.02, 0.045, 0.08],
-            [0.01, -0.03, 0.03, 0.035, 0.06],
-            [-0.02, 0.02, -0.03, 0.035, 0.065]
+            [0, 0, 0, 0.055, 0.11, 8],
+            [-0.035, -0.015, 0.025, 0.042, 0.085, 6],
+            [0.035, -0.01, -0.025, 0.045, 0.09, 8],
+            [0.015, -0.025, 0.035, 0.035, 0.075, 6],
+            [-0.025, 0.02, -0.035, 0.038, 0.08, 6],
+            [0.03, 0.025, 0.02, 0.032, 0.07, 6]
           ];
-          coords.forEach(([cx, cy, cz, r, h]) => {
-            const m = new THREE.Mesh(new THREE.ConeGeometry(r, h, 6), cryMat);
+          coords.forEach(([cx, cy, cz, r, h, seg]) => {
+            const m = new THREE.Mesh(new THREE.ConeGeometry(r, h, seg), cryMat);
             m.position.set(cx, cy, cz);
-            m.rotation.set(cx * 5, cy * 3, cz * 4);
+            m.rotation.set(cx * 6, cy * 4, cz * 5);
             internalMesh.add(m);
           });
         } else if (idStr === "cocaine_pill") {
@@ -823,14 +939,33 @@ export default function ThreeCanvas({
           cork.position.y = 0.055;
           internalMesh.add(tube, liquid, cork);
         } else if (idStr === "bath_salts") {
-          // Jar with coarse crystalline prismatic grains
-          const jarMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.75, roughness: 0.1 });
-          const jar = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.06, 16), jarMat);
-          const lid = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.042, 0.012, 16), new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9 }));
-          lid.position.y = 0.035;
-          const saltMat = new THREE.MeshPhysicalMaterial({ color: 0xf472b6, transmission: 0.5, roughness: 0.2 });
-          const salts = new THREE.Mesh(new THREE.DodecahedronGeometry(0.025), saltMat);
-          internalMesh.add(jar, lid, salts);
+          // Crystal jar with multifaceted prismatic sparkling gems
+          const jarMat = new THREE.MeshPhysicalMaterial({ 
+            color: 0xffffff, 
+            transmission: 0.90, 
+            roughness: 0.03,
+            clearcoat: 1.0,
+            ior: 1.54
+          });
+          const jar = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.065, 24), jarMat);
+          const lid = new THREE.Mesh(new THREE.CylinderGeometry(0.043, 0.043, 0.012, 24), goldTrimMat);
+          lid.position.y = 0.038;
+          
+          const saltMat = new THREE.MeshPhysicalMaterial({ 
+            color: 0xf472b6, 
+            transmission: 0.85, 
+            roughness: 0.04,
+            clearcoat: 1.0,
+            ior: 1.9,
+            specularIntensity: 1.0 
+          });
+          for (let s = 0; s < 5; s++) {
+            const saltGem = new THREE.Mesh(new THREE.DodecahedronGeometry(0.018), saltMat);
+            saltGem.position.set((s % 2 === 0 ? 0.012 : -0.012), -0.012 + s * 0.007, (s > 2 ? 0.01 : -0.01));
+            saltGem.rotation.set(s * 1.2, s * 0.8, s * 0.5);
+            internalMesh.add(saltGem);
+          }
+          internalMesh.add(jar, lid);
         } else if (idStr === "methadone") {
           // Amber syrup bottle with dosage measuring cup
           const botMat = new THREE.MeshPhysicalMaterial({ color: 0xb45309, transmission: 0.6, roughness: 0.2 });
@@ -922,20 +1057,20 @@ export default function ThreeCanvas({
             internalMesh.add(stem, cap);
           });
         } else if (idStr === "cannabis_candy_bag" || idStr === "happy_water_pouch") {
-          // Shiny metallic foil sachet pouch
+          // High-gloss metallic vacuum foil sachet pouch
           const foilMat = new THREE.MeshStandardMaterial({ 
             color: idStr === "cannabis_candy_bag" ? 0x10b981 : 0xf59e0b, 
-            metalness: 0.8, 
-            roughness: 0.25 
+            metalness: 0.95, 
+            roughness: 0.15 
           });
           const pouch = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.11, 0.015), foilMat);
-          const seal = new THREE.Mesh(new THREE.BoxGeometry(0.092, 0.015, 0.018), new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.9 }));
+          const seal = new THREE.Mesh(new THREE.BoxGeometry(0.092, 0.015, 0.018), goldTrimMat);
           seal.position.y = 0.05;
           internalMesh.add(pouch, seal);
         } else if (idStr === "cannabis_candy") {
-          // Translucent gummy bears / gelatin gummies
-          const gumMat1 = new THREE.MeshPhysicalMaterial({ color: 0x22c55e, transmission: 0.7, roughness: 0.2 });
-          const gumMat2 = new THREE.MeshPhysicalMaterial({ color: 0xef4444, transmission: 0.7, roughness: 0.2 });
+          // Translucent sparkling gelatin gummies
+          const gumMat1 = new THREE.MeshPhysicalMaterial({ color: 0x22c55e, transmission: 0.85, roughness: 0.1, clearcoat: 1.0, ior: 1.4 });
+          const gumMat2 = new THREE.MeshPhysicalMaterial({ color: 0xef4444, transmission: 0.85, roughness: 0.1, clearcoat: 1.0, ior: 1.4 });
           const bear1 = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.035, 0.02), gumMat1);
           bear1.position.set(-0.025, 0, 0);
           const bear2 = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.035, 0.02), gumMat2);
@@ -1055,10 +1190,84 @@ export default function ThreeCanvas({
       }
       
       casesGroup.add(specimenMesh);
-      floatingSpecimens.push({ mesh: specimenMesh, initialY: posY + 0.14, id: ex.id });
+      floatingSpecimens.push({ mesh: specimenMesh, initialY: specimenCenterY, id: ex.id });
     });
 
     scene.add(casesGroup);
+
+    // PROCEDURAL SPARKLE GLINTS (Hạt lóng lánh bảo tàng xung quanh 3 cụm tủ tiêu bản)
+    const sparkleGeo = new THREE.BufferGeometry();
+    const sparkleCount = isMobile ? 36 : 90;
+    const sparklePos = new Float32Array(sparkleCount * 3);
+
+    for (let i = 0; i < sparkleCount; i++) {
+      const cabChoice = i % 3;
+      let sx = 0, sy = 0, sz = 0;
+      if (cabChoice === 0) {
+        // Cabinet 1 (Left)
+        sx = -4.95 + (Math.random() - 0.5) * 1.3;
+        sy = 0.95 + Math.random() * 0.75;
+        sz = -1.25 + (Math.random() - 0.5) * 6.6;
+      } else if (cabChoice === 1) {
+        // Cabinet 2 (Right)
+        sx = 4.95 + (Math.random() - 0.5) * 1.3;
+        sy = 0.95 + Math.random() * 0.75;
+        sz = -1.25 + (Math.random() - 0.5) * 6.6;
+      } else {
+        // Cabinet 3 (Back)
+        sx = (Math.random() - 0.5) * 9.0;
+        sy = 0.95 + Math.random() * 0.75;
+        sz = 6.45 + (Math.random() - 0.5) * 1.3;
+      }
+      sparklePos[i * 3] = sx;
+      sparklePos[i * 3 + 1] = sy;
+      sparklePos[i * 3 + 2] = sz;
+    }
+    sparkleGeo.setAttribute("position", new THREE.BufferAttribute(sparklePos, 3));
+
+    // Star sparkle cross glint canvas texture
+    const createSparkleCanvas = () => {
+      const cvs = document.createElement("canvas");
+      cvs.width = 64;
+      cvs.height = 64;
+      const ctx = cvs.getContext("2d");
+      
+      const rad = ctx.createRadialGradient(32, 32, 0, 32, 32, 30);
+      rad.addColorStop(0, "rgba(255, 255, 255, 1)");
+      rad.addColorStop(0.2, "rgba(245, 208, 97, 0.9)");
+      rad.addColorStop(0.5, "rgba(56, 189, 248, 0.4)");
+      rad.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = rad;
+      ctx.fillRect(0, 0, 64, 64);
+
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.95)";
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(32, 2); ctx.lineTo(32, 62);
+      ctx.moveTo(2, 32); ctx.lineTo(62, 32);
+      ctx.stroke();
+
+      ctx.strokeStyle = "rgba(245, 208, 97, 0.8)";
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(14, 14); ctx.lineTo(50, 50);
+      ctx.moveTo(14, 50); ctx.lineTo(50, 14);
+      ctx.stroke();
+
+      return new THREE.CanvasTexture(cvs);
+    };
+
+    const sparkleTexture = createSparkleCanvas();
+    const sparkleMat = new THREE.PointsMaterial({
+      size: isMobile ? 0.08 : 0.12,
+      map: sparkleTexture,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const sparklePoints = new THREE.Points(sparkleGeo, sparkleMat);
+    scene.add(sparklePoints);
 
     // WALL POSTERS (4 posters with downloaded anti-drug educational artworks)
     const postersGroup = new THREE.Group();
@@ -1677,6 +1886,10 @@ export default function ThreeCanvas({
       }
       dustParticles.geometry.attributes.position.needsUpdate = true;
 
+      // Animate Museum Sparkle Glints (Lóng lánh bảo tàng trên các tủ tiêu bản)
+      sparkleMat.opacity = 0.6 + Math.sin(time * 3.6) * 0.3;
+      sparkleMat.size = (isMobile ? 0.08 : 0.12) * (1.0 + Math.sin(time * 2.5) * 0.2);
+
       // 2. PROCESS NAVIGATION CONTROLS (WASD Keys + Mobile Virtual Joystick)
       const moveSpeed = 2.4 * delta;
       const keys = stateRef.current.keys;
@@ -1854,6 +2067,9 @@ export default function ThreeCanvas({
       floorMat.dispose();
       ceilGeo.dispose();
       ceilMat.dispose();
+      sparkleGeo.dispose();
+      if (sparkleMat.map) sparkleMat.map.dispose();
+      sparkleMat.dispose();
       
       // Recursively clean groups
       wallGroup.children.forEach(disposeNode);
@@ -1876,6 +2092,17 @@ export default function ThreeCanvas({
           className="exhibit-look-prompt ui-element animate-pulse"
           style={{ cursor: "pointer", pointerEvents: "auto" }}
           onClick={() => {
+            if (interactionPrompt.type === "exhibit") {
+              onSelectExhibit(interactionPrompt.id);
+              onCompleteQuest(`explore_${interactionPrompt.id}`);
+            } else if (interactionPrompt.type === "curator") {
+              onSelectExhibit(null);
+              onCompleteQuest("chat_curator");
+              if (onOpenCurator) onOpenCurator();
+            }
+          }}
+          onTouchEnd={(e) => {
+            e.preventDefault();
             if (interactionPrompt.type === "exhibit") {
               onSelectExhibit(interactionPrompt.id);
               onCompleteQuest(`explore_${interactionPrompt.id}`);

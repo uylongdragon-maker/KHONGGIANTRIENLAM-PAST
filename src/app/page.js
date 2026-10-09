@@ -83,20 +83,11 @@ export default function Home() {
   const [showQuiz, setShowQuiz] = useState(false);
   const [showInspect3D, setShowInspect3D] = useState(false);
   
-  // Mobile and Orientation states
+  // Mobile detection
   const [isMobileDevice, setIsMobileDevice] = useState(false);
-  const [isPortrait, setIsPortrait] = useState(false);
-  const [bypassOrientationPrompt, setBypassOrientationPrompt] = useState(false);
 
   useEffect(() => {
     setIsMobileDevice(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-    
-    const checkOrientation = () => {
-      setIsPortrait(window.innerHeight > window.innerWidth);
-    };
-    checkOrientation();
-    window.addEventListener("resize", checkOrientation);
-    window.addEventListener("orientationchange", checkOrientation);
 
     // Global touch gesture isolation to block viewport bounces, address bar shifting, and pinch-to-zoom
     const handleGlobalTouchMove = (e) => {
@@ -142,8 +133,6 @@ export default function Home() {
     window.addEventListener("touchend", handleGlobalTouchEnd, { passive: false });
 
     return () => {
-      window.removeEventListener("resize", checkOrientation);
-      window.removeEventListener("orientationchange", checkOrientation);
       window.removeEventListener("touchmove", handleGlobalTouchMove);
       window.removeEventListener("touchend", handleGlobalTouchEnd);
     };
@@ -258,8 +247,10 @@ export default function Home() {
           </div>
 
           <div className="header-right">
-            <button className="invite-btn">MỜI BẠN</button>
-            <div className="profile-avatar">A</div>
+            <div className="header-badge-tag">
+              <Sparkles size={13} style={{ color: "var(--color-gold)" }} />
+              <span>TRIỂN LÃM 3D</span>
+            </div>
           </div>
         </header>
 
@@ -297,10 +288,8 @@ export default function Home() {
 
         {/* FOOTER */}
         <Footer
-          completedQuests={completedQuests}
-          savedExhibitsCount={savedExhibits.length}
           onOpenQuiz={() => setShowQuiz(true)}
-          earnedBadgesCount={earnedBadgesCount}
+          onOpenLibrary={() => setActiveNav("thu-vien")}
         />
       </div>
 
@@ -352,25 +341,6 @@ export default function Home() {
           exhibit={activeExhibit}
           onClose={() => setShowInspect3D(false)}
         />
-      )}
-
-      {/* ORIENTATION ROTATE DEVICE PROMPT OVERLAY */}
-      {isMobileDevice && isPortrait && !bypassOrientationPrompt && (
-        <div className="orientation-prompt-overlay ui-element">
-          <div className="orientation-prompt-card glass-panel">
-            <div className="phone-rotate-icon-container">
-              <Compass size={44} className="phone-rotate-icon" />
-            </div>
-            <h2>Xoay Ngang Thiết Bị</h2>
-            <p>Vui lòng xoay ngang điện thoại của bạn để có góc nhìn tham quan rộng mở và trải nghiệm không gian triển lãm 3D tốt nhất!</p>
-            <button 
-              className="bypass-orientation-btn"
-              onClick={() => setBypassOrientationPrompt(true)}
-            >
-              Tiếp tục ở chế độ dọc
-            </button>
-          </div>
-        </div>
       )}
     </div>
   );
@@ -544,11 +514,35 @@ function InspectModal({ exhibit, onClose }) {
       specimenMesh.rotation.x += deltaY * 0.01;
     };
 
-    const onMouseUp = () => { isDragging = false; };
+    const onTouchStart = (e) => {
+      if (e.touches && e.touches.length > 0) {
+        isDragging = true;
+        prevMouseX = e.touches[0].clientX;
+        prevMouseY = e.touches[0].clientY;
+      }
+    };
+
+    const onTouchMove = (e) => {
+      if (!isDragging || !e.touches || e.touches.length === 0) return;
+      const deltaX = e.touches[0].clientX - prevMouseX;
+      const deltaY = e.touches[0].clientY - prevMouseY;
+      prevMouseX = e.touches[0].clientX;
+      prevMouseY = e.touches[0].clientY;
+
+      specimenMesh.rotation.y += deltaX * 0.012;
+      specimenMesh.rotation.x += deltaY * 0.012;
+    };
+
+    const onTouchEnd = () => { isDragging = false; };
 
     mountRef.current.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
+
+    mountRef.current.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd);
+    window.addEventListener("touchcancel", onTouchEnd);
 
     // Animation Loop
     let id;
@@ -566,6 +560,9 @@ function InspectModal({ exhibit, onClose }) {
       cancelAnimationFrame(id);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
       resizeObserver.disconnect();
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);
